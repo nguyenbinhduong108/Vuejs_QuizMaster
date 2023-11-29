@@ -1,32 +1,32 @@
 <template>
     <div class="overflow-hidden">
         <!-- appbar -->
-        <div class="bg-[#f44336] flex flex-row h-[50px] justify-between items-center px-4 fixed z-20 inset-0">
+        <div class="bg-[#f44336] flex flex-row h-[50px] justify-between items-center px-4 fixed z-20 inset-0 shadow-lg">
             <div class="text-white font-bold text-lg cursor-pointer">Quiz Master</div>
 
-            <div class="hidden sm:flex sm:items-center">
-                <v-btn variant="text" icon="fa-solid fa-star" color="#fff"></v-btn>
+            <div class="flex items-center">
+                <v-btn variant="text" icon="fa-solid fa-gear" color="#fff"></v-btn>
                 <v-btn variant="text" icon="fa-solid fa-bell" color="#fff"></v-btn>
                 <v-btn variant="flat" append-icon="fa-solid fa-arrow-right" color="#fff">
                     Sign in
                 </v-btn>
             </div>
-            <div class="flex items-center sm:hidden">
-                <v-btn variant="text" icon="fa-solid fa-grip-lines" color="#fff">
-                </v-btn>
-            </div>
+
         </div>
 
+        <button class="shadow-lg">Subscribe</button>
+
         <!-- header -->
-        <div class="flex flex-col justify-end p-16 mt-[50px] gap-4 bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)]
-                                                bg-cover bg-center bg-no-repeat relative rounded-2xl sm:rounded-none ">
+        <div
+            class="flex flex-col justify-end p-16 gap-4 bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)]
+                                                    bg-cover bg-center bg-no-repeat relative rounded-2xl sm:rounded-none overflow-hidden">
             <div class="before:absolute before:inset-0 before:bg-black before:bg-opacity-30"></div>
 
-            <div class="title text-white text-8xl font-bold z-10 text-center">
+            <div class="title text-white text-5xl sm:text-8xl font-bold z-10 text-center">
                 Quiz Master
             </div>
 
-            <div class="text-white text-[24px] overflow-hidden z-10 text-center">
+            <div class="text-white text-xl sm:text-2xl overflow-hidden z-10 text-center">
                 Welcome to QuizMaster, where learning becomes fun and enjoyable. With thousands of diverse questions from
                 all
                 fields, QuizMaster is not only a question answering website, but also a source of inspiration for you to
@@ -180,11 +180,32 @@
                 </div>
             </div>
         </div>
-    </div></template>
+    </div>
+</template>
 
 <script lang="ts">
+import categoryApi from "../apis/categoryApi" 
 export default {
     name: "LandingPage",
+    created() {
+        console.log(this.getCategory());
+    },
+    data() {
+        return {
+        }
+    },
+    methods: {
+        async getCategory(): Promise<any> {
+            try {
+                const data = await (this as any).$_categoryApi.getAllCategory();
+                return data.data;
+            } catch (error) {
+                console.log('ákdlalsdkj');
+            }
+
+
+        }
+    }
 };
 </script>
 <style scoped></style>
