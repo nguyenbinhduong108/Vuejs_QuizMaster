@@ -118,11 +118,8 @@
         </div>
 
         <!-- demo -->
-        <div v-for="category in categories" class="m-2">
-            {{ category.name }}
-            <div class="h-16 bg-gray-300 rounded">
-                <v-card></v-card>
-            </div>
+        <div class="bg-gray-300 p-2 m-2 rounded flex gap-1 overflow-x-scroll custom-scrollbar">
+            <CustomCard :questions="questions"></CustomCard>
         </div>
 
         <!-- footer -->
@@ -194,12 +191,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import categoryApi from '@/apis/categoryApi';
-import accountApi from '@/apis/accountApi'
+import accountApi from '@/apis/accountApi';
+import questionApi from '@/apis/questionApi';
 import type { categoryProps } from '@/apis/categoryApi';
 import type { accountProps } from '@/apis/accountApi';
+import type { questionProps } from '@/apis/questionApi';
 
 const categories = ref<categoryProps[]>([]);
 const account = ref<accountProps>({});
+const questions = ref<questionProps[]>([]);
+
+import CustomCard from '@/components/CustomCard.vue';
+
+
 
 
 const getAllCategory = async () => {
@@ -207,7 +211,7 @@ const getAllCategory = async () => {
         const data = await categoryApi.getAllCategory();
         categories.value = data.data;
     } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu từ server', error);
+        console.error('Lỗi khi lấy dữ liệu từ server');
     }
 };
 
@@ -216,12 +220,21 @@ const loginAccount = async () => {
         const data = await accountApi.loginAccount('test@gmail.com', '11111');
         account.value = data.data;
     } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu từ server', error);
+        console.error('Lỗi khi lấy dữ liệu từ server');
+    }
+};
+
+const getAllQuestion = async () => {
+    try {
+        const data = await questionApi.getAllQuestion();
+        questions.value = data.data;
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu từ server');
     }
 }
 
 onMounted(async () => {
-    await getAllCategory();
+    await getAllQuestion();
 });
 </script>
 
