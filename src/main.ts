@@ -9,16 +9,6 @@ import vuetify from './plugins/vuetify'
 // import css
 import './css/main.css'
 
-//import Api
-import categoryApi from "./apis/categoryApi"
-
 const app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
-app.use(vuetify)
-
-app.config.globalProperties.$_categoryApi = categoryApi;
-
-
-app.mount('#app')
+app.use(createPinia()).use(router).use(vuetify).mount('#app');
