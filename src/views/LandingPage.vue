@@ -7,7 +7,7 @@
             <div class="flex items-center">
                 <v-btn variant="text" icon="fa-solid fa-gear" color="#fff"></v-btn>
                 <v-btn variant="text" icon="fa-solid fa-bell" color="#fff"></v-btn>
-                <v-btn variant="flat" append-icon="fa-solid fa-arrow-right" color="#fff">
+                <v-btn variant="flat" append-icon="fa-solid fa-arrow-right" color="#fff" @click="showForm">
                     Sign in
                 </v-btn>
             </div>
@@ -32,7 +32,7 @@
             </div>
 
             <div class="flex flex-col items-center">
-                <v-btn variant="flat" append-icon="fa-solid fa-arrow-right" color="#f44336">
+                <v-btn variant="flat" append-icon="fa-solid fa-arrow-right" color="#f44336" @click="showForm">
                     Get start
                 </v-btn>
             </div>
@@ -187,7 +187,7 @@
         </div>
     </div>
 
-    <LoginForm></LoginForm>
+    <LoginForm v-if="isShowForm" @closeForm="closeForm"></LoginForm>
 </template>
 
 <script setup lang="ts">
@@ -204,9 +204,11 @@ const account = ref<accountProps>({});
 const questions = ref<questionProps[]>([]);
 
 const cardId = ref<string>();
+const isShowForm = ref(false);
 
 import CustomCard from "@/components/CustomCard.vue";
 import LoginForm from "@/components/LoginForm.vue";
+
 
 const getAllCategory = async () => {
     try {
@@ -241,6 +243,14 @@ onMounted(async () => {
 
 function logCardId(cardId: string) {
     console.log(cardId)
+}
+
+function showForm() {
+    isShowForm.value = true;
+}
+
+function closeForm() {
+    isShowForm.value = false;
 }
 </script>
 
