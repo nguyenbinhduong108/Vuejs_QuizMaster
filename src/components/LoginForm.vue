@@ -38,11 +38,70 @@
             </v-form>
 
             <v-form v-else-if="typeForm === 'signUpForm'">
-                Sign Up
+                <div class="font-bold text-3xl text-center pb-3">Sign Up</div>
+                <v-row>
+                    <v-col>
+                        <v-text-field label="User" prepend-inner-icon="fa-solid fa-user" hide-details="auto"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <v-text-field label="Email" prepend-inner-icon="fa-solid fa-at" hide-details="auto"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <v-text-field label="Password" prepend-inner-icon="fa-solid fa-lock"
+                            hide-details="auto"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <v-text-field label="Confirm password" prepend-inner-icon="fa-solid fa-lock"
+                            hide-details="auto"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <v-btn block color="#f44336">Sign up</v-btn>
+
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <div class="flex justify-center">
+                            Already have an account?
+                            <div class="text-[#f44336] hover:cursor-pointer" @click="changeLoginForm">Login</div>
+                        </div>
+                    </v-col>
+                </v-row>
+
             </v-form>
-            
+
             <v-form v-else>
-                Forget password
+                <div class="font-bold text-3xl text-center pb-3">Porget password</div>
+                <v-row>
+                    <v-col>
+                        <v-text-field label="Email" prepend-inner-icon="fa-solid fa-at" hide-details="auto"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <v-text-field label="New password" prepend-inner-icon="fa-solid fa-lock"
+                            hide-details="auto"></v-text-field>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <v-btn block color="#f44336">Reset password</v-btn>
+                    </v-col>
+                </v-row>
             </v-form>
         </div>
     </div>
@@ -58,14 +117,18 @@ const emits = defineEmits([
 ])
 
 function changeForgetForm() {
-    typeForm.value = 'forgetForm'
+    typeForm.value = 'forgetForm';
 }
 
 function changeSignUpForm() {
-    typeForm.value = 'signUpForm'
+    typeForm.value = 'signUpForm';
 }
 
-function closeForm(){
+function changeLoginForm() {
+    typeForm.value = 'loginForm';
+}
+
+function closeForm() {
     emits('closeForm');
 }
 
