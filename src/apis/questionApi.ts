@@ -1,6 +1,6 @@
 import axios from "@/lib/axios";
 
-const baseApi = "http://localhost:3000/questions";
+const baseApi = "https://quizmaster-hpyy.onrender.com/questions";
 
 const questionApi = {
     getAllQuestion: async () => {

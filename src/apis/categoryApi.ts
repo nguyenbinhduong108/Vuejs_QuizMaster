@@ -1,6 +1,6 @@
 import axios from "../lib/axios";
 
-const baseApi = 'http://localhost:3000/category';
+const baseApi = 'https://quizmaster-hpyy.onrender.com/category';
 
 const categoryApi = {
     getAllCategory: async () => {

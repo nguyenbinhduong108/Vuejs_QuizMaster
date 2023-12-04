@@ -1,6 +1,6 @@
 import axios from "../lib/axios";
 
-const baseApi = 'http://localhost:3000/account';
+const baseApi = 'https://quizmaster-hpyy.onrender.com/account';
 
 const accountApi = {
     loginAccount: async (email: string, password: string) => {
@@ -31,7 +31,7 @@ const accountApi = {
 export default accountApi;
 
 export interface accountProps {
-    password?: string,
+    id?: string,
     email?: string,
     username?: string,
     avatar?: string,
@@ -39,9 +39,9 @@ export interface accountProps {
 };
 
 export interface accountBody {
-    password: string,
-    email: string,
-    username: string,
-    avatar: "https://i.imgur.com/t9Y4WFN.jpg",
-    isAdmin: false
+    password?: string,
+    email?: string,
+    username?: string,
+    avatar?: "https://i.imgur.com/t9Y4WFN.jpg",
+    isAdmin?: false
 }
