@@ -41,21 +41,24 @@ const questionApi = {
 export default questionApi;
 
 export interface questionProps {
-    id?: string,
-    name?: string,
-    image?: string,
-    timer?: number,
-    turn?: number,
-    quantity?: number,
-    account?: {
-        id?: string,
-        username?: string,
+    id: string,
+    name: string,
+    image: string,
+    timer: number,
+    turn: number,
+    quantity: number,
+    account: {
+        id: string,
+        username: string,
     },
-    category?: {
-        id?: string,
-        name?: string,
-        image?: string;
-    }
+    category: {
+        id: string,
+        name: string,
+        image: string;
+    },
+    createdAt: string,
+    updatedAt: string,
+    deletedAt: string,
 };
 
 export interface questionBody {
