@@ -19,7 +19,7 @@ const useAccountStore = defineStore('account', {
     },
     actions: {
         login(account: accountProps) {
-            this.account = account
+            this.account = account;
         },
 
         logout(){
