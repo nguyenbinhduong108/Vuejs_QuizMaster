@@ -24,7 +24,7 @@ const questionApi = {
     },
 
     updateQuestion:async (questionId: string, question: questionBody) => {
-        const data = await axios.put(`${baseApi}/${questionId}`, {question});
+        const data = await axios.put(`${baseApi}/${questionId}`, question);
         return data;
     },
 
@@ -34,7 +34,7 @@ const questionApi = {
     },
 
     createQuestion:async (question: questionBody) => {
-        const data = await axios.post(baseApi, {question});
+        const data = await axios.post(baseApi, question);
         return data;
     }
 };

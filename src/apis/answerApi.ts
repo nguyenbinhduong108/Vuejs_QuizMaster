@@ -14,12 +14,12 @@ const answerApi = {
     },
 
     createAnswerByQuestionId: async (questionId: string, answer: answerBody) => {
-        const data = await axios.post(`${baseApi}/${questionId}`, {answer});
+        const data = await axios.post(`${baseApi}/${questionId}`, answer);
         return data;
     },
 
     updateAnswerByAnswerId:async (answerId: string, answer: answerBody) => {
-        const data = await axios.put(`${baseApi}/${answerId}`, {answer});
+        const data = await axios.put(`${baseApi}/${answerId}`, answer);
         return data;        
     },
 

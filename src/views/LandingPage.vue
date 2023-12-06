@@ -130,7 +130,7 @@ import type { accountProps } from "@/apis/accountApi";
 import type { questionProps } from "@/apis/questionApi";
 
 const categories = ref<categoryProps[]>([]);
-const account = ref<accountProps>({});
+const account = ref<accountProps>();
 const questions = ref<questionProps[]>([]);
 
 const cardId = ref<string>();

@@ -16,11 +16,11 @@ const categoryApi = {
 export default categoryApi;
 
 export interface categoryProps  {
-    id?: string,
-    name?: string,
-    image?: string
-    createdAt?: Date,
-    updatedAt?: Date,
-    deletedAt?: Date,
+    id: string,
+    name: string,
+    image: string
+    createdAt: Date,
+    updatedAt: Date,
+    deletedAt: Date,
 }
 

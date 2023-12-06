@@ -9,7 +9,7 @@ const accountApi = {
     },
 
     registerAccount: async (account: accountBody) => {
-        const data = await axios.post(`${baseApi}/Register`, { account });
+        const data = await axios.post(`${baseApi}/Register`, account);
         return data;
     },
 
@@ -31,11 +31,11 @@ const accountApi = {
 export default accountApi;
 
 export interface accountProps {
-    id?: string,
-    email?: string,
-    username?: string,
-    avatar?: string,
-    isAdmin?: boolean,
+    id: string,
+    email: string,
+    username: string,
+    avatar: string,
+    isAdmin: boolean,
 };
 
 export interface accountBody {

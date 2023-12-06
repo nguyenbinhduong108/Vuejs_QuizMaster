@@ -44,6 +44,7 @@
                     <v-col>
                         <v-text-field 
                             v-model:model-value="confirmPassword"
+                            :error="!checkConfirmPassword"
                             label="Confirm password" 
                             prepend-inner-icon="fa-solid fa-lock" 
                             hide-details="auto"
@@ -78,13 +79,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Loading from '@/components/Loading.vue';
 import LoginForm from '@/components/LoginForm.vue'
 import imgurApi from '@/apis/imgurApi'
 import accountApi from '@/apis/accountApi'
-import type { accountBody } from '@/apis/accountApi'
+import type { accountBody, accountProps } from '@/apis/accountApi'
 import { useRouter } from 'vue-router';
+import useAccountStore from '@/stores/account';
 
 const account = ref<accountBody>({
     email: '',
@@ -92,7 +94,15 @@ const account = ref<accountBody>({
     password: '',
     avatar: 'https://i.imgur.com/t9Y4WFN.jpg',
 })
-const confirmPassword = ref('');
+const confirmPassword = ref<string>('');
+const checkConfirmPassword = computed(() =>{
+    if(account.value.password != confirmPassword.value){
+        return false;
+    }
+    return true;
+})
+
+const accountStore = useAccountStore();
 
 const fileInput = ref();
 const isShowLoading = ref(false);
@@ -139,9 +149,13 @@ function backToLandingPage() {
 
 async function createAccount() {
     try {
-        console.log(account.value);
-        const data = await accountApi.registerAccount(account.value);
-        console.log(1)
+        if(checkConfirmPassword.value === false){
+            console.log("Vui lòng xác nhận chính xác mật khẩu");
+            return;
+        }
+        const response = (await accountApi.registerAccount(account.value)).data;
+        accountStore.login(response)
+        router.push("/user")
     } catch (error) {
         console.error(error);
     }
