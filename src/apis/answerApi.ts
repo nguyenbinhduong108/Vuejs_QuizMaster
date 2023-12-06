@@ -1,4 +1,4 @@
-import axios from "@/lib/axios";
+import axios from "axios";
 
 const baseApi = "https://quizmaster-hpyy.onrender.com/answers";
 

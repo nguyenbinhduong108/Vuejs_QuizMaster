@@ -9,18 +9,28 @@
                 <div class="text-center text-4xl font-bold">Sign Up</div>
                 <v-row>
                     <v-col>
-                        <v-text-field label="User name" prepend-inner-icon="fa-solid fa-user"
-                            hide-details="auto"></v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field label="Email" prepend-inner-icon="fa-solid fa-at" hide-details="auto"></v-text-field>
+                        <v-text-field 
+                            v-model:model-value="account.username"
+                            label="User name" 
+                            prepend-inner-icon="fa-solid fa-user"
+                            hide-details="auto">
+                        </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col>
                         <v-text-field 
+                            v-model:model-value="account.email"
+                            label="Email" 
+                            prepend-inner-icon="fa-solid fa-at" 
+                            hide-details="auto">
+                        </v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-text-field 
+                            v-model:model-value="account.password"
                             label="Password" 
                             prepend-inner-icon="fa-solid fa-lock" 
                             hide-details="auto"
@@ -33,6 +43,7 @@
                 <v-row>
                     <v-col>
                         <v-text-field 
+                            v-model:model-value="confirmPassword"
                             label="Confirm password" 
                             prepend-inner-icon="fa-solid fa-lock" 
                             hide-details="auto"
@@ -128,7 +139,9 @@ function backToLandingPage() {
 
 async function createAccount() {
     try {
+        console.log(account.value);
         const data = await accountApi.registerAccount(account.value);
+        console.log(1)
     } catch (error) {
         console.error(error);
     }
