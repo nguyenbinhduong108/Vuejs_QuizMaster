@@ -39,9 +39,9 @@ export interface accountProps {
 };
 
 export interface accountBody {
-    password?: string,
-    email?: string,
-    username?: string,
-    avatar?: "https://i.imgur.com/t9Y4WFN.jpg",
-    isAdmin?: false
+    password: string,
+    email: string,
+    username: string,
+    avatar: string,
+    isAdmin: false
 }
