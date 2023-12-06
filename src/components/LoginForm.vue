@@ -121,6 +121,8 @@ function closeForm() {
 async function loginAccount() {
     try {
         const data = (await accountApi.loginAccount(account.value.email, account.value.password)).data;
+        
+        console.log(data);
 
         accountStore.login(data);
 

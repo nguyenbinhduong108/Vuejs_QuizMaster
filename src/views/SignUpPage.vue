@@ -125,9 +125,7 @@ async function handleFileChange(event: any) {
         isShowLoading.value = true;
         const formData = new FormData();
         formData.append('avatar', file);
-
         const response = await imgurApi.upload(formData);
-        console.log(response.data);
         account.value.avatar = response.data;
         isShowLoading.value = false;
     } catch (error) {

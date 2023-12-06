@@ -75,10 +75,9 @@ async function getAllQuestionByAccountId(id: string) {
     }
 }
 
-await getAllQuestionByAccountId(store.account.id);
 
 onBeforeMount(async () => {
-   
+    await getAllQuestionByAccountId(store.account.id);
 })
 </script>
 
