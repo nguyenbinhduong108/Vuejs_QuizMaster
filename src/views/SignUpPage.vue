@@ -1,8 +1,11 @@
 <template>
     <div class="w-screen h-screen relative bg-gradient-to-r from-[#FFBB5C] to-[#E25E3E]">
-        <div
+        <v-btn variant="flat" icon @click="backToLandingPage">
+            <v-icon color="white" icon="fa-solid fa-arrow-left"></v-icon>
+        </v-btn>
+        <div v-if="isSignUpForm"
             class="bg-white flex gap-1 w-[70vw] absolute translate-x-[-50%] translate-y-[-50%] top-1/2 left-1/2 rounded p-3 overflow-hidden">
-            <div class="flex-1">
+            <div class="flex-1 ">
                 <div class="text-center text-4xl font-bold">Sign Up</div>
                 <v-row>
                     <v-col>
@@ -17,20 +20,35 @@
                 </v-row>
                 <v-row>
                     <v-col>
-                        <v-text-field label="Password" prepend-inner-icon="fa-solid fa-lock"
-                            hide-details="auto"></v-text-field>
+                        <v-text-field 
+                            label="Password" 
+                            prepend-inner-icon="fa-solid fa-lock" 
+                            hide-details="auto"
+                            :type="isShowPassword ? 'text' : 'password'"
+                            :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+                            @click:append-inner="isShowPassword = !isShowPassword">
+                        </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col>
-                        <v-text-field label="Confirm password" prepend-inner-icon="fa-solid fa-lock"
-                            hide-details="auto"></v-text-field>
+                        <v-text-field 
+                            label="Confirm password" 
+                            prepend-inner-icon="fa-solid fa-lock" 
+                            hide-details="auto"
+                            :type="isShowConfirmPassword ? 'text' : 'password'"
+                            :append-inner-icon="isShowConfirmPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+                            @click:append-inner="isShowConfirmPassword = !isShowConfirmPassword">
+                        </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col>
-                        <v-btn block>Sign Up</v-btn>
-                        <div>Already have an account?<span class="font-bold underline whitespace-nowrap">Login here</span>
+                        <v-btn @click="createAccount" block color="#f44336">Sign Up</v-btn>
+                        <div class="text-center">
+                            Already have an account?
+                            <span @click="loginForm" class="font-bold underline whitespace-nowrap cursor-pointer">Login
+                                here</span>
                         </div>
                     </v-col>
                 </v-row>
@@ -43,26 +61,34 @@
                 <Loading v-if="isShowLoading"></Loading>
             </div>
         </div>
+
+        <LoginForm @signUp="signUpForm" @closeForm="signUpForm" v-else></LoginForm>
     </div>
 </template>
 
 <script setup lang="ts">
-import Loading from '@/components/Loading.vue';
 import { ref } from 'vue'
+import Loading from '@/components/Loading.vue';
+import LoginForm from '@/components/LoginForm.vue'
 import imgurApi from '@/apis/imgurApi'
+import accountApi from '@/apis/accountApi'
 import type { accountBody } from '@/apis/accountApi'
-import { fa } from 'vuetify/iconsets/fa';
+import { useRouter } from 'vue-router';
 
 const account = ref<accountBody>({
     email: '',
     username: '',
     password: '',
     avatar: 'https://i.imgur.com/t9Y4WFN.jpg',
-    isAdmin: false,
 })
+const confirmPassword = ref('');
 
 const fileInput = ref();
 const isShowLoading = ref(false);
+const isSignUpForm = ref(true);
+const router = useRouter();
+const isShowPassword = ref(false);
+const isShowConfirmPassword = ref(false);
 
 function chooseAvatar() {
     fileInput.value.click();
@@ -88,30 +114,25 @@ async function handleFileChange(event: any) {
     }
 }
 
+function loginForm() {
+    isSignUpForm.value = false;
+}
+
+function signUpForm() {
+    isSignUpForm.value = true;
+}
+
+function backToLandingPage() {
+    router.push("/");
+}
+
+async function createAccount() {
+    try {
+        const data = await accountApi.registerAccount(account.value);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 </script>
-<style scoped>
-.lds-dual-ring {
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-  }
-  .lds-dual-ring:after {
-    content: " ";
-    display: block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border-radius: 50%;
-    border: 6px solid #fff;
-    border-color: #fff transparent #fff transparent;
-    animation: lds-dual-ring 1.2s linear infinite;
-  }
-  @keyframes lds-dual-ring {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-</style>
+<style scoped></style>

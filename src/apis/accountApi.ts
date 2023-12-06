@@ -43,5 +43,4 @@ export interface accountBody {
     email: string,
     username: string,
     avatar: string,
-    isAdmin: false
 }

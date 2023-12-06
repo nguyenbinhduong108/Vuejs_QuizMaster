@@ -1,6 +1,7 @@
 <template>
     <div class="fixed inset-0 bg-black/50 z-30">
-        <div class="bg-white w-[30vw] max-w-[500px] min-w-[250px] top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-3 absolute rounded">
+        <div
+            class="bg-white w-[30vw] max-w-[500px] min-w-[250px] top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] p-3 absolute rounded">
             <div class="text-right absolute top-0 right-0">
                 <v-btn icon="fa-solid fa-close" variant="flat" @click="closeForm"></v-btn>
             </div>
@@ -15,8 +16,16 @@
 
                 <v-row>
                     <v-col>
-                        <v-text-field label="Password" prepend-inner-icon="fa-solid fa-lock" hide-details="auto"
-                            v-model:model-value="account.password"></v-text-field>
+                        <v-text-field 
+                            v-model:model-value="account.password"
+                            label="Password" 
+                            prepend-inner-icon="fa-solid fa-lock" 
+                            hide-details="auto"
+                            :type="isShowPassword ? 'text' : 'password'"
+                            :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+                            @click:append-inner="isShowPassword = !isShowPassword"
+                            >
+                        </v-text-field>
                         <div class="text-right text-[#f44336] hover:cursor-pointer" @click="changeForgetForm">
                             Forget password?
                         </div>
@@ -32,7 +41,7 @@
                     <v-col>
                         <div class="flex justify-center">
                             Not a member?
-                            <div class="text-[#f44336] hover:cursor-pointer" @click="changeSignUpForm">Signup now</div>
+                            <div class="text-[#f44336] cursor-pointer" @click="changeSignUpForm">Signup now</div>
                         </div>
                     </v-col>
                 </v-row>
@@ -67,10 +76,11 @@
 import { ref } from "vue"
 import accountApi from "@/apis/accountApi";
 import useAccountStore from "@/stores/account";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const accountStore = useAccountStore();
 const router = useRouter();
+const route = useRoute();
 
 const typeForm = ref('loginForm');
 const account = ref({
@@ -80,9 +90,11 @@ const account = ref({
     avatar: "https://i.imgur.com/t9Y4WFN.jpg",
     isAdmin: false
 });
+const isShowPassword = ref(false);
 
 const emits = defineEmits([
     'closeForm',
+    'signUp'
 ])
 
 function changeForgetForm() {
@@ -90,7 +102,12 @@ function changeForgetForm() {
 }
 
 function changeSignUpForm() {
-    router.push('/signup');
+    if (route.path !== '/signup') {
+        router.push('/signup');
+    }
+    else{
+        emits('signUp');
+    }
 }
 
 function changeLoginForm() {
