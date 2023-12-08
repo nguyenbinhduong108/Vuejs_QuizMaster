@@ -31,17 +31,17 @@ const answerApi = {
 export default answerApi;
 
 export interface answerProps {
-    id?: string,
-    title?: string,
-    answerA?: string,
-    answerB?: string,
-    answerC?: string,
-    answerD?: string,
-    trueAnswer?: string,
-    image?: string,
+    id: string,
+    title: string,
+    answerA: string,
+    answerB: string,
+    answerC: string,
+    answerD: string,
+    trueAnswer: string,
+    image: string,
     question: {
-        id?: string,
-        name?: string
+        id: string,
+        name: string
     }
 }
 

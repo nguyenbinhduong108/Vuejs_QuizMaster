@@ -1,10 +1,10 @@
 <template>
-    <v-card v-for="question in questions" :key="question.id" color="rgb(156, 163, 175)" :min-width="350" class="pr-2">
+    <v-card v-for="question in questions" :key="question.id" color="rgb(156, 163, 175)" height="236px" :min-width="350">
         <v-card-title class="text-white text-center">
             {{ question.name }}
         </v-card-title>
-        <div class="flex items-center flex-nowrap">
-            <div class="flex-1">
+        <div class="grid grid-cols-2 items-center flex-nowrap">
+            <div>
                 <v-card-item class="text-white">
                     <v-icon icon="fa-solid fa-clock"></v-icon>
                     {{ question.timer }}s
@@ -18,12 +18,12 @@
                     {{ question.quantity }} câu hỏi
                 </v-card-item>
                 <v-card-actions>
-                    <v-btn variant="elevated" color="#f44336" block @click="selcetCardOnClick(question.id)">Start</v-btn>
+                    <v-btn variant="elevated" color="#f44336" block @click="selecteddCardOnClick(question.id)">Start</v-btn>
                 </v-card-actions>
             </div>
 
-            <div class="w-[160px] h-[160px] rounded overflow-hidden">
-                <v-img :src="question.image" width="100%" height="100%" cover></v-img>
+            <div class="overflow-hidden w-full h-full p-2">
+                <v-img :src="question.image" class="rounded" width="100%" height="100%" cover></v-img>
             </div>
         </div>
     </v-card>
@@ -38,8 +38,8 @@ const emits = defineEmits([
     'click'
 ]);
 
-function selcetCardOnClick(message: string) {
-    emits("click", message);
+function selecteddCardOnClick(id: string) {
+    emits("click", id);
 }
 
 </script>

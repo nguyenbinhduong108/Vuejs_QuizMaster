@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { accountProps } from '@/apis/accountApi';
 
@@ -31,7 +30,7 @@ const useAccountStore = defineStore('account', {
                 isAdmin: false,
             }
         }
-    }
+    },
 })
 
 export default useAccountStore;

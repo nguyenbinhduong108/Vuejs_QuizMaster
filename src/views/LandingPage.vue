@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onBeforeMount } from "vue";
 import categoryApi from "@/apis/categoryApi";
 import accountApi from "@/apis/accountApi";
 import questionApi from "@/apis/questionApi";
@@ -160,7 +160,7 @@ const loginAccount = async () => {
     }
 };
 
-const getAllQuestion = async () => {
+async function getAllQuestion() {
     try {
         const data = await questionApi.getAllQuestion();
         questions.value = data.data;
@@ -169,7 +169,7 @@ const getAllQuestion = async () => {
     }
 };
 
-onMounted(async () => {
+onBeforeMount(async () => {
     await getAllQuestion();
 });
 

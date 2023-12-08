@@ -122,8 +122,6 @@ async function loginAccount() {
     try {
         const data = (await accountApi.loginAccount(account.value.email, account.value.password)).data;
         
-        console.log(data);
-
         accountStore.login(data);
 
         // Chuyển hướng đến trang user hoặc admin tùy thuộc vào isAdmin
