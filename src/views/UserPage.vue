@@ -4,7 +4,7 @@
         <UserAppBar :account="store.account"></UserAppBar>
 
         <!-- main -->
-        <div class="mt-[50px] flex flex-col md:flex-row h-[calc(100vh-50px)]">
+        <div class="mt-[50px] flex flex-1 flex-col md:flex-row h-[calc(100vh-50px)]">
             <RouterView></RouterView>
         </div>
     </div>

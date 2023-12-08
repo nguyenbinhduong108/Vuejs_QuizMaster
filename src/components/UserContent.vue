@@ -11,7 +11,7 @@
         </div>
     </div>
     <!-- content -->
-    <div class="bg-slate-600 relative w-[calc(100vw-140px)] flex flex-wrap gap-3 p-3 overflow-y-scroll overflow-hidden">
+    <div class="bg-slate-600 relative w-full h-full flex flex-wrap gap-3 p-3 overflow-y-scroll overflow-hidden">
         <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
         <Loading v-if="isShowLoading"></Loading>
     </div>
