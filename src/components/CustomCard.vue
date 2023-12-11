@@ -38,8 +38,8 @@ const emits = defineEmits([
     'click'
 ]);
 
-function selecteddCardOnClick(id: string) {
-    emits("click", id);
+function selecteddCardOnClick(questionId: string) {
+    emits("click", questionId);
 }
 
 </script>

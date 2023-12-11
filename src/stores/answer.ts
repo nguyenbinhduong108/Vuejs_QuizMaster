@@ -8,10 +8,6 @@ const useAnswerStore = defineStore('answer', {
         point: 0,
     }),
 
-    getters: {
-        
-    },
-
     actions: {
         async setAnswers(questionId: string): Promise<void> {
             try {
@@ -23,6 +19,15 @@ const useAnswerStore = defineStore('answer', {
                 console.error('Error setting answers:', error);
             }
         },
+
+        addPoint(){
+            this.point++;
+        },
+
+        resetAnswer(){
+            this.answers = [];
+            this.point = 0;
+        }
     },
 })
 

@@ -27,12 +27,14 @@ import Loading from './Loading.vue';
 import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import useAnswerStore from '@/stores/answer';
+import useQuestionStore from '@/stores/question'
 
 const questions = ref<questionProps[]>([]);
 const categories = ref<categoryProps[]>([]);
 const isShowLoading = ref(false);
 const router = useRouter();
-const store = useAnswerStore();
+const answerStore = useAnswerStore();
+const questionStore = useQuestionStore();
 
 async function getAllQuestion() {
     try {
@@ -66,7 +68,8 @@ async function getQuestionByCategory(categoryId: string) {
 }
 
 async function selecteddCardOnClick(questionId: string) {
-    await store.setAnswers(questionId);
+    await questionStore.setQuestion(questionId);
+    await answerStore.setAnswers(questionId);
 
     router.push("/user/play");
 }

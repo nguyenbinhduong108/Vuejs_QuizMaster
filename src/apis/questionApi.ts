@@ -54,7 +54,7 @@ export interface questionProps {
     category: {
         id: string,
         name: string,
-        image: string;
+        image: string,
     },
     createdAt: string,
     updatedAt: string,

@@ -7,7 +7,7 @@
             </div>
             <div>
                 <div class="text-xs">Thời gian còn loại</div>
-                <div class="text-base">12:30</div>
+                <div class="text-base">{{ formatTime }}</div>
             </div>
         </div>
         <div class="w-[60vw] flex flex-1 flex-col justify-between p-2 ">
@@ -35,15 +35,22 @@
             <v-btn color="blue" @click="nextAnswer">Next</v-btn>
         </div>
     </div>
+
+
 </template>
 
 <script setup lang="ts">
 import type { answerProps } from '@/apis/answerApi';
 import useAnswerStore from '@/stores/answer';
-import { ref } from 'vue';
+import useQuestionStore from '@/stores/question';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const isStopClick = ref(false);
-const answers = useAnswerStore().answers;
+const answerStore = useAnswerStore();
+const questionStore = useQuestionStore();
+
+
+const answers = answerStore.answers;
 const index = ref(0);
 
 // chọn đáp án
@@ -81,6 +88,7 @@ function handleAnswerClick(answerKey: keyof answerProps) {
 
     if (answers[index.value][answerKey] === answers[index.value].trueAnswer) {
         currentAnswer?.classList.add('answer-correct')
+        answerStore.addPoint();
     } else {
         currentAnswer?.classList.add('answer-error');
 
@@ -107,11 +115,42 @@ function getAnswerElement() {
 
 // tính thời gian
 
+const time = ref<number>(questionStore.question.timer);
+const timer = ref();
+
+let formatTime = computed(() => {
+    const minutes = Math.floor(time.value / 60);
+    const seconds = time.value % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+})
+
+function startTimer() {
+    timer.value = setInterval(() => {
+        if (time.value > 0) {
+            time.value--;
+        } else {
+            clearInterval(timer.value);
+            alert('Đã hết thời gian!');
+        }
+    }, 1000);
+};
+
+function stopTimer() {
+    clearInterval(timer.value);
+};
+
+onMounted(() => {
+    startTimer();
+})
+
+onUnmounted(() => {
+    stopTimer()
+})
 </script>
 
 <style scoped>
 .answer-base {
-    @apply text-white font-bold text-center bg-slate-400 p-2 rounded cursor-pointer hover:bg-slate-500 active:bg-slate-700;
+    @apply text-white font-bold text-center bg-slate-400 p-2 rounded cursor-pointer hover:bg-slate-500 active:bg-slate-700 transition-all;
 }
 
 .answer-correct {
