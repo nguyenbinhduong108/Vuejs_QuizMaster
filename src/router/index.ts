@@ -4,6 +4,7 @@ import AdminPage from '@/views/AdminPage.vue'
 import UserPage from '@/views/UserPage.vue'
 import SignUpPage from '@/views/SignUpPage.vue'
 import UserContent from '@/components/UserContent.vue'
+// import UserPlay from '@/components/UserPlay.vue'
 import UserPlay from '@/components/UserPlay.vue'
 
 const router = createRouter({

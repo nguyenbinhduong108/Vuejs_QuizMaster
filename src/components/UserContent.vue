@@ -1,19 +1,21 @@
 <template>
-    <!-- menu -->
-    <div class="flex flex-row md:!flex-col gap-2 min-w-[140px] bg-slate-500 p-1 overflow-hidden">
-        <div @click="getAllQuestion"
-            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
-            All
+    <div class="flex flex-1 flex-col md:flex-row w-full h-full">
+        <!-- menu -->
+        <div class="flex flex-row md:!flex-col gap-2 min-w-[140px] bg-slate-500 p-1 overflow-hidden">
+            <div @click="getAllQuestion"
+                class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
+                All
+            </div>
+            <div v-for="category in categories" :key="category.id" @click="getQuestionByCategory(category.id)"
+                class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
+                {{ category.name }}
+            </div>
         </div>
-        <div v-for="category in categories" :key="category.id" @click="getQuestionByCategory(category.id)"
-            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
-            {{ category.name }}
+        <!-- content -->
+        <div class="relative w-full h-full flex flex-wrap gap-3 p-3 overflow-y-scroll overflow-hidden">
+            <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+            <Loading v-if="isShowLoading"></Loading>
         </div>
-    </div>
-    <!-- content -->
-    <div class="bg-slate-600 relative w-full h-full flex flex-wrap gap-3 p-3 overflow-y-scroll overflow-hidden">
-        <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
-        <Loading v-if="isShowLoading"></Loading>
     </div>
 </template>
 
@@ -37,7 +39,7 @@ async function getAllQuestion() {
         isShowLoading.value = true;
         const data = await questionApi.getAllQuestion();
         questions.value = data.data;
-        isShowLoading.value = false;     
+        isShowLoading.value = false;
     } catch (error) {
         console.error("Có lỗi khi lấy dữ liệu từ server");
     }
@@ -65,7 +67,7 @@ async function getQuestionByCategory(categoryId: string) {
 
 async function selecteddCardOnClick(questionId: string) {
     await store.setAnswers(questionId);
-    
+
     router.push("/user/play");
 }
 
