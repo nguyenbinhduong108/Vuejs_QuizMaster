@@ -3,7 +3,7 @@
     <UserAppBar :account="store.account"></UserAppBar>
 
     <!-- main -->
-    <div class="bg-slate-600 mt-[50px] h-[calc(100vh-50px)] flex justify-center">
+    <div class="bg-slate-600 mt-[50px] h-[calc(100vh-50px)]">
         <RouterView></RouterView>
     </div>
 </template>

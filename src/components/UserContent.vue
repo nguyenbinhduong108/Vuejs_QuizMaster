@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-1 flex-col md:flex-row w-full h-full">
+    <div class="flex justify-center flex-1 flex-col md:flex-row w-full h-full">
         <!-- menu -->
         <div class="flex flex-row md:!flex-col gap-2 min-w-[140px] bg-slate-500 p-1 overflow-hidden">
             <div @click="getAllQuestion"

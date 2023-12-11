@@ -1,28 +1,39 @@
 <template>
-    <div class="w-[60vw] flex flex-col justify-between p-2 ">
-        <div class=""></div>
-        <div class="flex flex-col gap-5">
-            <div class="text-white font-bold text-center text-2xl py-4">{{ answers[index].title }}</div>
-            <div class="w-full h-[200px] rounded overflow-hidden">
-                <v-img :src="answers[index].image" cover></v-img>
+    <div class="flex flex-col items-center h-full">
+        <div class="grid grid-cols-2 w-full text-white text-center font-bold min-h-[56px]">
+            <div>
+                <div class="text-xs">Câu số</div>
+                <div class="text-base">{{ index + 1 }} / {{ answers.length }}</div>
             </div>
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-2">
-                <div class="absolute inset-0 cursor-not-allowed" v-if="isStopClick"></div>
-                <div class="answer-base" ref="answerA" @click="handleAnswerClick('answerA')">
-                    {{ answers[index].answerA }}
-                </div>
-                <div class="answer-base" ref="answerB" @click="handleAnswerClick('answerB')">
-                    {{ answers[index].answerB }}
-                </div>
-                <div class="answer-base" ref="answerC" @click="handleAnswerClick('answerC')">
-                    {{ answers[index].answerC }}
-                </div>
-                <div class="answer-base" ref="answerD" @click="handleAnswerClick('answerD')">
-                    {{ answers[index].answerD }}
-                </div>
+            <div>
+                <div class="text-xs">Thời gian còn loại</div>
+                <div class="text-base">12:30</div>
             </div>
         </div>
-        <v-btn color="blue" @click="nextAnswer">Next</v-btn>
+        <div class="w-[60vw] flex flex-1 flex-col justify-between p-2 ">
+            <div class="flex flex-col gap-5">
+                <div class="text-white font-bold text-center text-2xl py-4">{{ answers[index].title }}</div>
+                <div class="w-full h-[250px] rounded overflow-hidden bg-amber-500">
+                    <v-img :src="answers[index].image" height="100%" cover></v-img>
+                </div>
+                <div class="relative grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div class="absolute inset-0 cursor-not-allowed" v-if="isStopClick"></div>
+                    <div class="answer-base" ref="answerA" @click="handleAnswerClick('answerA')">
+                        {{ answers[index].answerA }}
+                    </div>
+                    <div class="answer-base" ref="answerB" @click="handleAnswerClick('answerB')">
+                        {{ answers[index].answerB }}
+                    </div>
+                    <div class="answer-base" ref="answerC" @click="handleAnswerClick('answerC')">
+                        {{ answers[index].answerC }}
+                    </div>
+                    <div class="answer-base" ref="answerD" @click="handleAnswerClick('answerD')">
+                        {{ answers[index].answerD }}
+                    </div>
+                </div>
+            </div>
+            <v-btn color="blue" @click="nextAnswer">Next</v-btn>
+        </div>
     </div>
 </template>
 
@@ -35,6 +46,7 @@ const isStopClick = ref(false);
 const answers = useAnswerStore().answers;
 const index = ref(0);
 
+// chọn đáp án
 function nextAnswer() {
     index.value++;
     [answerA, answerB, answerC, answerD].forEach(answer => {
@@ -92,6 +104,8 @@ function getAnswerElement() {
             return answerD.value;
     }
 }
+
+// tính thời gian
 
 </script>
 
