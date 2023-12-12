@@ -7,8 +7,11 @@
         <div
             class="flex flex-col sm:flex-row mt-[50px] p-4 gap-2 bg-[url(@/assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat">
             <div class="flex-1 bg-slate-500 p-4 rounded-xl">
-                <div class="text-center text-xl text-white font-bold">Welcome <span class="underline">{{
-                    store.account.username }}</span></div>
+                <div class="text-center text-xl text-white font-bold">
+                    Welcome 
+                    <span class="underline">{{
+                    store.account.username }}</span>
+                </div>
                 <div class="text-center pt-2">
                     <v-btn rounded="pill" variant="elevated" color="white" class="font-bold">Create a quiz</v-btn>
                 </div>

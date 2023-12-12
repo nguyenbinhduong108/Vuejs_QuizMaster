@@ -12,8 +12,18 @@
             </div>
         </div>
         <!-- content -->
-        <div class="relative w-full h-full flex flex-wrap gap-3 p-3 overflow-y-scroll overflow-hidden">
-            <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+        <div class="relative w-full h-full flex flex-col gap-3 p-3 overflow-y-scroll">
+            <div class="relative bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat rounded-2xl min-h-[250px] w-full">
+                <div class=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-5xl text-white p-3 rounded-full backdrop-blur-sm cursor-pointer font-bold shadow-xl shadow-slate-800">
+                    Welcome to QuizMaster
+                    <span class="underline">
+                        {{ accountStore.account.username }}
+                    </span>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3 items-stretch">
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+            </div>
             <Loading v-if="isShowLoading"></Loading>
         </div>
     </div>
@@ -28,6 +38,7 @@ import { onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import useAnswerStore from '@/stores/answer';
 import useQuestionStore from '@/stores/question'
+import useAccountStore from '@/stores/account';
 
 const questions = ref<questionProps[]>([]);
 const categories = ref<categoryProps[]>([]);
@@ -35,6 +46,7 @@ const isShowLoading = ref(false);
 const router = useRouter();
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
+const accountStore = useAccountStore();
 
 async function getAllQuestion() {
     try {
