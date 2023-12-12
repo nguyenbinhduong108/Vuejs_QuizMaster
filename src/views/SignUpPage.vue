@@ -4,7 +4,7 @@
             <v-icon color="white" icon="fa-solid fa-arrow-left"></v-icon>
         </v-btn>
         <div v-if="isSignUpForm"
-            class="bg-white flex gap-1 w-[70vw] absolute translate-x-[-50%] translate-y-[-50%] top-1/2 left-1/2 rounded p-3 overflow-hidden">
+            class="bg-white flex gap-1 w-[70vw] absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded p-3 overflow-hidden">
             <div class="flex-1 ">
                 <div class="text-center text-4xl font-bold">Sign Up</div>
                 <v-row>

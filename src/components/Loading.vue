@@ -1,7 +1,7 @@
 <template>
     <div class="absolute top-0 left-0 w-full h-full">
         <div class="z-40 absolute inset-0 bg-slate-300 opacity-50"></div>
-        <div class="absolute z-50 top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] lds-dual-ring"></div>
+        <div class="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lds-dual-ring"></div>
     </div>
 </template>
 

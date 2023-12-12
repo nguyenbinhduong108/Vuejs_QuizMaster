@@ -3,7 +3,7 @@
         <div class="grid grid-cols-2 w-full text-white text-center font-bold min-h-[56px]">
             <div>
                 <div class="text-xs">Câu số</div>
-                <div class="text-base">{{ index + 1 }} / {{ answers.length }}</div>
+                <div class="text-base">{{ index + 1 }} / {{ quatity }}</div>
             </div>
             <div>
                 <div class="text-xs">Thời gian còn loại</div>
@@ -36,7 +36,11 @@
         </div>
     </div>
 
-
+    <div class="fixed inset-0 w-screen h-screen bg-black/50 z-50">
+        <div class="absolute bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded overflow-hidden">
+            <v-img src="https://quizz.coccoc.com/_next/image?url=%2Fimages%2Flost.png&w=1920&q=75" width="500px" height="500px"></v-img>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -45,16 +49,25 @@ import useAnswerStore from '@/stores/answer';
 import useQuestionStore from '@/stores/question';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 
+
 const isStopClick = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
 
 
 const answers = answerStore.answers;
+const quatity = ref(questionStore.question.quantity);
 const index = ref(0);
+
+const icon = ref('@/assets/lost.png');
+const text = ref('');
 
 // chọn đáp án
 function nextAnswer() {
+    if(index.value + 1 === quatity.value){
+
+        return;
+    }
     index.value++;
     [answerA, answerB, answerC, answerD].forEach(answer => {
         if (answer.value) {
