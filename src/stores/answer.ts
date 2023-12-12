@@ -27,6 +27,10 @@ const useAnswerStore = defineStore('answer', {
         resetAnswer(){
             this.answers = [];
             this.point = 0;
+        },
+
+        resetPoint(){
+            this.point = 0;
         }
     },
 })

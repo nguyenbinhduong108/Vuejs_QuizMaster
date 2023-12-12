@@ -36,10 +36,31 @@
         </div>
     </div>
 
-    <div class="fixed inset-0 w-screen h-screen bg-black/50 z-50">
-        <div class="absolute bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded overflow-hidden">
-            <v-img src="https://quizz.coccoc.com/_next/image?url=%2Fimages%2Flost.png&w=1920&q=75" width="500px" height="500px"></v-img>
-        </div>
+    <div
+        v-if="isShowResult" 
+        class="fixed mt-[50px] flex justify-center p-8 inset-0 w-screen h-screen bg-[#2B2B6E] z-10">
+            <div class="flex flex-col items-center justify-evenly p-5 gap-4 w-full md:w-[60vw] h-full">
+                <div class="w-[150px] h-[150px]">
+                    <v-img :src="icon"></v-img>
+                </div>
+                <div class="text-white text-2xl text-center font-bold">
+                    {{ text }}  
+                </div>
+                <div class="bg-white w-full rounded p-4">
+                    <v-row class="text-center text-xl whitespace-nowrap">
+                        <v-col>Câu đúng: {{ answerStore.point}} / {{ quatity }}</v-col>
+                        <v-col>Thời gian: {{ calculateUsedTime(totalElapsedTime) }}</v-col>
+                    </v-row>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-1">
+                    <div>
+                        <v-btn @click="repLay" color="green" prepend-icon="fa-solid fa-rotate-right" block>Chơi lại</v-btn>
+                    </div>
+                    <div>
+                        <v-btn @click="homePage" color="yellow" prepend-icon="fa-solid fa-home" block>Trang chủ</v-btn>
+                    </div>
+                </div>
+            </div>
     </div>
 </template>
 
@@ -48,33 +69,35 @@ import type { answerProps } from '@/apis/answerApi';
 import useAnswerStore from '@/stores/answer';
 import useQuestionStore from '@/stores/question';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import resource from '@/helper/resource';
+import { useRouter } from 'vue-router';
 
 
 const isStopClick = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
+const router = useRouter();
 
 
 const answers = answerStore.answers;
 const quatity = ref(questionStore.question.quantity);
 const index = ref(0);
 
-const icon = ref('@/assets/lost.png');
-const text = ref('');
-
-// chọn đáp án
+//#region chọn đáp án
 function nextAnswer() {
-    if(index.value + 1 === quatity.value){
-
-        return;
-    }
-    index.value++;
     [answerA, answerB, answerC, answerD].forEach(answer => {
         if (answer.value) {
             answer.value.classList.remove('answer-correct', 'answer-error');
         }
     });
     isStopClick.value = false;
+
+    if (index.value + 1 === quatity.value) {
+        stopTimer();
+        resultForm();
+        return;
+    }
+    index.value++;
 }
 const answerA = ref<HTMLElement>();
 const answerB = ref<HTMLElement>();
@@ -125,9 +148,9 @@ function getAnswerElement() {
             return answerD.value;
     }
 }
+//#endregion
 
-// tính thời gian
-
+//#region tính thời gian
 const time = ref<number>(questionStore.question.timer);
 const timer = ref();
 
@@ -141,9 +164,10 @@ function startTimer() {
     timer.value = setInterval(() => {
         if (time.value > 0) {
             time.value--;
+            totalElapsedTime.value++;
         } else {
             clearInterval(timer.value);
-            alert('Đã hết thời gian!');
+            resultForm();
         }
     }, 1000);
 };
@@ -151,14 +175,57 @@ function startTimer() {
 function stopTimer() {
     clearInterval(timer.value);
 };
+//#endregion
+
+//#region tính thời gian đã chơi
+const totalElapsedTime = ref(0);
+function calculateUsedTime(elapsedTime: number) {
+    const usedTime = elapsedTime;
+    const usedMinutes = Math.floor(usedTime / 60);
+    const usedSeconds = usedTime % 60;
+
+    return `${usedMinutes}:${usedSeconds < 10 ? '0' : ''}${usedSeconds}`;
+}
+//#endregion
+
+//#region hiển thị bảng kết quả
+const icon = ref();
+const text = ref('');
+const isShowResult = ref(false);
+function resultForm() {
+    isShowResult.value = true;
+    if (answerStore.point < quatity.value / 2) {
+        icon.value = resource.icon.lost
+        text.value = "Chúc bạn may mắn lần sau!";
+    }
+    else{
+        icon.value = resource.icon.win
+        text.value = `Tuyệt quá! Bạn đã chinh phục được câu đố: ${questionStore.question.name}!`
+    }
+}
+//#endregion
+
+//#region button
+function repLay(){
+    index.value = 0;
+    answerStore.resetPoint();
+    isShowResult.value = false;
+};
+
+function homePage(){
+    router.push('/user');
+};
+//#endregion
 
 onMounted(() => {
     startTimer();
 })
 
 onUnmounted(() => {
-    stopTimer()
+    stopTimer();
 })
+
+
 </script>
 
 <style scoped>
