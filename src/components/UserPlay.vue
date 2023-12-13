@@ -207,10 +207,13 @@ function resultForm() {
 
 //#region button
 function repLay(){
-    time.value = questionStore.question.timer;
+    stopTimer();
     index.value = 0;
     answerStore.resetPoint();
+    time.value = questionStore.question.timer;
+    totalElapsedTime.value = 0;
     isShowResult.value = false;
+    startTimer();
 };
 
 function homePage(){
