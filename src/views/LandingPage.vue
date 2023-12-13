@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- appbar -->
-        <LandingAppBar @showForm="showForm"></LandingAppBar>
+        <AppBar @showForm="showForm"></AppBar>
 
 
         <!-- header -->
@@ -138,27 +138,9 @@ const isShowForm = ref(false);
 
 import CustomCard from "@/components/CustomCard.vue";
 import LoginForm from "@/components/LoginForm.vue";
-import LandingAppBar from "@/components/LandingAppBar.vue";
+import AppBar from "@/components/AppBar.vue";
 import Footer from "@/components/Footer.vue";
 
-
-const getAllCategory = async () => {
-    try {
-        const data = await categoryApi.getAllCategory();
-        categories.value = data.data;
-    } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu từ server");
-    }
-};
-
-const loginAccount = async () => {
-    try {
-        const data = await accountApi.loginAccount("test@gmail.com", "11111");
-        account.value = data.data;
-    } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu từ server");
-    }
-};
 
 async function getAllQuestion() {
     try {

@@ -3,7 +3,7 @@
         <div class="grid grid-cols-2 w-full text-white text-center font-bold min-h-[56px]">
             <div>
                 <div class="text-xs">Câu số</div>
-                <div class="text-base">{{ index + 1 }} / {{ quatity }}</div>
+                <div class="text-base">{{ index + 1 }} / {{ quantity }}</div>
             </div>
             <div>
                 <div class="text-xs">Thời gian còn loại</div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="bg-white w-full rounded p-4">
                     <v-row class="text-center text-xl whitespace-nowrap">
-                        <v-col>Câu đúng: {{ answerStore.point}} / {{ quatity }}</v-col>
+                        <v-col>Câu đúng: {{ answerStore.point}} / {{ quantity }}</v-col>
                         <v-col>Thời gian: {{ calculateUsedTime(totalElapsedTime) }}</v-col>
                     </v-row>
                 </div>
@@ -80,7 +80,7 @@ const router = useRouter();
 
 
 const answers = answerStore.answers;
-const quatity = ref(questionStore.question.quantity);
+const quantity = ref(questionStore.question.quantity);
 const index = ref(0);
 
 //#region chọn đáp án
@@ -92,7 +92,7 @@ function nextAnswer() {
     });
     isStopClick.value = false;
 
-    if (index.value + 1 === quatity.value) {
+    if (index.value + 1 === quantity.value) {
         stopTimer();
         resultForm();
         return;
@@ -194,7 +194,7 @@ const text = ref('');
 const isShowResult = ref(false);
 function resultForm() {
     isShowResult.value = true;
-    if (answerStore.point < quatity.value / 2) {
+    if (answerStore.point < quantity.value / 2) {
         icon.value = resource.icon.lost
         text.value = "Chúc bạn may mắn lần sau!";
     }
@@ -207,12 +207,15 @@ function resultForm() {
 
 //#region button
 function repLay(){
+    time.value = questionStore.question.timer;
     index.value = 0;
     answerStore.resetPoint();
     isShowResult.value = false;
 };
 
 function homePage(){
+    answerStore.resetAnswer();
+    questionStore.resetQuestion();
     router.push('/user');
 };
 //#endregion

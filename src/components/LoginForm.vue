@@ -16,15 +16,11 @@
 
                 <v-row>
                     <v-col>
-                        <v-text-field 
-                            v-model:model-value="account.password"
-                            label="Password" 
-                            prepend-inner-icon="fa-solid fa-lock" 
-                            hide-details="auto"
+                        <v-text-field v-model:model-value="account.password" label="Password"
+                            prepend-inner-icon="fa-solid fa-lock" hide-details="auto"
                             :type="isShowPassword ? 'text' : 'password'"
                             :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
-                            @click:append-inner="isShowPassword = !isShowPassword"
-                            >
+                            @click:append-inner="isShowPassword = !isShowPassword">
                         </v-text-field>
                         <div class="text-right text-[#f44336] hover:cursor-pointer" @click="changeForgetForm">
                             Forget password?
@@ -105,13 +101,9 @@ function changeSignUpForm() {
     if (route.path !== '/signup') {
         router.push('/signup');
     }
-    else{
+    else {
         emits('signUp');
     }
-}
-
-function changeLoginForm() {
-    typeForm.value = 'loginForm';
 }
 
 function closeForm() {
@@ -120,21 +112,22 @@ function closeForm() {
 
 async function loginAccount() {
     try {
-        const data = (await accountApi.loginAccount(account.value.email, account.value.password)).data;
-        
-        accountStore.login(data);
-
-        // Chuyển hướng đến trang user hoặc admin tùy thuộc vào isAdmin
-        if (accountStore.isAdmin) {
-            router.push('/admin');
-        } else {
-            router.push('/user');
+        if (account.value.email !== '' && account.value.password !== '') {
+            const data = (await accountApi.loginAccount(account.value.email, account.value.password)).data;
+            accountStore.login(data);
+            // Chuyển hướng đến trang user hoặc admin tùy thuộc vào isAdmin
+            if (accountStore.isAdmin) {
+                router.push('/admin');
+            } else {
+                router.push('/user');
+            }
         }
-
     } catch (error) {
         console.log("Lỗi khi đăng nhập: ", error);
     }
 }
+
+
 
 </script>
 

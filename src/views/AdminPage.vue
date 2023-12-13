@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- app bar -->
-        <UserAppBar :account="store.account"></UserAppBar>
+        <AppBar :account="store.account"></AppBar>
 
         <!-- option -->
         <div
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue"
-import UserAppBar from '@/components/UserAppBar.vue';
+import AppBar from '@/components/AppBar.vue';
 import Footer from '@/components/Footer.vue';
 import useAccountStore from '@/stores/account';
 import questionApi from '@/apis/questionApi';
