@@ -12,7 +12,7 @@
             </div>
         </div>
         <!-- content -->
-        <div class="relative w-full h-full flex flex-col gap-3 p-3 overflow-y-scroll">
+        <div class="relative w-full h-full flex flex-col gap-3 p-3">
             <div class="relative bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat rounded-2xl min-h-[250px] w-full">
                 <div class=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-5xl text-white p-3 rounded-full backdrop-blur-sm cursor-pointer font-bold shadow-xl shadow-slate-800">
                     Welcome to QuizMaster
@@ -21,7 +21,14 @@
                     </span>
                 </div>
             </div>
-            <div class="flex flex-wrap gap-3 items-stretch">
+            <div class="flex flex-wrap gap-3 items-stretch overflow-y-auto custom-scrollbar">
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
+                <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
                 <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
             </div>
             <Loading v-if="isShowLoading"></Loading>

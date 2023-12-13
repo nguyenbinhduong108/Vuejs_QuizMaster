@@ -5,7 +5,7 @@
         <div class="flex items-center">
             <v-btn variant="text" icon="fa-solid fa-gear" color="#fff"></v-btn>
             <v-btn variant="text" icon="fa-solid fa-bell" color="#fff"></v-btn>
-            <v-avatar size="36px" alt="Avatar">
+            <v-avatar size="36px" alt="Avatar" class="overflow-hidden">
                 <v-img :src="account.avatar" alt="Avatar"></v-img>
             </v-avatar>
         </div>

@@ -5,15 +5,15 @@
         </v-card-title>
         <div class="grid grid-cols-2 items-center flex-nowrap">
             <div>
-                <v-card-item class="text-white">
+                <v-card-item class="text-white overflow-hidden">
                     <v-icon icon="fa-solid fa-clock"></v-icon>
                     {{ question.timer }}s
                 </v-card-item>
-                <v-card-item class="text-white">
+                <v-card-item class="text-white overflow-hidden">
                     <v-icon icon="fa-solid fa-chart-simple"></v-icon>
                     {{ question.turn }} lượt chơi
                 </v-card-item>
-                <v-card-item class="text-white">
+                <v-card-item class="text-white overflow-hidden">
                     <v-icon icon="fa-solid fa-chess"></v-icon>
                     {{ question.quantity }} câu hỏi
                 </v-card-item>

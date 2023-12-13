@@ -8,7 +8,8 @@ import UserContent from '@/components/UserContent.vue'
 import UserPlay from '@/components/UserPlay.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
