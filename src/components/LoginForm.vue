@@ -9,7 +9,11 @@
                 <div class="font-bold text-3xl text-center pb-3">Login</div>
                 <v-row>
                     <v-col>
-                        <v-text-field label="Email" prepend-inner-icon="fa-solid fa-at" hide-details="auto"
+                        <v-text-field 
+                            :focused="focuedFirstInput"
+                            placeholder="example@gmail.com"
+                            label="Email" prepend-inner-icon="fa-solid fa-at" 
+                            hide-details="auto"
                             v-model:model-value="account.email"></v-text-field>
                     </v-col>
                 </v-row>
@@ -69,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, nextTick } from "vue"
 import accountApi from "@/apis/accountApi";
 import useAccountStore from "@/stores/account";
 import { useRoute, useRouter } from "vue-router";
@@ -127,7 +131,10 @@ async function loginAccount() {
     }
 }
 
-
+const focuedFirstInput = ref(false);
+nextTick(() => {
+    focuedFirstInput.value = true;
+})
 
 </script>
 

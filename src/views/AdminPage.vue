@@ -53,12 +53,15 @@
         <!-- footer -->
         <Footer></Footer>
     </div>
+
+    <AdminForm></AdminForm>
 </template>
 
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue"
 import AppBar from '@/components/AppBar.vue';
 import Footer from '@/components/Footer.vue';
+import AdminForm from "@/components/AdminForm.vue";
 import useAccountStore from '@/stores/account';
 import questionApi from '@/apis/questionApi';
 import type { questionProps } from '@/apis/questionApi';
