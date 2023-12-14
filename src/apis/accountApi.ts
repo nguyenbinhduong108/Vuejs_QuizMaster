@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseApi = 'https://quizmaster-hpyy.onrender.com/account';
+const baseApi = `${import.meta.env.VITE_BASE_API}/account`;
+// const baseApi = 'https://quizmaster-hpyy.onrender.com/account';
 
 const accountApi = {
     loginAccount: async (email: string, password: string) => {

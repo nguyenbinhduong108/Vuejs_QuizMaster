@@ -151,7 +151,7 @@ function getAnswerElement() {
 //#endregion
 
 //#region tính thời gian
-const time = ref<number>(questionStore.question.timer);
+const time = ref<number>(questionStore.question.timer * questionStore.question.quantity);
 const timer = ref();
 
 let formatTime = computed(() => {
@@ -210,7 +210,7 @@ function repLay(){
     stopTimer();
     index.value = 0;
     answerStore.resetPoint();
-    time.value = questionStore.question.timer;
+    time.value = questionStore.question.timer * questionStore.question.quantity;
     totalElapsedTime.value = 0;
     isShowResult.value = false;
     startTimer();

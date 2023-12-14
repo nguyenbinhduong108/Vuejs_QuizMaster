@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseApi = 'https://quizmaster-hpyy.onrender.com/imgur';
+const baseApi = `${import.meta.env.VITE_BASE_API}/imgur`;
 
 const imgurApi = {
     upload: async (formData: FormData) => {

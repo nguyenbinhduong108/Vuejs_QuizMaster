@@ -121,16 +121,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
-import categoryApi from "@/apis/categoryApi";
-import accountApi from "@/apis/accountApi";
+import { ref, onBeforeMount, onMounted } from "vue";
 import questionApi from "@/apis/questionApi";
-import type { categoryProps } from "@/apis/categoryApi";
-import type { accountProps } from "@/apis/accountApi";
 import type { questionProps } from "@/apis/questionApi";
 
-const categories = ref<categoryProps[]>([]);
-const account = ref<accountProps>();
 const questions = ref<questionProps[]>([]);
 
 const cardId = ref<string>();
@@ -151,10 +145,6 @@ async function getAllQuestion() {
     }
 };
 
-onBeforeMount(async () => {
-    await getAllQuestion();
-});
-
 function logCardId(cardId: string) {
     console.log(cardId)
 }
@@ -166,6 +156,10 @@ function showForm() {
 function closeForm() {
     isShowForm.value = false;
 }
+
+onBeforeMount(async () => {
+    await getAllQuestion();
+});
 </script>
 
 <style scoped></style>

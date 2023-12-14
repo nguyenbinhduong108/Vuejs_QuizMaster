@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseApi = 'https://quizmaster-hpyy.onrender.com/category';
+const baseApi = `${import.meta.env.VITE_BASE_API}/category`;
 
 const categoryApi = {
     getAllCategory: async () => {
