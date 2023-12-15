@@ -66,5 +66,5 @@ export interface questionBody {
     image: "https://i.imgur.com/Ekd3MLm.jpg",
     accountId: string,
     categoryId: "c528aa85-6f65-4794-91c9-fe6102b94c12",
-    timer: 60
+    timer: 0
 }

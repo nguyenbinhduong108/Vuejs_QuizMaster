@@ -1,81 +1,67 @@
 <template>
-    <div class="w-screen h-screen relative bg-gradient-to-r from-[#FFBB5C] to-[#E25E3E]">
+    <v-container fluid class="fixed inset-0 bg-gradient-to-r from-[#FFBB5C] to-[#E25E3E]">
         <v-btn variant="flat" icon @click="backToLandingPage">
             <v-icon color="white" icon="fa-solid fa-arrow-left"></v-icon>
         </v-btn>
-        <div v-if="isSignUpForm"
-            class="bg-white flex gap-1 w-[70vw] absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded p-3 overflow-hidden">
-            <div class="flex-1 ">
-                <div class="text-center text-4xl font-bold">Sign Up</div>
-                <v-row>
-                    <v-col>
-                        <v-text-field 
-                            v-model:model-value="account.username"
-                            label="User name" 
-                            prepend-inner-icon="fa-solid fa-user"
-                            hide-details="auto">
-                        </v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field 
-                            v-model:model-value="account.email"
-                            label="Email" 
-                            prepend-inner-icon="fa-solid fa-at" 
-                            hide-details="auto">
-                        </v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field 
-                            v-model:model-value="account.password"
-                            label="Password" 
-                            prepend-inner-icon="fa-solid fa-lock" 
-                            hide-details="auto"
-                            :type="isShowPassword ? 'text' : 'password'"
-                            :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
-                            @click:append-inner="isShowPassword = !isShowPassword">
-                        </v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-text-field 
-                            v-model:model-value="confirmPassword"
-                            :error="!checkConfirmPassword"
-                            label="Confirm password" 
-                            prepend-inner-icon="fa-solid fa-lock" 
-                            hide-details="auto"
-                            :type="isShowConfirmPassword ? 'text' : 'password'"
-                            :append-inner-icon="isShowConfirmPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
-                            @click:append-inner="isShowConfirmPassword = !isShowConfirmPassword">
-                        </v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <v-btn @click="createAccount" block color="#f44336">Sign Up</v-btn>
-                        <div class="text-center">
-                            Already have an account?
-                            <span @click="loginForm" class="font-bold underline whitespace-nowrap cursor-pointer">Login
-                                here</span>
-                        </div>
-                    </v-col>
-                </v-row>
-            </div>
-            <div class="flex relative flex-1 justify-center items-center bg-slate-400 rounded px-2">
-                <div class="rounded-full w-72 h-72 overflow-hidden" @click="chooseAvatar">
-                    <v-img :src="account.avatar" width="100%" height="100%" cover></v-img>
-                </div>
-                <input type="file" ref="fileInput" style="display: none;" @change="handleFileChange" />
-                <Loading v-if="isShowLoading"></Loading>
-            </div>
-        </div>
+        <v-container fluid v-if="isSignUpForm" class="bg-white flex gap-1 w-[70vw] absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded p-3 overflow-hidden">
+            <v-row>
+                <v-col>
+                    <v-row class="text-center text-4xl font-bold">
+                        <v-col>Sign Up</v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-text-field v-model:model-value="account.username" label="User name"
+                                prepend-inner-icon="fa-solid fa-user" hide-details="auto">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-text-field v-model:model-value="account.email" label="Email"
+                                prepend-inner-icon="fa-solid fa-at" hide-details="auto">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-text-field v-model:model-value="account.password" label="Password"
+                                prepend-inner-icon="fa-solid fa-lock" hide-details="auto"
+                                :type="isShowPassword ? 'text' : 'password'"
+                                :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+                                @click:append-inner="isShowPassword = !isShowPassword">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-text-field v-model:model-value="confirmPassword" :error="!checkConfirmPassword"
+                                label="Confirm password" prepend-inner-icon="fa-solid fa-lock" hide-details="auto"
+                                :type="isShowConfirmPassword ? 'text' : 'password'"
+                                :append-inner-icon="isShowConfirmPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+                                @click:append-inner="isShowConfirmPassword = !isShowConfirmPassword">
+                            </v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-btn @click="createAccount" block color="#f44336">Sign Up</v-btn>
+                            <div class="text-center">
+                                Already have an account?
+                                <span @click="loginForm" class="font-bold underline whitespace-nowrap cursor-pointer">Login
+                                    here</span>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col>
+                    <UploadImage v-model:model-value="account.avatar"></UploadImage>
+                </v-col>
+            </v-row>
+        </v-container>
 
         <LoginForm @signUp="signUpForm" @closeForm="signUpForm" v-else></LoginForm>
-    </div>
+    </v-container>
 </template>
 
 <script setup lang="ts">
@@ -87,6 +73,7 @@ import accountApi from '@/apis/accountApi'
 import type { accountBody, accountProps } from '@/apis/accountApi'
 import { useRouter } from 'vue-router';
 import useAccountStore from '@/stores/account';
+import UploadImage from '@/components/UploadImage.vue';
 
 const account = ref<accountBody>({
     email: '',
@@ -95,8 +82,8 @@ const account = ref<accountBody>({
     avatar: 'https://i.imgur.com/t9Y4WFN.jpg',
 })
 const confirmPassword = ref<string>('');
-const checkConfirmPassword = computed(() =>{
-    if(account.value.password != confirmPassword.value){
+const checkConfirmPassword = computed(() => {
+    if (account.value.password != confirmPassword.value) {
         return false;
     }
     return true;
@@ -147,7 +134,7 @@ function backToLandingPage() {
 
 async function createAccount() {
     try {
-        if(checkConfirmPassword.value === false){
+        if (checkConfirmPassword.value === false) {
             console.log("Vui lòng xác nhận chính xác mật khẩu");
             return;
         }

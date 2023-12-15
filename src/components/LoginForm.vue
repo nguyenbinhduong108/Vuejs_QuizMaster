@@ -10,7 +10,6 @@
                 <v-row>
                     <v-col>
                         <v-text-field 
-                            :focused="focuedFirstInput"
                             placeholder="example@gmail.com"
                             label="Email" prepend-inner-icon="fa-solid fa-at" 
                             hide-details="auto"
@@ -130,11 +129,6 @@ async function loginAccount() {
         console.log("Lỗi khi đăng nhập: ", error);
     }
 }
-
-const focuedFirstInput = ref(false);
-nextTick(() => {
-    focuedFirstInput.value = true;
-})
 
 </script>
 
