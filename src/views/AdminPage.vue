@@ -13,7 +13,7 @@
                     store.account.username }}</span>
                 </div>
                 <div class="text-center pt-2">
-                    <v-btn rounded="pill" variant="elevated" color="white" class="font-bold">Create a quiz</v-btn>
+                    <v-btn @click="showForm" rounded="pill" variant="elevated" color="white" class="font-bold">Create a quiz</v-btn>
                 </div>
             </div>
             <div class="flex-1 bg-slate-500 p-4 rounded-xl">
@@ -54,7 +54,7 @@
         <Footer></Footer>
     </div>
 
-    <AdminForm></AdminForm>
+    <AdminForm v-if="isShowForm" @closeForm="closeForm"></AdminForm>
 </template>
 
 <script setup lang="ts">
@@ -67,24 +67,32 @@ import questionApi from '@/apis/questionApi';
 import type { questionProps } from '@/apis/questionApi';
 import format from '@/helper/format'
 
-
 const store = useAccountStore();
 
 const listQuestion = ref<questionProps[]>([]);
 
-async function getAllQuestionByAccountId(id: string) {
+async function getAllQuestionByAccountId() {
     try {
-        const data = await questionApi.getAllQuestionByAccountId(id);
+        const data = await questionApi.getAllQuestionByAccountId(store.account.id);
         listQuestion.value = data.data;
     } catch (error) {
-
+        console.error("Có lỗi khi lấy dữ liệu từ server", error);
     }
 }
 
-
 onBeforeMount(async () => {
-    await getAllQuestionByAccountId(store.account.id);
+    await getAllQuestionByAccountId();
 })
+
+const isShowForm = ref(false);
+function showForm() {
+    isShowForm.value = true;
+}
+
+async function closeForm(){
+    isShowForm.value = false;
+    await getAllQuestionByAccountId();
+}
 </script>
 
 <style scoped></style>

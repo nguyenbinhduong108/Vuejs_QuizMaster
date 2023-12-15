@@ -1,7 +1,7 @@
 <template>
     <div class="fixed inset-0 bg-black/50 z-30">
         <div
-            class="bg-white w-[30vw] max-w-[500px] min-w-[250px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 absolute rounded">
+            class="bg-white w-[50vw] max-w-[500px] min-w-[250px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 absolute rounded">
             <div class="text-right absolute top-0 right-0">
                 <v-btn icon="fa-solid fa-close" variant="flat" @click="closeForm"></v-btn>
             </div>

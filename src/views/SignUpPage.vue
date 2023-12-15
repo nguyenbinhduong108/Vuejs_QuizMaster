@@ -66,11 +66,10 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import Loading from '@/components/Loading.vue';
 import LoginForm from '@/components/LoginForm.vue'
 import imgurApi from '@/apis/imgurApi'
 import accountApi from '@/apis/accountApi'
-import type { accountBody, accountProps } from '@/apis/accountApi'
+import type { accountBody } from '@/apis/accountApi'
 import { useRouter } from 'vue-router';
 import useAccountStore from '@/stores/account';
 import UploadImage from '@/components/UploadImage.vue';

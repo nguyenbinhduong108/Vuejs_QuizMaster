@@ -109,7 +109,7 @@
         </div>
 
         <!-- demo -->
-        <div class="bg-gray-300 p-2 m-2 rounded flex gap-1 overflow-x-scroll custom-scrollbar">
+        <div class="bg-gray-300 p-2 m-2 rounded flex gap-1 overflow-x-auto custom-scrollbar">
             <CustomCard :questions="questions" @click="logCardId"></CustomCard>
         </div>
 

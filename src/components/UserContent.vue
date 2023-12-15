@@ -64,7 +64,7 @@ async function getAllCategory() {
         const data = await categoryApi.getAllCategory();
         categories.value = data.data;
     } catch (error) {
-        console.error("Có lỗi khi lấy dữ liệu từ server");
+        console.error("Có lỗi khi lấy dữ liệu từ server", error);
     }
 }
 
