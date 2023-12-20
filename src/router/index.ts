@@ -4,8 +4,9 @@ import AdminPage from '@/views/AdminPage.vue'
 import UserPage from '@/views/UserPage.vue'
 import SignUpPage from '@/views/SignUpPage.vue'
 import UserContent from '@/components/UserContent.vue'
-// import UserPlay from '@/components/UserPlay.vue'
 import UserPlay from '@/components/UserPlay.vue'
+import AdminContent from '@/components/AdminContent.vue'
+import AdminAnswerVue from '@/components/AdminAnswer.vue'
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,18 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: AdminPage,
+      children: [
+        {
+          path: '',
+          name: 'admin-content',
+          component: AdminContent,
+        },
+        {
+          path: 'answer',
+          name: 'admin-answer',
+          component: AdminAnswerVue,
+        }
+      ]
     },
     {
       path: '/user',

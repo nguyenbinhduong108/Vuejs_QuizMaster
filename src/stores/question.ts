@@ -24,7 +24,11 @@ const useQuestionStore = defineStore('question', {
             updatedAt: '',
             deletedAt: '',
         } as questionProps,
+        
+        questionId: '',
     }),
+
+
 
     actions: {
         async setQuestion(questionId: string) {

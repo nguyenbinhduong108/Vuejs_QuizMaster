@@ -1,20 +1,19 @@
 import axios from "axios";
 
 const baseApi = `${import.meta.env.VITE_BASE_API}/questions`;
-
 const questionApi = {
-    getAllQuestion: async () => {
-        const data = await axios.get(`${baseApi}/GetAll`);
+    getAllQuestion: async (limit: number, offset: number, search: string) => {
+        const data = await axios.get(`${baseApi}/GetAll?limit=${limit}&offset=${offset}&search=${search}`);
         return data;
     },
 
-    getAllQuestionByAccountId: async (accountId: string) => {
-        const data = await axios.get(`${baseApi}/getAllQuestionByAccountId/${accountId}`);
+    getAllQuestionByAccountId: async (accountId: string, limit: number, offset: number, search: string) => {
+        const data = await axios.get(`${baseApi}/getAllQuestionByAccountId/${accountId}?limit=${limit}&offset=${offset}&search=${search}`);
         return data;
     },
 
-    getAllQuestionByCategoryId: async (categoryId: string) => {
-        const data = await axios.get(`${baseApi}/getAllQuestionByCategoryId/${categoryId}`);
+    getAllQuestionByCategoryId: async (categoryId: string, limit: number, offset: number, search: string) => {
+        const data = await axios.get(`${baseApi}/getAllQuestionByCategoryId/${categoryId}?limit=${limit}&offset=${offset}&search=${search}`);
         return data;
     },
 
