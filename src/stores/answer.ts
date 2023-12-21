@@ -9,7 +9,7 @@ const useAnswerStore = defineStore('answer', {
     }),
 
     actions: {
-        async setAnswers(questionId: string): Promise<void> {
+        async setAnswers(questionId: string) {
             try {
                 const response = await answerApi.getByQuestionId(questionId);
                 const answers = response.data;

@@ -1,10 +1,12 @@
 <template>
-  <!-- app bar -->
-  <AppBar :account="store.account"></AppBar>
+  <div class="test">
+    <!-- app bar -->
+    <AppBar :account="store.account"></AppBar>
 
-  <!-- main -->
-  <div class="bg-slate-600 mt-[50px] h-[calc(100vh-50px)]">
-    <RouterView></RouterView>
+    <!-- main -->
+    <div class="bg-slate-600 mt-[50px] h-[calc(100vh-50px)]">
+      <RouterView></RouterView>
+    </div>
   </div>
 </template>
 
@@ -15,3 +17,9 @@ import { RouterView } from "vue-router";
 
 const store = useAccountStore();
 </script>
+
+<style scoped>
+.test {
+  overflow: inherit !important;
+}
+</style>
