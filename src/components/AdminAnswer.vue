@@ -105,6 +105,7 @@
           height="100%" 
           cover
           class="blur-sm hover:blur-0 transition-all"
+          @click="selectAnswer(answer.id)"
         ></v-img>
       </v-card>     
 
@@ -123,7 +124,7 @@
 import useQuestionStore from "@/stores/question";
 import { ref, onBeforeMount } from "vue";
 import UploadImage from "@/components/UploadImage.vue";
-import { type answerBody, type answerProps } from "@/apis/answerApi";
+import answerApi, { type answerBody, type answerProps } from "@/apis/answerApi";
 import useAnswerStore from "@/stores/answer"
 
 const questionId = ref();
@@ -151,6 +152,21 @@ async function getAllAnswerByQuestionId(){
     listAnswer.value = answerStore.answers;
   } catch (error) {
     console.error('Có lỗi khi lấy dữ liệu', error);
+  }
+}
+
+async function selectAnswer(answerId: string){
+  try {
+    const response = (await answerApi.getAnswerByAnswerId(answerId)).data;
+
+    answer.value.answerA = response.answerA;
+    answer.value.answerB = response.answerB;
+    answer.value.answerC = response.answerC;
+    answer.value.answerD = response.answerD;
+    answer.value.title = response.title;
+    answer.value.image = response.image;
+  } catch (error) {
+    console.error("Có lỗi khi lấy answer", error);
   }
 }
 
