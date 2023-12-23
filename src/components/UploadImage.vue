@@ -10,7 +10,7 @@
       <v-img :src="modelValue" width="100%" height="100%" cover></v-img>
     </v-row>
     <v-row v-else class="flex justify-center items-center">
-      <div class="w-72 h-72 rounded-full" @click="chooseAvatar">
+      <div class="w-72 h-72 rounded-full overflow-hidden" @click="chooseAvatar">
         <v-img :src="modelValue" width="100%" height="100%" cover></v-img>
       </div>
     </v-row>
@@ -45,7 +45,7 @@ const emits = defineEmits(["update:modelValue"]);
 
 const fileInput = ref();
 const isShowLoading = ref(false);
-const modelValue = ref(props.modelValue);
+const newModelValue = ref(props.modelValue);
 
 function chooseAvatar() {
   fileInput.value.click();
@@ -62,8 +62,8 @@ async function handleFileChange(event: any) {
     const formData = new FormData();
     formData.append("avatar", file);
     const response = await imgurApi.upload(formData);
-    modelValue.value = response.data;
-    emits("update:modelValue", modelValue.value);
+    newModelValue.value = response.data;
+    emits("update:modelValue", newModelValue.value);
     isShowLoading.value = false;
   } catch (error) {
     console.error("Error uploading image:", error);

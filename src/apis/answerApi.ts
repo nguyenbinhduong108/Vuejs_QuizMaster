@@ -52,5 +52,5 @@ export interface answerBody {
     answerC: string,
     answerD: string,
     trueAnswer: string,
-    image: "https://i.imgur.com/oJN9YcQ.jpg"
+    image: string,
 }

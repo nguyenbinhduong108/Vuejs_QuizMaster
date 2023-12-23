@@ -1,26 +1,18 @@
 .custom-scrollbar {
     overflow-x: scroll;
     overflow-y: scroll;
-    /* Hiển thị thanh cuộn chỉ khi cần thiết */
 }
 
-/* Tùy chỉnh thanh cuộn trên trình duyệt WebKit (Chrome, Safari) */
 .custom-scrollbar::-webkit-scrollbar {
     height: 6px;
     width: 6px;
-    /* Chiều rộng của thanh cuộn */
 }
 
-/* Tùy chỉnh thanh cuộn thumb (thanh kéo) */
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.5);
-    /* Màu nền của thanh cuộn thumb */
     border-radius: 6px;
-    /* Độ cong của các góc thanh cuộn thumb */
 }
 
-/* Tùy chỉnh thanh cuộn track (dải chạy của thanh cuộn) */
 .custom-scrollbar::-webkit-scrollbar-track {
     background-color: transparent;
-    /* Màu nền của thanh cuộn track */
 }

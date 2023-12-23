@@ -1,5 +1,5 @@
 <template>
-  <div class="test">
+  <div class="!w-screen !h-screen ">
     <!-- app bar -->
     <AppBar :account="store.account"></AppBar>
 
@@ -19,7 +19,5 @@ const store = useAccountStore();
 </script>
 
 <style scoped>
-.test {
-  overflow: inherit !important;
-}
+
 </style>
