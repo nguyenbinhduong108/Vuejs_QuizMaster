@@ -143,6 +143,16 @@
     <Footer></Footer>
   </div>
 
+  <v-btn
+    class="fixed bottom-5 right-5 transition-transform"
+    style="transform-origin: center center;"
+    icon="fa-solid fa-arrow-up"
+    size="large"
+    color="#f44336"
+    v-if="showScrollToTop"
+    @click="scrollToTop"
+  ></v-btn>
+
   <LoginForm v-if="isShowForm" @closeForm="closeForm"></LoginForm>
 </template>
 
@@ -182,8 +192,30 @@ function closeForm() {
   isShowForm.value = false;
 }
 
+const showScrollToTop = ref(false);
+
+function handleScroll() {
+  if (window.scrollY > 0) {
+    showScrollToTop.value = true;
+  } else {
+    showScrollToTop.value = false;
+  }
+}
+
+function scrollToTop() {
+    window.scrollTo({
+      behavior: 'auto',
+      top: 0,
+
+    });
+}
+
 onBeforeMount(async () => {
   await getAllQuestion();
+});
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
 });
 </script>
 
