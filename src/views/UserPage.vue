@@ -1,10 +1,10 @@
 <template>
-  <div class="!w-screen !h-screen ">
+  <div class="!w-screen !h-screen overflow-hidden">
     <!-- app bar -->
     <AppBar :account="store.account"></AppBar>
 
     <!-- main -->
-    <div class="bg-slate-600 mt-[50px] h-[calc(100vh-50px)]">
+    <div class="bg-slate-600 !mt-[50px] h-[calc(100vh-50px)]">
       <RouterView></RouterView>
     </div>
   </div>

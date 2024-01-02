@@ -2,12 +2,7 @@
 // import { RouterLink, RouterView } from 'vue-router'
 </script>
 
-<template>
-  <!-- <router-view v-slot="{ Component }">
-    <transition name="slide-left">
-      <component :is="Component" />
-    </transition>
-  </router-view> -->
+<template> 
   <router-view></router-view>
 </template>
 

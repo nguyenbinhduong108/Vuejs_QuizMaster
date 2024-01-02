@@ -3,7 +3,8 @@
     v-for="question in questions"
     :key="question.id"
     color="rgb(156, 163, 175)"
-    :min-width="350"
+    class="flex-shrink-0 basis-[350px]"
+    :class="{ 'flex-grow': flexGrow }"
   >
     <v-card-title class="text-white text-center">
       {{ question.name }}
@@ -39,8 +40,9 @@
                 color="#f44336"
                 block
                 @click="selecteddCardOnClick(question.id)"
-                >Start</v-btn
               >
+                Start
+              </v-btn>
             </v-card-actions>
           </v-row>
         </v-col>
@@ -60,7 +62,15 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps(["questions"]);
+import type { questionProps } from "@/apis/questionApi";
+
+const props = defineProps({
+  questions: Array<questionProps>,
+  flexGrow: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const emits = defineEmits(["click"]);
 

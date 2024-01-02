@@ -39,6 +39,7 @@
         <CustomCard
           :questions="questions"
           @click="selecteddCardOnClick"
+          flex-grow
         ></CustomCard>
       </div>
       <Loading v-if="isShowLoading"></Loading>
