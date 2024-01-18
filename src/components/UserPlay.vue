@@ -20,38 +20,34 @@
         <div class="w-full h-[250px] rounded overflow-hidden bg-amber-500">
           <v-img :src="answers[index].image" height="100%" cover></v-img>
         </div>
-        <div class="relative grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div
-            class="absolute inset-0 cursor-not-allowed"
-            v-if="isStopClick"
-          ></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
           <div
             class="answer-base"
             ref="answerA"
             @click="handleAnswerClick('answerA')"
           >
-            {{ answers[index].answerA }}
+            {{ answers[index].answers[0] }}
           </div>
           <div
             class="answer-base"
             ref="answerB"
             @click="handleAnswerClick('answerB')"
           >
-            {{ answers[index].answerB }}
+            {{ answers[index].answers[1] }}
           </div>
           <div
             class="answer-base"
             ref="answerC"
             @click="handleAnswerClick('answerC')"
           >
-            {{ answers[index].answerC }}
+            {{ answers[index].answers[2] }}
           </div>
           <div
             class="answer-base"
             ref="answerD"
             @click="handleAnswerClick('answerD')"
           >
-            {{ answers[index].answerD }}
+            {{ answers[index].answers[3] }}
           </div>
         </div>
       </div>
@@ -103,12 +99,12 @@
 </template>
 
 <script setup lang="ts">
-import type { answerProps } from "@/apis/answerApi";
 import useAnswerStore from "@/stores/answer";
 import useQuestionStore from "@/stores/question";
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, onBeforeMount } from "vue";
 import resource from "@/helper/resource";
 import router from "@/router";
+import * as _ from "lodash";
 
 const isStopClick = ref(false);
 const answerStore = useAnswerStore();
@@ -125,7 +121,6 @@ function nextAnswer() {
       answer.value.classList.remove("answer-correct", "answer-error");
     }
   });
-  isStopClick.value = false;
 
   if (index.value + 1 === quantity.value) {
     stopTimer();
@@ -133,13 +128,19 @@ function nextAnswer() {
     return;
   }
   index.value++;
+  isStopClick.value = false;
+  answers[index.value].answers = _.shuffle(answers[index.value].answers);
 }
 const answerA = ref<HTMLElement>();
 const answerB = ref<HTMLElement>();
 const answerC = ref<HTMLElement>();
 const answerD = ref<HTMLElement>();
 
-function handleAnswerClick(answerKey: keyof answerProps) {
+function handleAnswerClick(answerKey: string) {
+  if(isStopClick.value === true){
+    return;
+  }
+
   let currentAnswer = null;
 
   switch (answerKey) {
@@ -157,29 +158,31 @@ function handleAnswerClick(answerKey: keyof answerProps) {
       break;
   }
 
-  if (answers[index.value][answerKey] === answers[index.value].trueAnswer) {
+  if (currentAnswer?.innerText === answers[index.value].trueAnswer) {
     currentAnswer?.classList.add("answer-correct");
     answerStore.addPoint();
+    isStopClick.value = true;
   } else {
     currentAnswer?.classList.add("answer-error");
 
     const correctAnswer = getAnswerElement();
     correctAnswer?.classList.add("answer-correct");
+    isStopClick.value = true;
+
   }
-  isStopClick.value = true;
 }
 
 function getAnswerElement() {
   const trueAnswer = answers[index.value].trueAnswer;
 
   switch (trueAnswer) {
-    case answers[index.value].answerA:
+    case answers[index.value].answers[0]:
       return answerA.value;
-    case answers[index.value].answerB:
+    case answers[index.value].answers[1]:
       return answerB.value;
-    case answers[index.value].answerC:
+    case answers[index.value].answers[2]:
       return answerC.value;
-    case answers[index.value].answerD:
+    case answers[index.value].answers[3]:
       return answerD.value;
   }
 }
@@ -244,20 +247,26 @@ function resultForm() {
 //#region button
 function repLay() {
   stopTimer();
+  answers[0].answers = _.shuffle(answers[0].answers);
   index.value = 0;
   answerStore.resetPoint();
   time.value = questionStore.question.timer * questionStore.question.quantity;
   totalElapsedTime.value = 0;
   isShowResult.value = false;
+  isStopClick.value = false;
   startTimer();
 }
 
 function homePage() {
   answerStore.resetAnswer();
   questionStore.resetQuestion();
-  router.push("/user");
+  router.push({name: 'user-content'});
 }
 //#endregion
+
+onBeforeMount(() => {
+  answers[0].answers = _.shuffle(answers[0].answers);
+})
 
 onMounted(() => {
   startTimer();
