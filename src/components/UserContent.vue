@@ -58,7 +58,6 @@ import useAccountStore from "@/stores/account";
 
 import { useRoute, useRouter } from "vue-router";
 
-const route = useRoute();
 const router = useRouter();
 
 const questions = ref<questionProps[]>([]);
@@ -110,7 +109,7 @@ async function selecteddCardOnClick(questionId: string) {
   await answerStore.setAnswers(questionId);
   isShowLoading.value = false;
 
-  router.push({name: 'user-play', params: {id: accountStore.account.id, questionId: questionId}});
+  router.push({name: 'user-play', params: {questionId: questionId}});
 }
 
 onBeforeMount(() => {

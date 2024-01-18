@@ -13,7 +13,7 @@ const answerApi = {
         return data;
     },
 
-    createAnswerByQuestionId: async (questionId: string, answer: answerBody) => {
+    createAnswerByQuestionId: async (questionId: string, answer: Array<answerBody>) => {
         const data = await axios.post(`${baseApi}/${questionId}`, answer);
         return data;
     },
@@ -33,10 +33,7 @@ export default answerApi;
 export interface answerProps {
     id: string,
     title: string,
-    answerA: string,
-    answerB: string,
-    answerC: string,
-    answerD: string,
+    answers: Array<string>,
     trueAnswer: string,
     image: string,
     question: {
@@ -47,10 +44,7 @@ export interface answerProps {
 
 export interface answerBody {
     title: string,
-    answerA: string,
-    answerB: string,
-    answerC: string,
-    answerD: string,
+    answers: Array<string>,
     trueAnswer: string,
     image: string,
 }
