@@ -39,7 +39,6 @@
         <CustomCard
           :questions="questions"
           @click="selecteddCardOnClick"
-          flex-grow
         ></CustomCard>
       </div>
       <Loading v-if="isShowLoading"></Loading>
@@ -56,7 +55,11 @@ import { onBeforeMount, ref } from "vue";
 import useAnswerStore from "@/stores/answer";
 import useQuestionStore from "@/stores/question";
 import useAccountStore from "@/stores/account";
-import router from "@/router";
+
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
 
 const questions = ref<questionProps[]>([]);
 const categories = ref<categoryProps[]>([]);
@@ -107,7 +110,7 @@ async function selecteddCardOnClick(questionId: string) {
   await answerStore.setAnswers(questionId);
   isShowLoading.value = false;
 
-  router.push("/user/play");
+  router.push({name: 'user-play', params: {id: accountStore.account.id, questionId: questionId}});
 }
 
 onBeforeMount(() => {

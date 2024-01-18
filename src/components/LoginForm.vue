@@ -151,7 +151,7 @@ async function loginAccount() {
       if (accountStore.isAdmin) {
         router.push("/admin");
       } else {
-        router.push("/user");
+        router.push({name: 'user-content', params: { id: data.id }});
       }
     }
   } catch (error) {
