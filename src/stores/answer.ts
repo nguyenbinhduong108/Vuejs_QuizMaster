@@ -4,7 +4,7 @@ import answerApi from "@/apis/answerApi";
 
 const useAnswerStore = defineStore('answer', {
     state: () => ({
-        answers: [] as answerProps[],
+        answers: [] as Array<answerProps>,
         point: 0,
         totalTimer: '',
     }),

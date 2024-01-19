@@ -216,7 +216,7 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  //   startTimer();
+    startTimer();
 });
 
 onUnmounted(() => {
