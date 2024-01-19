@@ -6,6 +6,7 @@ const useAnswerStore = defineStore('answer', {
     state: () => ({
         answers: [] as answerProps[],
         point: 0,
+        totalTimer: '',
     }),
 
     actions: {
@@ -27,10 +28,12 @@ const useAnswerStore = defineStore('answer', {
         resetAnswer(){
             this.answers = [];
             this.point = 0;
+            this.totalTimer = '';
         },
 
         resetPoint(){
             this.point = 0;
+            this.totalTimer = '';
         }
     },
 })

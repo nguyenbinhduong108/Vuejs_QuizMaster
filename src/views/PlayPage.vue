@@ -1,20 +1,27 @@
 <template>
-  <!-- game play -->
   <v-container
     fluid
-    class="bg-slate-600 h-screen sm:px-20 md:px-40 flex flex-col justify-between"
+    class="bg-slate-600 min-h-screen max-h-screen sm:px-20 md:px-40 flex flex-col justify-center"
   >
     <!-- header -->
-    <v-row class="grid grid-cols-2 w-full text-white text-center font-bold">
+    <v-row
+      class="text-white text-center font-bold"
+    >
       <v-col>
-        <v-row class="text-xs justify-center">Câu số</v-row>
-        <v-row class="text-base justify-center"
-          >{{ index + 1 }} / {{ quantity }}
-        </v-row>
+        <div class="text-xs justify-center">
+            Câu số
+        </div>
+        <div class="text-base justify-center">
+            {{ index + 1 }} / {{ quantity }}
+        </div>
       </v-col>
       <v-col>
-        <v-row class="text-xs justify-center">Thời gian còn loại</v-row>
-        <v-row class="text-base justify-center">{{ formatTime }}</v-row>
+        <div class="text-xs justify-center">
+            Thời gian còn lại
+        </div>
+        <div class="text-base justify-center">
+            {{ formatTime }}
+        </div>
       </v-col>
     </v-row>
 
@@ -25,11 +32,12 @@
       </v-col>
     </v-row>
 
+    <!-- ! fix image -->
     <!-- image -->
-    <v-row
-      class="overflow-hidden hidden sm:flex sm:justify-center sm:items-center"
-    >
-      <v-img :src="answers[index].image"></v-img>
+    <v-row>
+        <v-col>
+            <v-img :src="answers[index].image"></v-img>
+        </v-col>
     </v-row>
 
     <!-- answer -->
@@ -73,64 +81,18 @@
       </v-col>
     </v-row>
   </v-container>
-
-  <!-- result -->
-  <v-container
-    fluid
-    v-if="isShowResult"
-    class="fixed inset-0 w-screen sm:px-20 md:px-40 bg-[#2B2B6E] z-10 flex flex-col justify-center items-center"
-  >
-    <v-col>
-      <v-img :src="icon"></v-img>
-    </v-col>
-    <v-row>
-      <v-col class="text-white text-2xl text-center font-bold">
-        {{ text }}
-      </v-col>
-    </v-row>
-    <v-col>
-      <v-row class="text-center text-xl whitespace-nowrap bg-white rounded p-4">
-        <v-col>Câu đúng: {{ answerStore.point }} / {{ quantity }}</v-col>
-        <v-col>Thời gian: {{ calculateUsedTime(totalElapsedTime) }}</v-col>
-      </v-row>
-      <v-row>Hạng 1</v-row>
-      <v-row>Hạng 1</v-row>
-      <v-row>Hạng 1</v-row>
-    </v-col>
-    <v-col class="grid grid-cols-1 md:grid-cols-2 w-full gap-1">
-      <v-btn
-        @click="repLay"
-        color="green"
-        prepend-icon="fa-solid fa-rotate-right"
-        block
-      >
-        Chơi lại
-      </v-btn>
-      <v-btn
-        @click="homePage"
-        color="yellow"
-        prepend-icon="fa-solid fa-home"
-        block
-      >
-        Trang chủ
-      </v-btn>
-    </v-col>
-  </v-container>
 </template>
 
 <script setup lang="ts">
 import useAnswerStore from "@/stores/answer";
 import useQuestionStore from "@/stores/question";
 import { ref, computed, onMounted, onUnmounted, onBeforeMount } from "vue";
-import resource from "@/helper/resource";
 import router from "@/router";
 import * as _ from "lodash";
-import useAccountStore from "@/stores/account";
 
 const isStopClick = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
-const accountStore = useAccountStore();
 
 const answers = answerStore.answers;
 const quantity = ref(questionStore.question.quantity);
@@ -146,7 +108,6 @@ function nextAnswer() {
 
   if (index.value + 1 === quantity.value) {
     stopTimer();
-    resultForm();
     return;
   }
   index.value++;
@@ -227,13 +188,14 @@ function startTimer() {
       time.value--;
       totalElapsedTime.value++;
     } else {
-      clearInterval(timer.value);
-      resultForm();
+      stopTimer();
     }
   }, 1000);
 }
 
 function stopTimer() {
+  answerStore.totalTimer = calculateUsedTime(totalElapsedTime.value);
+  router.push({ name: "result" });
   clearInterval(timer.value);
 }
 //#endregion
@@ -249,51 +211,12 @@ function calculateUsedTime(elapsedTime: number) {
 }
 //#endregion
 
-//#region hiển thị bảng kết quả
-const icon = ref();
-const text = ref("");
-const isShowResult = ref(false);
-function resultForm() {
-  isShowResult.value = true;
-  if (answerStore.point < quantity.value / 2) {
-    icon.value = resource.icon.lost;
-    text.value = "Chúc bạn may mắn lần sau!";
-  } else {
-    icon.value = resource.icon.win;
-    text.value = `Tuyệt quá! Bạn đã chinh phục được câu đố: ${questionStore.question.name}!`;
-  }
-}
-//#endregion
-
-//#region button
-function repLay() {
-  stopTimer();
-  answers[0].answers = _.shuffle(answers[0].answers);
-  index.value = 0;
-  answerStore.resetPoint();
-  time.value = questionStore.question.timer * questionStore.question.quantity;
-  totalElapsedTime.value = 0;
-  isShowResult.value = false;
-  isStopClick.value = false;
-  startTimer();
-}
-
-function homePage() {
-  answerStore.resetAnswer();
-  questionStore.resetQuestion();
-  router.push({
-    name: "user-content",
-    params: { id: accountStore.account.id },
-  });
-}
-//#endregion
-
 onBeforeMount(() => {
   answers[0].answers = _.shuffle(answers[0].answers);
 });
 
 onMounted(() => {
-  // startTimer();
+  //   startTimer();
 });
 
 onUnmounted(() => {
