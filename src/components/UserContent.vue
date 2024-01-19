@@ -41,9 +41,9 @@
           @click="selecteddCardOnClick"
         ></CustomCard>
       </div>
-      <Loading v-if="isShowLoading"></Loading>
     </div>
   </div>
+  <Loading v-if="isShowLoading"></Loading>
 </template>
 
 <script setup lang="ts">

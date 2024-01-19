@@ -4,11 +4,11 @@
     <AppBar :account="store.account"></AppBar>
 
     <!-- main -->
-    <div class="bg-slate-600 !mt-[50px] h-[calc(100vh-50px)]">
+    <div class="bg-slate-600 !pt-[50px] h-screen">
       <RouterView></RouterView>
     </div>
   </div>
-</template>
+</template> 
 
 <script setup lang="ts">
 import useAccountStore from "@/stores/account";

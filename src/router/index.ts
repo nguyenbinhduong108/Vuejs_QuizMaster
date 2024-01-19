@@ -49,12 +49,12 @@ const router = createRouter({
           name: 'user-content',
           component: UserContent
         },
-        {
-          path: 'play/:questionId',
-          name: 'user-play',
-          component: UserPlay
-        }
       ],
+    },
+    {
+      path: '/play/:questionId',
+      name: 'user-play',
+      component: UserPlay
     }
   ]
 })

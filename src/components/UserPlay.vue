@@ -1,101 +1,121 @@
 <template>
-  <div class="flex flex-col items-center h-full">
-    <div
-      class="grid grid-cols-2 w-full text-white text-center font-bold min-h-[56px]"
-    >
-      <div>
-        <div class="text-xs">Câu số</div>
-        <div class="text-base">{{ index + 1 }} / {{ quantity }}</div>
-      </div>
-      <div>
-        <div class="text-xs">Thời gian còn loại</div>
-        <div class="text-base">{{ formatTime }}</div>
-      </div>
-    </div>
-    <div class="w-[60vw] flex flex-1 flex-col justify-between p-2">
-      <div class="flex flex-col gap-5">
-        <div class="text-white font-bold text-center text-2xl py-4">
-          {{ answers[index].title }}
-        </div>
-        <div class="w-full h-[250px] rounded overflow-hidden bg-amber-500">
-          <v-img :src="answers[index].image" height="100%" cover></v-img>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <div
-            class="answer-base"
-            ref="answerA"
-            @click="handleAnswerClick('answerA')"
-          >
-            {{ answers[index].answers[0] }}
-          </div>
-          <div
-            class="answer-base"
-            ref="answerB"
-            @click="handleAnswerClick('answerB')"
-          >
-            {{ answers[index].answers[1] }}
-          </div>
-          <div
-            class="answer-base"
-            ref="answerC"
-            @click="handleAnswerClick('answerC')"
-          >
-            {{ answers[index].answers[2] }}
-          </div>
-          <div
-            class="answer-base"
-            ref="answerD"
-            @click="handleAnswerClick('answerD')"
-          >
-            {{ answers[index].answers[3] }}
-          </div>
-        </div>
-      </div>
-      <v-btn color="blue" @click="nextAnswer">Next</v-btn>
-    </div>
-  </div>
-
-  <div
-    v-if="isShowResult"
-    class="fixed mt-[50px] flex justify-center p-8 inset-0 w-screen h-screen bg-[#2B2B6E] z-10"
+  <!-- game play -->
+  <v-container
+    fluid
+    class="bg-slate-600 h-screen sm:px-20 md:px-40 flex flex-col justify-between"
   >
-    <div
-      class="flex flex-col items-center justify-evenly p-5 gap-4 w-full md:w-[60vw] h-full"
-    >
-      <div class="w-[150px] h-[150px]">
-        <v-img :src="icon"></v-img>
-      </div>
-      <div class="text-white text-2xl text-center font-bold">
-        {{ text }}
-      </div>
-      <div class="bg-white w-full rounded p-4">
-        <v-row class="text-center text-xl whitespace-nowrap">
-          <v-col>Câu đúng: {{ answerStore.point }} / {{ quantity }}</v-col>
-          <v-col>Thời gian: {{ calculateUsedTime(totalElapsedTime) }}</v-col>
+    <!-- header -->
+    <v-row class="grid grid-cols-2 w-full text-white text-center font-bold">
+      <v-col>
+        <v-row class="text-xs justify-center">Câu số</v-row>
+        <v-row class="text-base justify-center"
+          >{{ index + 1 }} / {{ quantity }}
         </v-row>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-1">
-        <div>
-          <v-btn
-            @click="repLay"
-            color="green"
-            prepend-icon="fa-solid fa-rotate-right"
-            block
-            >Chơi lại</v-btn
-          >
+      </v-col>
+      <v-col>
+        <v-row class="text-xs justify-center">Thời gian còn loại</v-row>
+        <v-row class="text-base justify-center">{{ formatTime }}</v-row>
+      </v-col>
+    </v-row>
+
+    <!-- title -->
+    <v-row>
+      <v-col class="text-white font-bold text-center text-2xl">
+        {{ answers[index].title }}
+      </v-col>
+    </v-row>
+
+    <!-- image -->
+    <v-row
+      class="overflow-hidden hidden sm:flex sm:justify-center sm:items-center"
+    >
+      <v-img :src="answers[index].image"></v-img>
+    </v-row>
+
+    <!-- answer -->
+    <v-row>
+      <v-col class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div
+          class="answer-base"
+          ref="answerA"
+          @click="handleAnswerClick('answerA')"
+        >
+          {{ answers[index].answers[0] }}
         </div>
-        <div>
-          <v-btn
-            @click="homePage"
-            color="yellow"
-            prepend-icon="fa-solid fa-home"
-            block
-            >Trang chủ</v-btn
-          >
+        <div
+          class="answer-base"
+          ref="answerB"
+          @click="handleAnswerClick('answerB')"
+        >
+          {{ answers[index].answers[1] }}
         </div>
-      </div>
-    </div>
-  </div>
+        <div
+          class="answer-base"
+          ref="answerC"
+          @click="handleAnswerClick('answerC')"
+        >
+          {{ answers[index].answers[2] }}
+        </div>
+        <div
+          class="answer-base"
+          ref="answerD"
+          @click="handleAnswerClick('answerD')"
+        >
+          {{ answers[index].answers[3] }}
+        </div>
+      </v-col>
+    </v-row>
+
+    <!-- next button -->
+    <v-row>
+      <v-col>
+        <v-btn color="blue" @click="nextAnswer" block>Next</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
+
+  <!-- result -->
+  <v-container
+    fluid
+    v-if="isShowResult"
+    class="fixed inset-0 w-screen sm:px-20 md:px-40 bg-[#2B2B6E] z-10 flex flex-col justify-center items-center"
+  >
+    <v-col>
+      <v-img :src="icon"></v-img>
+    </v-col>
+    <v-row>
+      <v-col class="text-white text-2xl text-center font-bold">
+        {{ text }}
+      </v-col>
+    </v-row>
+    <v-col>
+      <v-row class="text-center text-xl whitespace-nowrap bg-white rounded p-4">
+        <v-col>Câu đúng: {{ answerStore.point }} / {{ quantity }}</v-col>
+        <v-col>Thời gian: {{ calculateUsedTime(totalElapsedTime) }}</v-col>
+      </v-row>
+      <v-row>Hạng 1</v-row>
+      <v-row>Hạng 1</v-row>
+      <v-row>Hạng 1</v-row>
+    </v-col>
+    <v-col class="grid grid-cols-1 md:grid-cols-2 w-full gap-1">
+      <v-btn
+        @click="repLay"
+        color="green"
+        prepend-icon="fa-solid fa-rotate-right"
+        block
+      >
+        Chơi lại
+      </v-btn>
+      <v-btn
+        @click="homePage"
+        color="yellow"
+        prepend-icon="fa-solid fa-home"
+        block
+      >
+        Trang chủ
+      </v-btn>
+    </v-col>
+  </v-container>
 </template>
 
 <script setup lang="ts">
@@ -105,10 +125,12 @@ import { ref, computed, onMounted, onUnmounted, onBeforeMount } from "vue";
 import resource from "@/helper/resource";
 import router from "@/router";
 import * as _ from "lodash";
+import useAccountStore from "@/stores/account";
 
 const isStopClick = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
+const accountStore = useAccountStore();
 
 const answers = answerStore.answers;
 const quantity = ref(questionStore.question.quantity);
@@ -137,7 +159,7 @@ const answerC = ref<HTMLElement>();
 const answerD = ref<HTMLElement>();
 
 function handleAnswerClick(answerKey: string) {
-  if(isStopClick.value === true){
+  if (isStopClick.value === true) {
     return;
   }
 
@@ -168,7 +190,6 @@ function handleAnswerClick(answerKey: string) {
     const correctAnswer = getAnswerElement();
     correctAnswer?.classList.add("answer-correct");
     isStopClick.value = true;
-
   }
 }
 
@@ -260,16 +281,19 @@ function repLay() {
 function homePage() {
   answerStore.resetAnswer();
   questionStore.resetQuestion();
-  router.push({name: 'user-content'});
+  router.push({
+    name: "user-content",
+    params: { id: accountStore.account.id },
+  });
 }
 //#endregion
 
 onBeforeMount(() => {
   answers[0].answers = _.shuffle(answers[0].answers);
-})
+});
 
 onMounted(() => {
-  startTimer();
+  // startTimer();
 });
 
 onUnmounted(() => {
@@ -279,7 +303,7 @@ onUnmounted(() => {
 
 <style scoped>
 .answer-base {
-  @apply text-white font-bold text-center bg-slate-400 p-2 rounded cursor-pointer hover:bg-slate-500 active:bg-slate-700 transition-all;
+  @apply text-white font-bold text-center bg-slate-400 p-2 rounded cursor-pointer hover:bg-slate-500 active:bg-slate-700 transition-all whitespace-nowrap;
 }
 
 .answer-correct {
