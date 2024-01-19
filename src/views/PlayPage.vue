@@ -34,7 +34,7 @@
 
     <!-- ! fix image -->
     <!-- image -->
-    <v-row>
+    <v-row class="overflow-hidden hidden sm:flex">
         <v-col>
             <v-img :src="answers[index].image"></v-img>
         </v-col>
