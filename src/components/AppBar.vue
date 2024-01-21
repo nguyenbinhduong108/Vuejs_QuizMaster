@@ -1,29 +1,20 @@
 <template>
-  <div
-    class="bg-[#f44336] flex flex-row h-[50px] justify-between items-center px-4 fixed z-20 inset-0 shadow-lg"
-  >
-    <div class="text-white font-bold text-lg cursor-pointer">QuizMaster</div>
+  <div class="bg-[#7070c2] flex flex-row h-[50px] justify-between items-center px-4 fixed z-20 inset-0 shadow-lg">
+    <div class="text-white font-bold text-lg cursor-pointer" @click="backToHome">
+      QuizMaster
+    </div>
 
     <div class="flex items-center">
       <v-btn variant="text" icon="fa-solid fa-gear" color="#fff"></v-btn>
       <v-btn variant="text" icon="fa-solid fa-bell" color="#fff"></v-btn>
       <v-menu v-if="account">
         <template v-slot:activator="{ props }">
-          <v-avatar
-            v-bind="props"
-            size="36px"
-            alt="Avatar"
-            class="overflow-hidden"
-          >
+          <v-avatar v-bind="props" size="36px" alt="Avatar" class="overflow-hidden">
             <v-img :src="account.avatar" alt="Avatar"></v-img>
           </v-avatar>
         </template>
         <v-list>
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            :value="index"
-          >
+          <v-list-item v-for="(item, index) in items" :key="index" :value="index">
             <v-list-item-title @click="item.func">{{
               item.title
             }}</v-list-item-title>
@@ -31,32 +22,29 @@
         </v-list>
       </v-menu>
 
-      <v-btn
-        v-else
-        variant="flat"
-        append-icon="fa-solid fa-arrow-right"
-        color="#fff"
-        @click="showForm"
-      >
-        Sign in
+      <v-btn v-else variant="flat"
+        className='rounded-lg bg-secondary-10 px-4 py-2 hover:-translate-y-0.5 hover:shadow-elevation-1 outline-none border-none'
+        @click="showForm">
+        Đăng nhập
       </v-btn>
     </div>
   </div>
+
+  <LoginForm v-if="isShowForm" @closeForm="closeForm"></LoginForm>
 </template>
 
 <script setup lang="ts">
-const emits = defineEmits(["showForm"]);
 
-function showForm() {
-  emits("showForm");
-}
+import LoginForm from "@/components/LoginForm.vue";
 
 import { ref } from "vue";
 import useAccountStore from "@/stores/account";
 import router from "@/router";
 
 const accountStore = useAccountStore();
-const prop = defineProps(["account"]);
+const account = accountStore.account;
+// const prop = defineProps(["account"]);
+const isShowForm = ref(false);
 
 const items = ref([
   { title: "Thông tin", func: yourInfo },
@@ -75,5 +63,17 @@ function setting() {
 function logout() {
   accountStore.logout();
   router.push("/");
+}
+
+function backToHome() {
+  router.push("/");
+}
+
+function showForm() {
+  isShowForm.value = true;
+}
+
+function closeForm() {
+  isShowForm.value = false;
 }
 </script>

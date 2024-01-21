@@ -1,69 +1,49 @@
 <template>
-  <div class="!w-screen !h-screen overflow-hidden">
+  <div class="!w-screen min-h-screen">
     <!-- app bar -->
-    <AppBar :account="accountStore.account"></AppBar>
+    <AppBar></AppBar>
 
     <!-- main -->
-    <div class="bg-slate-600 !pt-[50px] h-screen">
+    <div class="bg-white !pt-[50px] h-screen">
       <div class="flex justify-center flex-1 flex-col md:flex-row w-full h-full">
         <!-- menu -->
-        <div
-          class="flex flex-row md:!flex-col gap-2 min-w-[140px] bg-slate-500 p-1 overflow-hidden"
-        >
-          <div
-            @click="getAllQuestion"
-            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap"
-          >
+        <div class="flex flex-row md:!flex-col gap-2 min-w-[140px] bg-red-500 p-1 overflow-hidden">
+          <div @click="getAllQuestion"
+            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
             All
           </div>
-          <div
-            v-for="category in categories"
-            :key="category.id"
-            @click="getQuestionByCategory(category.id)"
-            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap"
-          >
+          <div v-for="category in categories" :key="category.id" @click="getQuestionByCategory(category.id)"
+            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
             {{ category.name }}
           </div>
         </div>
         <!-- content -->
-        <div
-          class="relative w-full h-full flex flex-col gap-3 p-3 overflow-y-auto custom-scrollbar"
-        >
-          <div
-            class="relative bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat rounded-2xl min-h-[250px] w-full"
-          >
-            <div
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-5xl text-white p-4 rounded-2xl backdrop-blur-sm backdrop-brightness-75 cursor-pointer font-bold shadow-xl shadow-slate-800"
-            >
-              Welcome to QuizMaster
-              <span class="underline">
-                {{ accountStore.account.username }}
-              </span>
-            </div>
-          </div>
+        <div class="relative w-full h-full flex flex-col gap-3 p-3 overflow-y-auto custom-scrollbar">
           <div class="flex flex-wrap gap-3 items-stretch overflow-visible">
-            <CustomCard
-              :questions="questions"
-              @click="selecteddCardOnClick"
-            ></CustomCard>
+            <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
           </div>
         </div>
       </div>
       <Loading v-if="isShowLoading"></Loading>
     </div>
+
+    <!-- footer -->
+    <!-- <Footer></Footer> -->
   </div>
 </template> 
 
 <script setup lang="ts">
 import AppBar from "@/components/AppBar.vue";
-import categoryApi, { type categoryProps } from "@/apis/categoryApi";
-import questionApi, { type questionProps } from "@/apis/questionApi";
+import Footer from "@/components/Footer.vue";
 import CustomCard from '../components/CustomCard.vue'
 import Loading from "../components/Loading.vue";
+
+import categoryApi, { type categoryProps } from "@/apis/categoryApi";
+import questionApi, { type questionProps } from "@/apis/questionApi";
+
 import { onBeforeMount, ref } from "vue";
 import useAnswerStore from "@/stores/answer";
 import useQuestionStore from "@/stores/question";
-import useAccountStore from "@/stores/account";
 
 import { useRouter } from "vue-router";
 
@@ -74,7 +54,6 @@ const categories = ref<categoryProps[]>([]);
 const isShowLoading = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
-const accountStore = useAccountStore();
 
 async function getAllQuestion() {
   try {
@@ -118,7 +97,7 @@ async function selecteddCardOnClick(questionId: string) {
   await answerStore.setAnswers(questionId);
   isShowLoading.value = false;
 
-  router.push({name: 'play', params: {questionId: questionId}});
+  router.push({ name: 'play', params: { questionId: questionId } });
 }
 
 onBeforeMount(() => {
@@ -127,6 +106,4 @@ onBeforeMount(() => {
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

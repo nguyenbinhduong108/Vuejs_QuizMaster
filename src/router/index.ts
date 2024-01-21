@@ -1,59 +1,59 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LandingPage from '@/views/LandingPage.vue'
-import AdminPage from '@/views/AdminPage.vue'
-import UserPage from '@/views/UserPage.vue'
-import SignUpPage from '@/views/SignUpPage.vue'
-import AdminContent from '@/components/AdminContent.vue'
-import AdminAnswer from '@/components/AdminAnswer.vue'
-import ResultPage from '@/views/ResultPage.vue'
-import PlayPage from '@/views/PlayPage.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import LandingPage from "@/views/LandingPage.vue";
+import AdminPage from "@/views/AdminPage.vue";
+import UserPage from "@/views/UserPage.vue";
+import SignUpPage from "@/views/SignUpPage.vue";
+import AdminContent from "@/components/AdminContent.vue";
+import AdminAnswer from "@/components/AdminAnswer.vue";
+import ResultPage from "@/views/ResultPage.vue";
+import PlayPage from "@/views/PlayPage.vue";
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: LandingPage
-    },
-    {
-      path: '/signup',
-      name: 'signup',
-      component: SignUpPage,
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: AdminPage,
-      children: [
-        {
-          path: '',
-          name: 'admin-content',
-          component: AdminContent,
-        },
-        {
-          path: 'answer',
-          name: 'admin-answer',
-          component: AdminAnswer,
-        }
-      ]
-    },
-    {
-      path: '/user/:id',
-      name: 'user',
+      path: "/",
+      name: "home",
       component: UserPage,
     },
     {
-      path: '/play/:questionId',
-      name: 'play',
+      path: "/signup",
+      name: "signup",
+      component: SignUpPage,
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: AdminPage,
+      children: [
+        {
+          path: "",
+          name: "admin-content",
+          component: AdminContent,
+        },
+        {
+          path: "answer",
+          name: "admin-answer",
+          component: AdminAnswer,
+        },
+      ],
+    },
+    {
+      path: "/user/:id",
+      name: "user",
+      component: UserPage,
+    },
+    {
+      path: "/play/:questionId",
+      name: "play",
       component: PlayPage,
     },
     {
-      path: '/result',
-      name: 'result',
+      path: "/result",
+      name: "result",
       component: ResultPage,
-    }
-  ]
-})
-export default router
+    },
+  ],
+});
+export default router;

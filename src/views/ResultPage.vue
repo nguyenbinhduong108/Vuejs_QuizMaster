@@ -1,8 +1,6 @@
 <template>
-    <v-container
-    fluid
-    class="inset-0 w-screen h-screen sm:px-20 md:px-40 bg-[#2B2B6E] z-10 flex flex-col justify-center items-center"
-  >
+  <v-container fluid
+    class="inset-0 w-screen h-screen sm:px-20 md:px-40 bg-[#2B2B6E] z-10 flex flex-col justify-center items-center">
     <v-col class="w-[150px] h-[150px]">
       <v-img :src="icon"></v-img>
     </v-col>
@@ -21,20 +19,10 @@
       <v-row>Hạng 1</v-row>
     </v-col>
     <v-col class="grid grid-cols-1 md:grid-cols-2 w-full gap-1">
-      <v-btn
-        @click="repLay"
-        color="green"
-        prepend-icon="fa-solid fa-rotate-right"
-        block
-      >
+      <v-btn @click="repLay" color="green" prepend-icon="fa-solid fa-rotate-right" block>
         Chơi lại
       </v-btn>
-      <v-btn
-        @click="homePage"
-        color="yellow"
-        prepend-icon="fa-solid fa-home"
-        block
-      >
+      <v-btn @click="homePage" color="yellow" prepend-icon="fa-solid fa-home" block>
         Trang chủ
       </v-btn>
     </v-col>
@@ -73,7 +61,7 @@ function repLay() {
   router.push({
     name: 'play',
     params: {
-        questionId: questionStore.question.id
+      questionId: questionStore.question.id
     }
   });
 }
@@ -81,17 +69,12 @@ function repLay() {
 function homePage() {
   answerStore.resetAnswer();
   questionStore.resetQuestion();
-  router.push({
-    name: "user",
-    params: {
-        id: accountStore.account.id,
-    }
-  });
+  router.push("/");
 }
 //#endregion
 
 onBeforeMount(() => {
-    resultForm();
+  resultForm();
 })
 
 </script>
