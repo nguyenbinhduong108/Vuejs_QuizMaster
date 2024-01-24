@@ -82,7 +82,7 @@ async function getQuestionByCategory(categoryId: string) {
     const response = await questionApi.getAllQuestionByCategoryId(
       categoryId,
       10,
-      0,
+      1,
       ""
     );
     questions.value = response.data.data;

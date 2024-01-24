@@ -5,8 +5,8 @@
     </div>
 
     <div class="flex items-center">
+      <v-btn variant="text" icon="fa-solid fa-search" color="#fff"></v-btn>
       <v-btn variant="text" icon="fa-solid fa-gear" color="#fff"></v-btn>
-      <v-btn variant="text" icon="fa-solid fa-bell" color="#fff"></v-btn>
       <v-menu v-if="account.id">
         <template v-slot:activator="{ props }">
           <v-avatar v-bind="props" size="36px" alt="Avatar" class="overflow-hidden">
