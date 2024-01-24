@@ -59,7 +59,7 @@ const accountStore = useAccountStore();
 async function getAllQuestion() {
   try {
     isShowLoading.value = true;
-    const response = await questionApi.getAllQuestion(10, 0, "");
+    const response = await questionApi.getAllQuestion(10, 1, "");
     questions.value = response.data.data;
     isShowLoading.value = false;
   } catch (error) {

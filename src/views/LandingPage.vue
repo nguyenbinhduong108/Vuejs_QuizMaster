@@ -173,7 +173,7 @@ import Footer from "@/components/Footer.vue";
 
 async function getAllQuestion() {
   try {
-    const response = await questionApi.getAllQuestion(10, 0, "");
+    const response = await questionApi.getAllQuestion(10, 1, "");
     questions.value = response.data.data;
   } catch (error) {
     console.error("Lỗi khi lấy dữ liệu từ server");

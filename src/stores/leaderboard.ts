@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import type { leaderboardProps } from "@/apis/leaderboardApi";
 
-const useLeaderboard = defineStore('leaderboard', {
+const useLeaderboardStore = defineStore('leaderboard', {
     state: () => ({
         leaderboards: [] as Array<leaderboardProps>,
     }),
@@ -10,4 +10,4 @@ const useLeaderboard = defineStore('leaderboard', {
     },
 })
 
-export default useLeaderboard;
+export default useLeaderboardStore;

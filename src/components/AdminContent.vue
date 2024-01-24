@@ -94,7 +94,7 @@ const accountStore = useAccountStore();
 const questionStore = useQuestionStore();
 
 const listQuestion = ref<questionProps[]>([]);
-const page = ref(0);
+const page = ref(1);
 const totalPage = ref(0);
 
 async function getAllQuestionByAccountId() {
@@ -102,7 +102,7 @@ async function getAllQuestionByAccountId() {
     const response = await questionApi.getAllQuestionByAccountId(
       accountStore.account.id,
       10,
-      page.value * 10,
+      page.value,
       ""
     );
     listQuestion.value = response.data.data;

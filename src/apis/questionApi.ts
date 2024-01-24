@@ -2,18 +2,18 @@ import axios from "axios";
 
 const baseApi = `${import.meta.env.VITE_BASE_API}/questions`;
 const questionApi = {
-    getAllQuestion: async (limit: number, offset: number, search: string) => {
-        const data = await axios.get(`${baseApi}/GetAll?limit=${limit}&offset=${offset}&search=${search}`);
+    getAllQuestion: async (limit: number, page: number, search: string) => {
+        const data = await axios.get(`${baseApi}/GetAll?limit=${limit}&page=${page}&search=${search}`);
         return data;
     },
 
-    getAllQuestionByAccountId: async (accountId: string, limit: number, offset: number, search: string) => {
-        const data = await axios.get(`${baseApi}/getAllQuestionByAccountId/${accountId}?limit=${limit}&offset=${offset}&search=${search}`);
+    getAllQuestionByAccountId: async (accountId: string, limit: number, page: number, search: string) => {
+        const data = await axios.get(`${baseApi}/getAllQuestionByAccountId/${accountId}?limit=${limit}&page=${page}&search=${search}`);
         return data;
     },
 
-    getAllQuestionByCategoryId: async (categoryId: string, limit: number, offset: number, search: string) => {
-        const data = await axios.get(`${baseApi}/getAllQuestionByCategoryId/${categoryId}?limit=${limit}&offset=${offset}&search=${search}`);
+    getAllQuestionByCategoryId: async (categoryId: string, limit: number, page: number, search: string) => {
+        const data = await axios.get(`${baseApi}/getAllQuestionByCategoryId/${categoryId}?limit=${limit}&page=${page}&search=${search}`);
         return data;
     },
 
