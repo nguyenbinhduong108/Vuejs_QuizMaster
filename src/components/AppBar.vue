@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#7070c2] flex flex-row h-[50px] justify-between items-center px-4 fixed z-20 inset-0 shadow-lg">
+  <div class="bg-primary-10 flex flex-row h-[50px] justify-between items-center px-4 fixed z-20 inset-0 shadow-lg">
     <div class="text-white font-bold text-lg cursor-pointer" @click="backToHome">
       QuizMaster
     </div>
@@ -7,7 +7,7 @@
     <div class="flex items-center">
       <v-btn variant="text" icon="fa-solid fa-gear" color="#fff"></v-btn>
       <v-btn variant="text" icon="fa-solid fa-bell" color="#fff"></v-btn>
-      <v-menu v-if="account">
+      <v-menu v-if="account.id">
         <template v-slot:activator="{ props }">
           <v-avatar v-bind="props" size="36px" alt="Avatar" class="overflow-hidden">
             <v-img :src="account.avatar" alt="Avatar"></v-img>
@@ -28,9 +28,9 @@
         Đăng nhập
       </v-btn>
     </div>
-  </div>
 
-  <LoginForm v-if="isShowForm" @closeForm="closeForm"></LoginForm>
+    <LoginForm v-if="isShowForm" @closeForm="closeForm"></LoginForm>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -40,10 +40,10 @@ import LoginForm from "@/components/LoginForm.vue";
 import { ref } from "vue";
 import useAccountStore from "@/stores/account";
 import router from "@/router";
+import { computed } from "vue";
 
 const accountStore = useAccountStore();
-const account = accountStore.account;
-// const prop = defineProps(["account"]);
+const account = computed(() => accountStore.account);
 const isShowForm = ref(false);
 
 const items = ref([

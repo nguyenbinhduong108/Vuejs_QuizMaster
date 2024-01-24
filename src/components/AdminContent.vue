@@ -5,22 +5,14 @@
 
     <!-- option -->
     <div
-      class="flex flex-col sm:flex-row mt-[50px] p-4 gap-2 bg-[url(@/assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat"
-    >
+      class="flex flex-col sm:flex-row mt-[50px] p-4 gap-2 bg-[url(@/assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat">
       <div class="flex-1 bg-slate-500 p-4 rounded-xl">
         <div class="text-center text-xl text-white font-bold">
           Welcome
           <span class="underline">{{ accountStore.account.username }}</span>
         </div>
         <div class="text-center pt-2">
-          <v-btn
-            @click="showForm"
-            rounded="pill"
-            variant="elevated"
-            color="white"
-            class="font-bold"
-            >Create a quiz</v-btn
-          >
+          <v-btn @click="showForm" rounded="pill" variant="elevated" color="white" class="font-bold">Create a quiz</v-btn>
         </div>
       </div>
       <div class="flex-1 bg-slate-500 p-4 rounded-xl">
@@ -28,42 +20,22 @@
           Try our ChatGPT powered
         </div>
         <div class="text-center pt-2">
-          <v-btn
-            rounded="pill"
-            variant="elevated"
-            color="white"
-            class="font-bold"
-            >AI quiz generator</v-btn
-          >
+          <v-btn rounded="pill" variant="elevated" color="white" class="font-bold">AI quiz generator</v-btn>
         </div>
       </div>
     </div>
 
     <!-- pagination -->
     <div class="w-full pt-4" v-if="totalPage > 1">
-      <v-pagination
-        v-model="page"
-        :length="totalPage"
-        rounded="circle"
-      ></v-pagination>
+      <v-pagination v-model="page" :length="totalPage" rounded="circle"></v-pagination>
     </div>
     <!-- body -->
     <div class="p-4 gap-2 grid grid-cols-1 lg:grid-cols-2">
-      <v-card
-        class="p-1"
-        color="rgb(156, 163, 175)"
-        v-for="question in listQuestion"
-        :key="question.id"
-      >
+      <v-card class="p-1" color="rgb(156, 163, 175)" v-for="question in listQuestion" :key="question.id">
         <div class="text-center">{{ question.name }}</div>
         <div class="flex flex-col sm:flex-row gap-2">
           <div class="flex flex-1 max-h-[180px] rounded overflow-hidden">
-            <v-img
-              :src="question.image"
-              width="100%"
-              height="100%"
-              cover
-            ></v-img>
+            <v-img :src="question.image" width="100%" height="100%" cover></v-img>
           </div>
           <div class="flex-1 flex-col">
             <div>
@@ -85,12 +57,7 @@
                 </v-btn>
               </div>
               <div class="flex-1">
-                <v-btn
-                  @click="deleteQuestion(question.id)"
-                  block
-                  prepend-icon="fa-solid fa-trash"
-                  color="#f44336"
-                >
+                <v-btn @click="deleteQuestion(question.id)" block prepend-icon="fa-solid fa-trash" color="#f44336">
                   Xoá
                 </v-btn>
               </div>
@@ -102,11 +69,7 @@
 
     <!-- pagination -->
     <div class="w-full pb-4" v-if="totalPage > 1">
-      <v-pagination
-        v-model="page"
-        :length="totalPage"
-        rounded="circle"
-      ></v-pagination>
+      <v-pagination v-model="page" :length="totalPage" rounded="circle"></v-pagination>
     </div>
     <!-- footer -->
     <Footer></Footer>

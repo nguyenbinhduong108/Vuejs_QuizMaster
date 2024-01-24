@@ -39,11 +39,11 @@ const router = createRouter({
         },
       ],
     },
-    {
-      path: "/user/:id",
-      name: "user",
-      component: UserPage,
-    },
+    // {
+    //   path: "/user/:id",
+    //   name: "user",
+    //   component: UserPage,
+    // },
     {
       path: "/play/:questionId",
       name: "play",

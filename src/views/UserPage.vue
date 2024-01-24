@@ -46,6 +46,7 @@ import useAnswerStore from "@/stores/answer";
 import useQuestionStore from "@/stores/question";
 
 import { useRouter } from "vue-router";
+import useAccountStore from "@/stores/account";
 
 const router = useRouter();
 
@@ -54,7 +55,7 @@ const categories = ref<categoryProps[]>([]);
 const isShowLoading = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
-
+const accountStore = useAccountStore();
 async function getAllQuestion() {
   try {
     isShowLoading.value = true;
