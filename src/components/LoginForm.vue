@@ -117,7 +117,12 @@ async function loginAccount() {
       accountStore.login(data);
       // Chuyển hướng đến trang user hoặc admin tùy thuộc vào isAdmin
       if (accountStore.isAdmin) {
-        router.push("/admin");
+        router.push({
+          name: 'admin-content', 
+          params: {
+            id: data.id,
+          },
+        });
       } else {
         router.push("/");
       }
