@@ -4,38 +4,64 @@
     <AppBar></AppBar>
 
     <!-- main -->
-    <div class="bg-white !pt-[50px] h-screen">
-      <div class="flex justify-center flex-1 flex-col md:flex-row w-full h-full">
-        <!-- menu -->
-        <div class="flex flex-row md:!flex-col gap-2 min-w-[140px] bg-red-500 p-1 overflow-hidden">
-          <div @click="getAllQuestion"
-            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
-            All
+    <div class="flex flex-col items-center justify-center bg-primary-60">
+      <div
+        class="!pt-[50px] min-h-screen w-full lg:w-5/6 xl:w-4/5 2xl:w-1/2 my-6 px-4"
+      >
+        <div class="flex flex-col md:flex-row gap-8">
+          <!-- menu -->
+          <div class="flex md:!flex-col gap-2">
+            <div
+              @click="
+                () => {
+                  getAllQuestion();
+                  selectCategory(null);
+                }
+              "
+              class="bg-primary-20 py-2 px-4 font-medium w-28 text-slate-500 cursor-pointer rounded-lg whitespace-nowrap hover:bg-primary-40 hover:border hover:border-1 border-primary-10 hover:text-primary-30 active:bg-primary-10"
+              :class="{ selected: selectedCategory === null }"
+            >
+              Tất cả
+            </div>
+
+            <div
+              v-for="category in categories"
+              :key="category.id"
+              @click="
+                () => {
+                  getQuestionByCategory(category.id);
+                  selectCategory(category.id);
+                }
+              "
+              class="bg-primary-20 py-2 px-4 font-medium w-28 text-slate-500 cursor-pointer rounded-lg whitespace-nowrap hover:bg-primary-40 hover:border hover:border-1 border-primary-10 hover:text-primary-30 active:bg-primary-10"
+              :class="{ selected: selectedCategory === category.id }"
+            >
+              {{ category.name }}
+            </div>
           </div>
-          <div v-for="category in categories" :key="category.id" @click="getQuestionByCategory(category.id)"
-            class="p-3 font-bold text-white cursor-pointer rounded hover:bg-slate-200 hover:!text-black whitespace-nowrap">
-            {{ category.name }}
+
+          <!-- content -->
+
+          <div class="flex flex-wrap gap-4">
+            <CustomCard
+              :questions="questions"
+              @click="selectedCardOnClick"
+            ></CustomCard>
           </div>
         </div>
-        <!-- content -->
-        <div class="relative w-full h-full flex flex-col gap-3 p-3 overflow-y-auto custom-scrollbar">
-          <div class="flex flex-wrap gap-3 items-stretch overflow-visible">
-            <CustomCard :questions="questions" @click="selecteddCardOnClick"></CustomCard>
-          </div>
-        </div>
+        <Loading v-if="isShowLoading"></Loading>
       </div>
-      <Loading v-if="isShowLoading"></Loading>
     </div>
 
     <!-- footer -->
     <!-- <Footer></Footer> -->
   </div>
-</template> 
+</template>
 
 <script setup lang="ts">
 import AppBar from "@/components/AppBar.vue";
 import Footer from "@/components/Footer.vue";
-import CustomCard from '../components/CustomCard.vue'
+import CustomCard from "../components/CustomCard.vue";
 import Loading from "../components/Loading.vue";
 
 import categoryApi, { type categoryProps } from "@/apis/categoryApi";
@@ -52,6 +78,8 @@ const router = useRouter();
 
 const questions = ref<questionProps[]>([]);
 const categories = ref<categoryProps[]>([]);
+const selectedCategory = ref<string | null>(null);
+
 const isShowLoading = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
@@ -92,19 +120,34 @@ async function getQuestionByCategory(categoryId: string) {
   }
 }
 
-async function selecteddCardOnClick(questionId: string) {
+async function selectedCardOnClick(questionId: string) {
   isShowLoading.value = true;
   await questionStore.setQuestion(questionId);
   await answerStore.setAnswers(questionId);
   isShowLoading.value = false;
 
-  router.push({ name: 'play', params: { questionId: questionId } });
+  router.push({ name: "play", params: { questionId: questionId } });
 }
 
 onBeforeMount(() => {
   getAllCategory();
   getAllQuestion();
 });
+
+const selectCategory = (categoryId: string | null) => {
+  selectedCategory.value = categoryId;
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.selected {
+  background-color: #7070c2;
+  color: #ffff;
+}
+
+.selected:hover {
+  background-color: #7070c2;
+  color: #ffff;
+  border: none;
+}
+</style>
