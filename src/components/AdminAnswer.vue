@@ -12,7 +12,7 @@
               :rules="[
                 () => !!answer.title || 'Tên bộ câu hỏi không được để trống',
               ]"
-              label="Tên câu hỏi"
+              label="Câu hỏi"
             ></v-text-field>
           </div>
           <div class="flex flex-col flex-1 gap-5">
@@ -123,7 +123,7 @@
           height="100%"
           cover
           class="blur-sm hover:blur-0 transition-all"
-          @click="selectAnswer(answer.id)"
+          @click="selectApiAnswer(answer.id)"
         ></v-img>
       </v-card>
 
@@ -164,12 +164,16 @@ import formMode from "@/helper/enum";
 import Loading from "./Loading.vue";
 
 const questionStore = useQuestionStore();
-const questionId = ref(questionStore.questionId);
-const answerSelectedId = ref();
 const answerStore = useAnswerStore();
+
+const questionId = ref(questionStore.questionId);
+const apiAnswerSelectedId = ref<string>("");
+const addAnswerSelectedNumber = ref<number>(0);
 const listAnswer = ref<answerProps[]>([]);
 const mode = ref(formMode.Add);
 const isShowLoading = ref(false);
+const isApiList = ref(false);
+const isAddList = ref(false);
 
 const answer = ref<answerBody>({
   title: "",
@@ -198,14 +202,17 @@ async function getAllAnswerByQuestionId() {
 //#region chọn 1 answer
 async function selectAddAnswer(number: number) {
   try {
+    isApiList.value = false;
+    isAddList.value = true;
+
+    addAnswerSelectedNumber.value = number;
     isShowLoading.value = true;
     const response = listAddAnswer.value[number];
     mode.value = formMode.Edit;
 
-    answer.value.answers[0] = response.answers[0];
-    answer.value.answers[1] = response.answers[1];
-    answer.value.answers[2] = response.answers[2];
-    answer.value.answers[3] = response.answers[3];
+    for(let index = 0; index < response.answers.length; index++){
+        answer.value.answers[index] = response.answers[index];
+    }
     answer.value.title = response.title;
     answer.value.image = response.image;
     answer.value.trueAnswer = response.trueAnswer;
@@ -223,6 +230,8 @@ async function selectAddAnswer(number: number) {
       case response.answers[3]:
         selectedField.value = "answerD";
         break;
+      default :
+        selectedField.value = "";
     }
     isShowLoading.value = false;
   } catch (error) {
@@ -230,17 +239,19 @@ async function selectAddAnswer(number: number) {
   }
 }
 
-async function selectAnswer(answerId: string) {
+async function selectApiAnswer(answerId: string) {
   try {
-    answerSelectedId.value = answerId;
+    isApiList.value = true;
+    isAddList.value = false;
+
+    apiAnswerSelectedId.value = answerId;
     isShowLoading.value = true;
     const response = (await answerApi.getAnswerByAnswerId(answerId)).data;
     mode.value = formMode.Edit;
 
-    answer.value.answers[0] = response.answers[0];
-    answer.value.answers[1] = response.answers[1];
-    answer.value.answers[2] = response.answers[2];
-    answer.value.answers[3] = response.answers[3];
+    for(let index = 0; index < response.answers.length; index++){
+        answer.value.answers[index] = response.answers[index];
+    }
     answer.value.title = response.title;
     answer.value.image = response.image;
     answer.value.trueAnswer = response.trueAnswer;
@@ -291,8 +302,12 @@ function selectTrueAnswer(trueAnswer: string) {
 
 //#region new Answer
 function newAnsswer() {
-  mode.value = formMode.Add;
-  listAddAnswer.value.push(answer.value);
+
+  if(mode.value == formMode.Edit){
+    mode.value = formMode.Add;
+  } else if(mode.value == formMode.Add){
+    listAddAnswer.value.push(answer.value);
+  }
 
   answer.value = {
     title: "",
@@ -309,12 +324,13 @@ function newAnsswer() {
 async function createAnswer() {
   try {
     isShowLoading.value = true;
-    const response = await answerApi.createAnswerByQuestionId(
+    await answerApi.createAnswerByQuestionId(
       questionId.value,
       listAddAnswer.value
     );
+
+    listAddAnswer.value = [];
     await getAllAnswerByQuestionId();
-    newAnsswer();
     isShowLoading.value = false;
   } catch (error) {
     console.log("Có lỗi khi thêm answer", error);
@@ -324,9 +340,17 @@ async function createAnswer() {
 async function deleteAnswer() {
   try {
     isShowLoading.value = true;
-    const response = await answerApi.deleteAnswer(answerSelectedId.value);
-    await getAllAnswerByQuestionId();
 
+
+    if(isApiList.value == true){
+      await answerApi.deleteAnswer(apiAnswerSelectedId.value);
+      await getAllAnswerByQuestionId();
+    }
+    else if(isAddList.value == true){
+      listAddAnswer.value.splice(addAnswerSelectedNumber.value, 1);
+    }
+
+    newAnsswer();
     isShowLoading.value = false;
   } catch (error) {
     console.log("Có lỗi khi xoá answer", error);
@@ -336,14 +360,25 @@ async function deleteAnswer() {
 async function updateAnswer() {
   try {
     isShowLoading.value = true;
-    const response = await answerApi.updateAnswerByAnswerId(
-      answerSelectedId.value,
-      answer.value
-    );
 
-    await getAllAnswerByQuestionId();
+    if(isApiList.value == true){
 
-    console.log(answer.value);
+      await answerApi.updateAnswerByAnswerId(
+        apiAnswerSelectedId.value,
+        answer.value
+      );
+      await getAllAnswerByQuestionId();
+    }
+
+    else if(isAddList.value == true){
+      listAddAnswer.value.splice(
+        addAnswerSelectedNumber.value,
+        1,
+        answer.value
+      );
+    }
+
+    newAnsswer();
     isShowLoading.value = false;
   } catch (error) {
     console.log("Có lỗi khi cập nhật answer", error);
