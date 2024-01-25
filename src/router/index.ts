@@ -23,7 +23,7 @@ const router = createRouter({
       component: SignUpPage,
     },
     {
-      path: "/admin",
+      path: "/:id",
       name: "admin",
       component: AdminPage,
       children: [

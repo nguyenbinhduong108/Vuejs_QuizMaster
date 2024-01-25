@@ -12,20 +12,15 @@
               :rules="[
                 () => !!answer.title || 'Tên bộ câu hỏi không được để trống',
               ]"
-              label="Tên câu hỏi"
+              label="Câu hỏi"
             ></v-text-field>
           </div>
           <div class="flex flex-col flex-1 gap-5">
-
-
-            <UploadImage 
-              v-model="answer.image" 
-              rectangle
-              ></UploadImage>
+            <UploadImage v-model="answer.image" rectangle></UploadImage>
 
             <div class="relative grid grid-cols-1 md:grid-cols-2 gap-2">
               <v-text-field
-                v-model:model-value="answer.answerA"
+                v-model:model-value="answer.answers[0]"
                 :bg-color="selectedField === 'answerA' ? 'green' : 'white'"
                 :prepend-inner-icon="
                   selectedField === 'answerA'
@@ -35,14 +30,15 @@
                 rounded="pill"
                 variant="solo"
                 :rules="[
-                  () => !!answer.answerA || 'Câu trả lời không được để trống',
+                  () =>
+                    !!answer.answers[0] || 'Câu trả lời không được để trống',
                 ]"
                 co
                 label="Đáp án A"
                 @click:prepend-inner="selectTrueAnswer('answerA')"
               ></v-text-field>
               <v-text-field
-                v-model:model-value="answer.answerB"
+                v-model:model-value="answer.answers[1]"
                 :bg-color="selectedField === 'answerB' ? 'green' : 'white'"
                 :prepend-inner-icon="
                   selectedField === 'answerB'
@@ -52,13 +48,14 @@
                 rounded="pill"
                 variant="solo"
                 :rules="[
-                  () => !!answer.answerB || 'Câu trả lời không được để trống',
+                  () =>
+                    !!answer.answers[1] || 'Câu trả lời không được để trống',
                 ]"
                 label="Đáp án B"
                 @click:prepend-inner="selectTrueAnswer('answerB')"
               ></v-text-field>
               <v-text-field
-                v-model:model-value="answer.answerC"
+                v-model:model-value="answer.answers[2]"
                 :bg-color="selectedField === 'answerC' ? 'green' : 'white'"
                 :prepend-inner-icon="
                   selectedField === 'answerC'
@@ -68,13 +65,14 @@
                 rounded="pill"
                 variant="solo"
                 :rules="[
-                  () => !!answer.answerC || 'Câu trả lời không được để trống',
+                  () =>
+                    !!answer.answers[2] || 'Câu trả lời không được để trống',
                 ]"
                 label="Đáp án C"
                 @click:prepend-inner="selectTrueAnswer('answerC')"
               ></v-text-field>
               <v-text-field
-                v-model:model-value="answer.answerD"
+                v-model:model-value="answer.answers[3]"
                 :bg-color="selectedField === 'answerD' ? 'green' : 'white'"
                 :prepend-inner-icon="
                   selectedField === 'answerD'
@@ -84,7 +82,8 @@
                 rounded="pill"
                 variant="solo"
                 :rules="[
-                  () => !!answer.answerD || 'Câu trả lời không được để trống',
+                  () =>
+                    !!answer.answers[3] || 'Câu trả lời không được để trống',
                 ]"
                 label="Đáp án D"
                 @click:prepend-inner="selectTrueAnswer('answerD')"
@@ -92,9 +91,9 @@
             </div>
           </div>
           <div v-if="mode === formMode.Edit" class="grid grid-cols-2 gap-2">
-            <v-btn @click="updateAnswer" variant="elevated" color="blue" block
-              >Lưu</v-btn
-            >
+            <v-btn @click="updateAnswer" variant="elevated" color="blue" block>
+              Lưu
+            </v-btn>
             <v-btn @click="deleteAnswer" variant="elevated" color="blue" block
               >Xoá</v-btn
             >
@@ -110,22 +109,43 @@
     </div>
 
     <div
-      class="p-2 w-full h-[20vh] bg-slate-400 flex flex- gap-2 overflow-x-scroll custom-scrollbar"
+      class="p-2 w-full h-[20vh] bg-slate-400 flex flex- gap-2 !overflow-scroll custom-scrollbar"
     >
-      <v-card min-width="200px" v-for="answer in listAnswer" :key="answer.id">
+      <v-card
+        class="overflow-hidden"
+        min-width="200px"
+        v-for="answer in listAnswer"
+        :key="answer.id"
+      >
         <v-img
           :src="answer.image"
           width="100%"
           height="100%"
           cover
           class="blur-sm hover:blur-0 transition-all"
-          @click="selectAnswer(answer.id)"
+          @click="selectApiAnswer(answer.id)"
+        ></v-img>
+      </v-card>
+
+      <v-card
+        class="overflow-hidden"
+        min-width="200px"
+        v-for="(answer, number) in listAddAnswer"
+        :key="number"
+      >
+        <v-img
+          :src="answer.image"
+          width="100%"
+          height="100%"
+          cover
+          class="blur-sm hover:blur-0 transition-all"
+          @click="selectAddAnswer(number)"
         ></v-img>
       </v-card>
 
       <v-card
         min-width="200px"
-        class="flex justify-center items-center"
+        class="flex justify-center items-center !overflow-visible"
         @click="newAnsswer"
       >
         <v-icon size="x-large" icon="fa-solid fa-circle-plus"></v-icon>
@@ -144,22 +164,26 @@ import formMode from "@/helper/enum";
 import Loading from "./Loading.vue";
 
 const questionStore = useQuestionStore();
-const questionId = ref(questionStore.questionId);
-const answerSelectedId = ref();
 const answerStore = useAnswerStore();
+
+const questionId = ref(questionStore.questionId);
+const apiAnswerSelectedId = ref<string>("");
+const addAnswerSelectedNumber = ref<number>(0);
 const listAnswer = ref<answerProps[]>([]);
 const mode = ref(formMode.Add);
 const isShowLoading = ref(false);
+const isApiList = ref(false);
+const isAddList = ref(false);
 
 const answer = ref<answerBody>({
   title: "",
-  answerA: "",
-  answerB: "",
-  answerC: "",
-  answerD: "",
+  answers: [],
   trueAnswer: "",
   image: "https://i.imgur.com/oJN9YcQ.jpg",
 });
+
+const listAddAnswer = ref<Array<answerBody>>([]);
+
 onBeforeMount(async () => {
   await getAllAnswerByQuestionId();
 });
@@ -176,33 +200,73 @@ async function getAllAnswerByQuestionId() {
 //#endregion
 
 //#region chọn 1 answer
-async function selectAnswer(answerId: string) {
+async function selectAddAnswer(number: number) {
   try {
-    answerSelectedId.value = answerId;
+    isApiList.value = false;
+    isAddList.value = true;
+
+    addAnswerSelectedNumber.value = number;
     isShowLoading.value = true;
-    const response = (await answerApi.getAnswerByAnswerId(answerId)).data;
+    const response = listAddAnswer.value[number];
     mode.value = formMode.Edit;
 
-    console.log(answer.value.image);
-    answer.value.answerA = response.answerA;
-    answer.value.answerB = response.answerB;
-    answer.value.answerC = response.answerC;
-    answer.value.answerD = response.answerD;
+    for(let index = 0; index < response.answers.length; index++){
+        answer.value.answers[index] = response.answers[index];
+    }
     answer.value.title = response.title;
     answer.value.image = response.image;
     answer.value.trueAnswer = response.trueAnswer;
 
     switch (response.trueAnswer) {
-      case response.answerA:
+      case response.answers[0]:
         selectedField.value = "answerA";
         break;
-      case response.answerB:
+      case response.answers[1]:
         selectedField.value = "answerB";
         break;
-      case response.answerC:
+      case response.answers[2]:
         selectedField.value = "answerC";
         break;
-      case response.answerD:
+      case response.answers[3]:
+        selectedField.value = "answerD";
+        break;
+      default :
+        selectedField.value = "";
+    }
+    isShowLoading.value = false;
+  } catch (error) {
+    console.error("Có lỗi khi lấy answer", error);
+  }
+}
+
+async function selectApiAnswer(answerId: string) {
+  try {
+    isApiList.value = true;
+    isAddList.value = false;
+
+    apiAnswerSelectedId.value = answerId;
+    isShowLoading.value = true;
+    const response = (await answerApi.getAnswerByAnswerId(answerId)).data;
+    mode.value = formMode.Edit;
+
+    for(let index = 0; index < response.answers.length; index++){
+        answer.value.answers[index] = response.answers[index];
+    }
+    answer.value.title = response.title;
+    answer.value.image = response.image;
+    answer.value.trueAnswer = response.trueAnswer;
+
+    switch (response.trueAnswer) {
+      case response.answers[0]:
+        selectedField.value = "answerA";
+        break;
+      case response.answers[1]:
+        selectedField.value = "answerB";
+        break;
+      case response.answers[2]:
+        selectedField.value = "answerC";
+        break;
+      case response.answers[3]:
         selectedField.value = "answerD";
         break;
     }
@@ -221,16 +285,16 @@ function selectTrueAnswer(trueAnswer: string) {
 
   switch (trueAnswer) {
     case "answerA":
-      answer.value.trueAnswer = answer.value.answerA;
+      answer.value.trueAnswer = answer.value.answers[0];
       break;
     case "answerB":
-      answer.value.trueAnswer = answer.value.answerB;
+      answer.value.trueAnswer = answer.value.answers[1];
       break;
     case "answerC":
-      answer.value.trueAnswer = answer.value.answerC;
+      answer.value.trueAnswer = answer.value.answers[2];
       break;
     case "answerD":
-      answer.value.trueAnswer = answer.value.answerD;
+      answer.value.trueAnswer = answer.value.answers[3];
       break;
   }
 }
@@ -238,34 +302,35 @@ function selectTrueAnswer(trueAnswer: string) {
 
 //#region new Answer
 function newAnsswer() {
-  mode.value = formMode.Add;
-  console.log(answer.value.image);
+
+  if(mode.value == formMode.Edit){
+    mode.value = formMode.Add;
+  } else if(mode.value == formMode.Add){
+    listAddAnswer.value.push(answer.value);
+  }
 
   answer.value = {
     title: "",
-    answerA: "",
-    answerB: "",
-    answerC: "",
-    answerD: "",
+    answers: [],
     trueAnswer: "",
     image: "https://i.imgur.com/oJN9YcQ.jpg",
   };
-  selectedField.value = '';
-
-
+  selectedField.value = "";
 }
 //#endregion
 
 //#region btn
+
 async function createAnswer() {
   try {
     isShowLoading.value = true;
-    const response = await answerApi.createAnswerByQuestionId(
+    await answerApi.createAnswerByQuestionId(
       questionId.value,
-      answer.value
+      listAddAnswer.value
     );
+
+    listAddAnswer.value = [];
     await getAllAnswerByQuestionId();
-    newAnsswer();
     isShowLoading.value = false;
   } catch (error) {
     console.log("Có lỗi khi thêm answer", error);
@@ -275,9 +340,17 @@ async function createAnswer() {
 async function deleteAnswer() {
   try {
     isShowLoading.value = true;
-    const response = await answerApi.deleteAnswer(answerSelectedId.value);
-    await getAllAnswerByQuestionId();
 
+
+    if(isApiList.value == true){
+      await answerApi.deleteAnswer(apiAnswerSelectedId.value);
+      await getAllAnswerByQuestionId();
+    }
+    else if(isAddList.value == true){
+      listAddAnswer.value.splice(addAnswerSelectedNumber.value, 1);
+    }
+
+    newAnsswer();
     isShowLoading.value = false;
   } catch (error) {
     console.log("Có lỗi khi xoá answer", error);
@@ -287,11 +360,25 @@ async function deleteAnswer() {
 async function updateAnswer() {
   try {
     isShowLoading.value = true;
-    const response = await answerApi.updateAnswerByAnswerId(answerSelectedId.value,answer.value);
 
-    await getAllAnswerByQuestionId();
+    if(isApiList.value == true){
 
-    console.log(answer.value);
+      await answerApi.updateAnswerByAnswerId(
+        apiAnswerSelectedId.value,
+        answer.value
+      );
+      await getAllAnswerByQuestionId();
+    }
+
+    else if(isAddList.value == true){
+      listAddAnswer.value.splice(
+        addAnswerSelectedNumber.value,
+        1,
+        answer.value
+      );
+    }
+
+    newAnsswer();
     isShowLoading.value = false;
   } catch (error) {
     console.log("Có lỗi khi cập nhật answer", error);
@@ -306,4 +393,3 @@ async function updateAnswer() {
   color: white !important;
 }
 </style>
-

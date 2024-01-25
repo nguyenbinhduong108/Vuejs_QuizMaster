@@ -141,7 +141,7 @@ async function deleteQuestion(id: string) {
 
 function addAnswer(questionId: string) {
   questionStore.questionId = questionId;
-  router.push("admin/answer");
+  router.push({name: 'admin-answer'});
 }
 </script>
 
