@@ -1,61 +1,51 @@
 <template>
-  <div class="!w-screen min-h-screen">
+  <div class="!w-screen min-h-[calc(100vh-50px)]">
     <!-- app bar -->
     <AppBar></AppBar>
 
     <!-- main -->
     <div class="flex flex-col items-center justify-center bg-primary-60">
-      <div
-        class="!pt-[50px] min-h-screen w-full lg:w-5/6 xl:w-4/5 2xl:w-1/2 my-6 px-4"
-      >
-        <div class="flex flex-col md:flex-row gap-8">
+      <div class="!pt-[50px] min-h-[calc(100vh-50px)] w-full xl:w-4/5 2xl:w-3/4 my-6 px-4 flex justify-center">
+        <div class="flex flex-col lg:flex-row gap-8 overflow-hidden pt-4">
           <!-- menu -->
-          <div class="flex md:!flex-col gap-2">
-            <div
-              @click="
-                () => {
-                  getAllQuestion();
-                  selectCategory(null);
-                }
+          <div v-if="categories.length > 0" class="flex lg:!flex-col gap-2">
+            <div @click="() => {
+              getAllQuestion();
+              selectCategory(null);
+            }
               "
               class="bg-primary-20 py-2 px-4 font-medium w-28 text-slate-500 cursor-pointer rounded-lg whitespace-nowrap hover:bg-primary-40 hover:border hover:border-1 border-primary-10 hover:text-primary-30 active:bg-primary-10"
-              :class="{ selected: selectedCategory === null }"
-            >
+              :class="{ selected: selectedCategory === null }">
               Tất cả
             </div>
 
-            <div
-              v-for="category in categories"
-              :key="category.id"
-              @click="
-                () => {
-                  getQuestionByCategory(category.id);
-                  selectCategory(category.id);
-                }
+            <div v-for="category in categories" :key="category.id" @click="() => {
+              getQuestionByCategory(category.id);
+              selectCategory(category.id);
+            }
               "
               class="bg-primary-20 py-2 px-4 font-medium w-28 text-slate-500 cursor-pointer rounded-lg whitespace-nowrap hover:bg-primary-40 hover:border hover:border-1 border-primary-10 hover:text-primary-30 active:bg-primary-10"
-              :class="{ selected: selectedCategory === category.id }"
-            >
+              :class="{ selected: selectedCategory === category.id }">
               {{ category.name }}
             </div>
           </div>
 
           <!-- content -->
-
-          <div class="flex flex-wrap gap-4">
-            <CustomCard
-              :questions="questions"
-              @click="selectedCardOnClick"
-            ></CustomCard>
+          <div v-if="questions.length > 0" class="flex flex-col md:grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CustomCard :questions="questions" @click="handleSelectQuestion"></CustomCard>
           </div>
+          <div v-if="questions.length <= 0 && !isShowLoading"
+            class="min-w-[calc(100vw-500px)] text-xl flex items-center justify-center">Xin lỗi, chủ đề này không
+            có câu hỏi
+            nào!</div>
         </div>
-        <Loading v-if="isShowLoading"></Loading>
       </div>
+      <Loading v-if="isShowLoading"></Loading>
     </div>
-
-    <!-- footer -->
-    <!-- <Footer></Footer> -->
   </div>
+
+  <!-- footer -->
+  <!-- <Footer></Footer> -->
 </template>
 
 <script setup lang="ts">
@@ -81,7 +71,6 @@ const categories = ref<categoryProps[]>([]);
 const selectedCategory = ref<string | null>(null);
 
 const isShowLoading = ref(false);
-const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
 const accountStore = useAccountStore();
 async function getAllQuestion() {
@@ -129,10 +118,7 @@ async function getQuestionByCategory(categoryId: string) {
 //   router.push({ name: "play", params: { questionId: questionId } });
 // }
 
-async function selectedCardOnClick(questionId: string) {
-  isShowLoading.value = true;
-  await questionStore.setQuestion(questionId);
-  isShowLoading.value = false;
+async function handleSelectQuestion(questionId: string) {
   router.push({ name: "questionDetails", params: { questionId: questionId } });
 }
 
