@@ -7,6 +7,7 @@ import AdminContent from "@/components/AdminContent.vue";
 import AdminAnswer from "@/components/AdminAnswer.vue";
 import ResultPage from "@/views/ResultPage.vue";
 import PlayPage from "@/views/PlayPage.vue";
+import QuestionDetails from "@/views/QuestionDetails.vue";
 
 const router = createRouter({
   // history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
           component: AdminAnswer,
         },
       ],
+    },
+    {
+      path: "/question/:questionId",
+      name: "questionDetails",
+      component: QuestionDetails,
     },
     // {
     //   path: "/user/:id",

@@ -120,13 +120,20 @@ async function getQuestionByCategory(categoryId: string) {
   }
 }
 
+// async function selectedCardOnClick(questionId: string) {
+//   isShowLoading.value = true;
+//   await questionStore.setQuestion(questionId);
+//   await answerStore.setAnswers(questionId);
+//   isShowLoading.value = false;
+
+//   router.push({ name: "play", params: { questionId: questionId } });
+// }
+
 async function selectedCardOnClick(questionId: string) {
   isShowLoading.value = true;
   await questionStore.setQuestion(questionId);
-  await answerStore.setAnswers(questionId);
   isShowLoading.value = false;
-
-  router.push({ name: "play", params: { questionId: questionId } });
+  router.push({ name: "questionDetails", params: { questionId: questionId } });
 }
 
 onBeforeMount(() => {

@@ -160,7 +160,7 @@ import { ref, onBeforeMount } from "vue";
 import UploadImage from "@/components/UploadImage.vue";
 import answerApi, { type answerBody, type answerProps } from "@/apis/answerApi";
 import useAnswerStore from "@/stores/answer";
-import formMode from "@/helper/enum";
+import { formMode } from "@/helper/enum";
 import Loading from "./Loading.vue";
 
 const questionStore = useQuestionStore();
@@ -210,8 +210,8 @@ async function selectAddAnswer(number: number) {
     const response = listAddAnswer.value[number];
     mode.value = formMode.Edit;
 
-    for(let index = 0; index < response.answers.length; index++){
-        answer.value.answers[index] = response.answers[index];
+    for (let index = 0; index < response.answers.length; index++) {
+      answer.value.answers[index] = response.answers[index];
     }
     answer.value.title = response.title;
     answer.value.image = response.image;
@@ -230,7 +230,7 @@ async function selectAddAnswer(number: number) {
       case response.answers[3]:
         selectedField.value = "answerD";
         break;
-      default :
+      default:
         selectedField.value = "";
     }
     isShowLoading.value = false;
@@ -249,8 +249,8 @@ async function selectApiAnswer(answerId: string) {
     const response = (await answerApi.getAnswerByAnswerId(answerId)).data;
     mode.value = formMode.Edit;
 
-    for(let index = 0; index < response.answers.length; index++){
-        answer.value.answers[index] = response.answers[index];
+    for (let index = 0; index < response.answers.length; index++) {
+      answer.value.answers[index] = response.answers[index];
     }
     answer.value.title = response.title;
     answer.value.image = response.image;
@@ -302,10 +302,9 @@ function selectTrueAnswer(trueAnswer: string) {
 
 //#region new Answer
 function newAnsswer() {
-
-  if(mode.value == formMode.Edit){
+  if (mode.value == formMode.Edit) {
     mode.value = formMode.Add;
-  } else if(mode.value == formMode.Add){
+  } else if (mode.value == formMode.Add) {
     listAddAnswer.value.push(answer.value);
   }
 
@@ -341,12 +340,10 @@ async function deleteAnswer() {
   try {
     isShowLoading.value = true;
 
-
-    if(isApiList.value == true){
+    if (isApiList.value == true) {
       await answerApi.deleteAnswer(apiAnswerSelectedId.value);
       await getAllAnswerByQuestionId();
-    }
-    else if(isAddList.value == true){
+    } else if (isAddList.value == true) {
       listAddAnswer.value.splice(addAnswerSelectedNumber.value, 1);
     }
 
@@ -361,16 +358,13 @@ async function updateAnswer() {
   try {
     isShowLoading.value = true;
 
-    if(isApiList.value == true){
-
+    if (isApiList.value == true) {
       await answerApi.updateAnswerByAnswerId(
         apiAnswerSelectedId.value,
         answer.value
       );
       await getAllAnswerByQuestionId();
-    }
-
-    else if(isAddList.value == true){
+    } else if (isAddList.value == true) {
       listAddAnswer.value.splice(
         addAnswerSelectedNumber.value,
         1,

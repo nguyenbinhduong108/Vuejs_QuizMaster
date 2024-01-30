@@ -21,13 +21,40 @@
         </v-col>
         <v-col class="w-full">
           <v-row class="p-2 flex flex-col gap-2">
-            <div class="bg-primary-20 rounded-xl px-3 text-sm text-slate-500">
-              {{ question.category.name }}
+            <div class="flex gap-2">
+              <v-chip color="#7070c2" variant="flat" size="small">
+                {{ question.category.name }}</v-chip
+              >
+              <v-chip
+                v-if="question.level === questionLevel.Easy"
+                color="green"
+                variant="flat"
+                size="small"
+                >Dễ</v-chip
+              >
+              <v-chip
+                v-if="question.level === questionLevel.Medium"
+                color="yellow"
+                variant="flat"
+                size="small"
+                >Trung bình</v-chip
+              >
+              <v-chip
+                v-if="question.level === questionLevel.Hard"
+                color="pink"
+                variant="flat"
+                size="small"
+                >Khó</v-chip
+              >
+
+              <v-chip v-if="true" color="red" variant="flat" size="small"
+                >HOT</v-chip
+              >
             </div>
             <div class="w-full text-black !overflow-hidden line-clamp-2">
               {{ question.name }}
             </div>
-            <div class="w-full text-black !overflow-hidden">
+            <div class="w-full text-black !overflow-hidden text-sm">
               {{ question.quantity }} câu hỏi - {{ question.turn }} lượt chơi
             </div>
           </v-row>
@@ -39,7 +66,7 @@
 
 <script setup lang="ts">
 import type { questionProps } from "@/apis/questionApi";
-
+import { questionLevel } from "@/helper/enum";
 const props = defineProps({
   questions: Array<questionProps>,
   flexGrow: {
