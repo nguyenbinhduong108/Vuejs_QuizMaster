@@ -15,4 +15,17 @@
     font-family: 'Poppins', 'Roboto', monospace;
 }
 
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 16, 109, 0.5);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
 
