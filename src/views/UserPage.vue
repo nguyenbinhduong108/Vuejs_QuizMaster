@@ -1,5 +1,6 @@
 <template>
-  <div class="!w-screen min-h-[calc(100vh-50px)]">
+  <Loading v-if="isShowLoading"></Loading>
+  <div v-if="!isShowLoading" class="!w-screen min-h-[calc(100vh-50px)]">
     <!-- app bar -->
     <AppBar></AppBar>
 
@@ -40,7 +41,7 @@
             nào!</div>
         </div>
       </div>
-      <Loading v-if="isShowLoading"></Loading>
+
     </div>
   </div>
 

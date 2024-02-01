@@ -55,7 +55,7 @@ const useQuestionStore = defineStore("question", {
     },
 
     async setQuestion(questionId: string) {
-      this.resetQuestion();
+      // this.resetQuestion();
 
       try {
         const response = await questionApi.getQuestionByQuestionId(questionId);
