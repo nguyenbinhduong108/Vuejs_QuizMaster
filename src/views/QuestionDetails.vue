@@ -19,7 +19,7 @@
                     {{ questionStore.question.category.name }}</v-chip>
                 </div>
 
-                <div class="w-full text-black !overflow-hidden line-clamp-3 text-xl font-bold">
+                <div class="w-full xl:w-56 text-black !overflow-hidden line-clamp-3 text-xl font-bold">
                   {{ questionStore.question.name }}
                 </div>
 
@@ -61,20 +61,19 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-4 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
+            <div class="flex flex-col gap-2 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
               <div class="text-black font-semibold">
                 Bảng xếp hạng
               </div>
-              <div class="grid grid-cols-2 gap-4">
-
-              </div>
+              <Leaderboard :questionId="questionStore.question.id" :totalQuestions="questionStore.question.quantity">
+              </Leaderboard>
             </div>
 
             <div class="flex flex-col gap-4 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
               <div class="text-black font-semibold">
                 Bình luận
               </div>
-
+              <Comments />
             </div>
           </div>
           <div>
@@ -95,6 +94,8 @@ import { questionLevel } from "@/helper/enum";
 
 import { onBeforeMount, ref } from "vue";
 import { onBeforeUnmount } from "vue";
+import Leaderboard from "@/components/Leaderboard.vue";
+import Comments from "@/components/Comments.vue";
 
 
 const isShowLoading = ref(false);

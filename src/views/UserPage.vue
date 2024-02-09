@@ -36,7 +36,8 @@
             <CustomCard :questions="questions" @click="handleSelectQuestion"></CustomCard>
           </div>
           <div v-if="questions.length <= 0 && !isShowLoading"
-            class="min-w-[calc(100vw-500px)] text-xl flex items-center justify-center">Xin lỗi, chủ đề này không
+            class="min-w-[calc(100vw-500px)] 2xl:min-w-[calc(100vw-700px)] text-xl flex items-center justify-center">Xin
+            lỗi, chủ đề này không
             có câu hỏi
             nào!</div>
         </div>
