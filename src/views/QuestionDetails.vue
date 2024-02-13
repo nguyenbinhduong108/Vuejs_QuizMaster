@@ -8,8 +8,8 @@
       <div class="!pt-[50px] min-h-[calc(100vh-50px)] w-full xl:w-4/5 2xl:w-3/4 my-6 px-4 flex justify-center">
         <div class="flex flex-col md:flex-row gap-8">
           <div class="flex flex-col gap-4">
-            <div class="flex gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
-              <div class="w-50 max-h-50 rounded overflow-hidden">
+            <div class="flex flex-col md:flex-row gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
+              <div class="md:w-50 md:max-h-50 min-w-50 min-h-50 rounded overflow-hidden flex items-center justify-center">
                 <v-img :src="questionStore.question.image" width="200" height="200" cover></v-img>
               </div>
 
@@ -37,8 +37,8 @@
                     </button>
                   </div>
 
-                  <v-snackbar v-model="isCopyToClipboard" :timeout="2000" color="success" rounded="pill">
-                    <div class="text-center">Link đã được sao chép!</div>
+                  <v-snackbar v-model="isCopyToClipboard" :timeout="2000" color="success">
+                    <div class="text-center">Đã sao chép vào clipboard!</div>
                   </v-snackbar>
                 </div>
               </div>
@@ -73,12 +73,40 @@
               <div class="text-black font-semibold">
                 Bình luận
               </div>
-              <Comments />
+              <Comments :questionId="questionStore.question.id" />
             </div>
           </div>
-          <div>
-            <div class="text-black text-xl font-bold">Các câu đố liên quan</div>
+
+          <div class="flex flex-col gap-2">
+            <div class="text-black text-xl font-bold text-center">Các câu đố liên quan</div>
+            <div v-if="!isRelativeQuestionsLoading"
+              class="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-100px)] pr-2">
+              <div v-for="(question, index) in relativeQuestions" :key="index"
+                @click="handleClickRelativeQuestion(question.id)"
+                class="flex gap-2 bg-white p-3 rounded-lg w-full md:max-w-[250px] min-h-40 hover:-translate-y-0.5 hover:shadow-elevation-1 cursor-pointer">
+                <div class="min-w-25 min-h-25 rounded overflow-hidden flex items-center justify-center">
+                  <v-img :src="question.image" width="100" height="100" cover></v-img>
+                </div>
+                <div class="flex flex-col gap-2 max-w-[calc(100%-100px)]">
+                  <div>
+                    <v-chip color="#7070c2" variant="flat" size="small">
+                      {{ question.category.name }}</v-chip>
+                  </div>
+                  <div class="w-full text-black !overflow-hidden line-clamp-2">
+                    {{ question.name }}
+                  </div>
+                  <div class="w-full text-black !overflow-hidden text-sm">
+                    {{ question.quantity }} câu hỏi - {{ question.turn }} lượt chơi
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="isRelativeQuestionsLoading" class="w-full flex items-center justify-center min-w-[250px]">
+              <v-progress-circular indeterminate :size="32" :width="4" color="#7070c2"></v-progress-circular>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -87,57 +115,107 @@
 
 <script setup lang="ts">
 import AppBar from "@/components/AppBar.vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import useQuestionStore from "@/stores/question";
 import useAnswerStore from "@/stores/answer";
 import { questionLevel } from "@/helper/enum";
 
-import { onBeforeMount, ref } from "vue";
-import { onBeforeUnmount } from "vue";
-import Leaderboard from "@/components/Leaderboard.vue";
-import Comments from "@/components/Comments.vue";
+import { onBeforeMount, ref, onBeforeUnmount } from "vue"
+import Leaderboard from "@/components/Leaderboard.vue"
+import Comments from "@/components/Comments.vue"
+import type { questionProps } from "@/apis/questionApi"
+import questionApi from "@/apis/questionApi"
+import { computed } from "vue"
+import { watch } from "vue";
 
 
-const isShowLoading = ref(false);
-const router = useRouter();
-const questionStore = useQuestionStore();
-const answerStore = useAnswerStore();
+const isShowLoading = ref(false)
+const router = useRouter()
+const route = useRoute()
+const questionStore = useQuestionStore()
+const answerStore = useAnswerStore()
 
 const { questionId } = router.currentRoute.value.params;
 
 onBeforeMount(async () => {
-  isShowLoading.value = true;
+  isShowLoading.value = true
   await questionStore.setQuestion(String(questionId));
-  isShowLoading.value = false;
+  await loadRelativeQuestions(questionStore.question.category.id)
+  isShowLoading.value = false
 });
 
+// watch(
+//   () => route.path,
+//   async (newPath, oldPath) => {
+//     isShowLoading.value = true;
+//     await questionStore.setQuestion(String(newPath.));
+//     await loadRelativeQuestions(questionStore.question.category.id);
+//     isShowLoading.value = false;
+//   }
+// );
+
+
+
 onBeforeUnmount(() => {
-  questionStore.resetQuestion();
+  questionStore.resetQuestion()
 })
 
 const handleClickPlay = async (questionId: string) => {
-  isShowLoading.value = true;
-  await questionStore.setQuestion(questionId);
-  await answerStore.setAnswers(questionId);
-  isShowLoading.value = false;
+  isShowLoading.value = true
+  await questionStore.setQuestion(questionId)
+  await answerStore.setAnswers(questionId)
+  isShowLoading.value = false
 
-  console.log('id: ', questionId)
-  router.push({ name: "play", params: { questionId: questionId } });
+  // console.log('id: ', questionId)
+  router.push({ name: "play", params: { questionId: questionId } })
 }
 
-const isCopyToClipboard = ref(false);
+const isCopyToClipboard = ref(false)
 
 const handleClickShare = () => {
-  const currentUrl = window.location.href;
+  const currentUrl = window.location.href
 
   navigator.clipboard.writeText(currentUrl)
     .then(() => {
-      console.log('Đã sao chép URL vào clipboard: ' + currentUrl);
-      isCopyToClipboard.value = true;
+      console.log('Đã sao chép URL vào clipboard: ' + currentUrl)
+      isCopyToClipboard.value = true
     })
     .catch((err) => {
-      console.error('Lỗi khi sao chép URL vào clipboard: ', err);
-      isCopyToClipboard.value = false;
+      console.error('Lỗi khi sao chép URL vào clipboard: ', err)
+      isCopyToClipboard.value = false
     });
 }
+
+const relativeQuestions = ref<questionProps[]>([]);
+const currentQuestion = computed(() => questionStore.question)
+const isRelativeQuestionsLoading = ref(false)
+
+const loadRelativeQuestions = async (categoryId: string) => {
+  try {
+    isRelativeQuestionsLoading.value = true
+    const response = await questionApi.getAllQuestionByCategoryId(
+      categoryId,
+      10,
+      1,
+      ""
+    );
+    relativeQuestions.value = response.data.data.filter(
+      (q: questionProps) => q.id !== currentQuestion.value.id
+    );
+    isRelativeQuestionsLoading.value = false
+  } catch (error) {
+    console.error("Có lỗi khi lấy dữ liệu từ server", error)
+  }
+}
+
+const handleClickRelativeQuestion = async (questionId: string) => {
+  console.log('click relative id ' + questionId)
+  await questionStore.setQuestion(String(questionId));
+  await loadRelativeQuestions(questionStore.question.category.id)
+  router.push({ name: "question-details", params: { questionId: questionId } })
+  // isShowLoading.value = true
+
+  // isShowLoading.value = false
+}
+
 </script>

@@ -1,12 +1,12 @@
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-import { aliases, fa } from 'vuetify/iconsets/fa'
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
+import { aliases, fa } from "vuetify/iconsets/fa";
 
 const vuetify = createVuetify({
   icons: {
-    defaultSet: 'fa',
+    defaultSet: "fa",
     aliases,
     sets: {
       fa,
@@ -14,6 +14,6 @@ const vuetify = createVuetify({
   },
   components,
   directives,
-})
+});
 
 export default vuetify;

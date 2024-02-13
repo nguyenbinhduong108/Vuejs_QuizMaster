@@ -118,13 +118,13 @@ async function loginAccount() {
       // Chuyển hướng đến trang user hoặc admin tùy thuộc vào isAdmin
       if (accountStore.isAdmin) {
         router.push({
-          name: 'admin-content', 
+          name: 'admin-content',
           params: {
             id: data.id,
           },
         });
       } else {
-        router.push("/");
+        // router.push("/");
       }
       closeForm();
     }

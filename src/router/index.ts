@@ -42,7 +42,7 @@ const router = createRouter({
     },
     {
       path: "/question/:questionId",
-      name: "questionDetails",
+      name: "question-details",
       component: QuestionDetails,
     },
     // {

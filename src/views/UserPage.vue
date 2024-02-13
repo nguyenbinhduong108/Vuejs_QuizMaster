@@ -9,7 +9,7 @@
       <div class="!pt-[50px] min-h-[calc(100vh-50px)] w-full xl:w-4/5 2xl:w-3/4 my-6 px-4 flex justify-center">
         <div class="flex flex-col lg:flex-row gap-8 overflow-hidden pt-4">
           <!-- menu -->
-          <div v-if="categories.length > 0" class="flex overflow-x-scroll lg:!flex-col gap-2 custom-scrollbar">
+          <div v-if="categories.length > 0" class="flex overflow-x-scroll lg:!flex-col gap-2">
             <div @click="() => {
               getAllQuestion();
               selectCategory(null);
@@ -121,7 +121,7 @@ async function getQuestionByCategory(categoryId: string) {
 // }
 
 async function handleSelectQuestion(questionId: string) {
-  router.push({ name: "questionDetails", params: { questionId: questionId } });
+  router.push({ name: "question-details", params: { questionId: questionId } });
 }
 
 onBeforeMount(() => {

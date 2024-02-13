@@ -1,7 +1,7 @@
 <template>
   <v-card v-for="question in questions" :key="question.id" color="#fff"
     class="w-full lg:w-[400px] xl:w-[430px] max-h-40 rounded-lg overflow-hidden" :class="{ 'flex-grow': flexGrow }"
-    @click="selecteddCardOnClick(question.id)">
+    @click="selectedCardOnClick(question.id)">
     <v-container class="p-4">
       <v-row>
         <v-col class="w-25">
@@ -47,7 +47,7 @@ const props = defineProps({
 
 const emits = defineEmits(["click"]);
 
-function selecteddCardOnClick(questionId: string) {
+function selectedCardOnClick(questionId: string) {
   emits("click", questionId);
 }
 </script>

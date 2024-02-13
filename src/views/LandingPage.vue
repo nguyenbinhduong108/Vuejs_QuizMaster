@@ -5,21 +5,14 @@
 
     <!-- header -->
     <div
-      class="flex flex-col justify-end p-16 gap-4 mt-[50px] bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat relative rounded-2xl sm:rounded-none overflow-hidden"
-    >
-      <div
-        class="before:absolute before:inset-0 before:bg-black before:bg-opacity-30"
-      ></div>
+      class="flex flex-col justify-end p-16 gap-4 mt-[50px] bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat relative rounded-2xl sm:rounded-none overflow-hidden">
+      <div class="before:absolute before:inset-0 before:bg-black before:bg-opacity-30"></div>
 
-      <div
-        class="title text-white text-5xl sm:text-8xl font-bold z-10 text-center"
-      >
+      <div class="title text-white text-5xl sm:text-8xl font-bold z-10 text-center">
         Quiz Master
       </div>
 
-      <div
-        class="text-white text-xl sm:text-2xl overflow-hidden z-10 text-center"
-      >
+      <div class="text-white text-xl sm:text-2xl overflow-hidden z-10 text-center">
         Welcome to QuizMaster, where learning becomes fun and enjoyable. With
         thousands of diverse questions from all fields, QuizMaster is not only a
         question answering website, but also a source of inspiration for you to
@@ -29,12 +22,7 @@
       </div>
 
       <div class="flex flex-col items-center">
-        <v-btn
-          variant="flat"
-          append-icon="fa-solid fa-arrow-right"
-          color="#f44336"
-          @click="showForm"
-        >
+        <v-btn variant="flat" append-icon="fa-solid fa-arrow-right" color="#f44336" @click="showForm">
           Get start
         </v-btn>
       </div>
@@ -99,11 +87,7 @@
         </div>
       </div>
       <div class="flex justify-center">
-        <v-icon
-          icon="fa-brands fa-battle-net"
-          color="#f44336"
-          size="200"
-        ></v-icon>
+        <v-icon icon="fa-brands fa-battle-net" color="#f44336" size="200"></v-icon>
       </div>
     </div>
 
@@ -111,31 +95,20 @@
     <div class="p-8 flex flex-col md:flex-row justify-between gap-2">
       <div class="flex-1">
         <div class="text-black font-bold text-3xl">Your info</div>
-        <v-text-field
-          label="Name"
-          prepend-inner-icon="fa-solid fa-user"
-        ></v-text-field>
-        <v-text-field
-          label="Phone"
-          prepend-inner-icon="fa-solid fa-phone"
-        ></v-text-field>
-        <v-text-field
-          label="Email"
-          prepend-inner-icon="fa-solid fa-at"
-        ></v-text-field>
+        <v-text-field label="Name" prepend-inner-icon="fa-solid fa-user"></v-text-field>
+        <v-text-field label="Phone" prepend-inner-icon="fa-solid fa-phone"></v-text-field>
+        <v-text-field label="Email" prepend-inner-icon="fa-solid fa-at"></v-text-field>
         <v-btn color="#f44336" block>Send</v-btn>
       </div>
       <div class="flex-1">
         <div
-          class="bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] h-[200px] md:h-full md:w-full bg-cover bg-center bg-no-repeat rounded-lg"
-        ></div>
+          class="bg-[url(../assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] h-[200px] md:h-full md:w-full bg-cover bg-center bg-no-repeat rounded-lg">
+        </div>
       </div>
     </div>
 
     <!-- demo -->
-    <div
-      class="bg-gray-300 p-2 m-2 rounded flex gap-1 overflow-x-auto custom-scrollbar"
-    >
+    <div class="bg-gray-300 p-2 m-2 rounded flex gap-1 overflow-x-auto">
       <CustomCard :questions="questions" @click="logCardId"></CustomCard>
     </div>
 
@@ -143,15 +116,8 @@
     <Footer></Footer>
   </div>
 
-  <v-btn
-    class="fixed bottom-5 right-5 transition-transform"
-    style="transform-origin: center center;"
-    icon="fa-solid fa-arrow-up"
-    size="large"
-    color="#f44336"
-    v-if="showScrollToTop"
-    @click="scrollToTop"
-  ></v-btn>
+  <v-btn class="fixed bottom-5 right-5 transition-transform" style="transform-origin: center center;"
+    icon="fa-solid fa-arrow-up" size="large" color="#f44336" v-if="showScrollToTop" @click="scrollToTop"></v-btn>
 
   <LoginForm v-if="isShowForm" @closeForm="closeForm"></LoginForm>
 </template>
@@ -203,11 +169,11 @@ function handleScroll() {
 }
 
 function scrollToTop() {
-    window.scrollTo({
-      behavior: 'auto',
-      top: 0,
+  window.scrollTo({
+    behavior: 'auto',
+    top: 0,
 
-    });
+  });
 }
 
 onBeforeMount(async () => {

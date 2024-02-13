@@ -1,5 +1,8 @@
 <template>
-  <div v-if="leaderboardList.length > 0" v-for="(user, index) in leaderboardList" :key="index"
+  <div v-if="isLoading" class="w-full flex items-center justify-center">
+    <v-progress-circular indeterminate :size="32" :width="4" color="#7070c2"></v-progress-circular>
+  </div>
+  <div v-if="leaderboardList.length > 0 && !isLoading" v-for="(user, index) in leaderboardList" :key="index"
     class="flex gap-4 items-center border-t border-black-500 py-2">
     <div v-if="index === 0">
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +46,7 @@
 
     <div class="flex items-center place-content-between w-full">
       <div class="flex gap-2 items-center">
-        <div class="w-10 max-h-10 rounded overflow-hidden">
+        <div class="w-10 max-h-10 rounded-full overflow-hidden">
           <v-img :src="user.account.avatar" width="40" height="40" cover></v-img>
         </div>
         <div>{{ user.account.username }}</div>
@@ -56,12 +59,13 @@
     </div>
   </div>
 
-  <div v-else class="flex justify-center">Chưa có người chơi nào!</div>
+  <div v-if="leaderboardList.length === 0 && !isLoading" class="flex justify-center text-gray-400">Chưa có người chơi nào!
+  </div>
 </template>
 
 
 <script lang="ts" setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import leaderboardApi, { type leaderboardProps } from '@/apis/leaderboardApi';
 
 const props = defineProps({
@@ -70,11 +74,14 @@ const props = defineProps({
 })
 
 const leaderboardList = ref<leaderboardProps[]>([])
+const isLoading = ref(false)
 
 async function getLeaderboardList(questionId: string) {
   try {
+    isLoading.value = true
     const response = await leaderboardApi.getLeaderboard(questionId)
     leaderboardList.value = response.data
+    isLoading.value = false
   } catch (error) {
     console.error("Có lỗi khi lấy dữ liệu từ server");
   }
@@ -84,8 +91,12 @@ onBeforeMount(() => {
   if (props.questionId) {
     const questionId = props.questionId
     getLeaderboardList(questionId)
-    console.log(questionId)
-    console.log('list: ' + leaderboardList)
   }
 });
+
+watch(() => props.questionId, (newValue) => {
+  if (newValue) {
+    getLeaderboardList(newValue)
+  }
+})
 </script>
