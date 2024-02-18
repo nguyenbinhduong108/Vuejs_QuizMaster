@@ -1,31 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-@import url('https://use.fontawesome.com/releases/v6.4.2/css/all.css');
-@import url('./base/scroll.css');
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+@import url("https://use.fontawesome.com/releases/v6.4.2/css/all.css");
+@import url("./base/scroll.css");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-family: 'Poppins', 'Roboto', monospace;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Poppins", "Roboto", monospace;
 }
 
 ::-webkit-scrollbar {
-    height: 6px;
-    width: 6px;
+  height: 6px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 16, 109, 0.5);
-    border-radius: 6px;
+  background-color: rgba(0, 16, 109, 0.5);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: transparent;
+  background-color: transparent;
 }
-

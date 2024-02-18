@@ -34,7 +34,7 @@
         <v-row>
           <v-col>
             <div class="flex justify-center gap-2">
-              Don't have an account?
+              Chưa có tài khoản?
               <div class="text-[#f44336] cursor-pointer" @click="changeSignUpForm">
                 Đăng ký ngay
               </div>

@@ -24,9 +24,10 @@
       <div v-if="!isCommentListLoading && commentList.length === 0"
         class="flex items-center justify-center text-gray-400">Hãy là người đầu tiên để lại bình luận!</div>
 
-      <!-- hidden if total page < 2 -->
+
       <div class="flex justify-end w-full">
-        <v-pagination v-model="page" class="my-2" :length="5" size="small"></v-pagination>
+        <v-pagination v-if="totalPage >= 2" v-model="page" class="my-2" :length="totalPage"
+          :total-visible="totalPage / 2 + 1" active-color="#7070c2" size="small"></v-pagination>
       </div>
     </div>
 
@@ -53,7 +54,7 @@
       </div>
 
       <v-snackbar v-model="isCommentSuccess" :timeout="2000" color="success">
-        <div class="text-center">Bạn đã gửi 1 bình luận</div>
+        <div class="text-center">Bạn đã gửi 1 bình luận!</div>
       </v-snackbar>
     </div>
   </div>
@@ -73,14 +74,17 @@ const props = defineProps({
 const commentList = ref<commentsProps[]>([])
 const isCommentListLoading = ref<boolean>(false)
 const page = ref<number>(1)
+const totalPage = ref<number>(1)
 
 const getCommentsList = async (questionId: string, page: number) => {
   try {
     isCommentListLoading.value = true
 
     const response = await commentsApi.getComments(questionId, page)
-    commentList.value = response.data
+    commentList.value = response.data.data
+    totalPage.value = response.data.total
 
+    console.log('total ' + totalPage.value)
     isCommentListLoading.value = false
   } catch (error) {
     console.error("Có lỗi khi lấy dữ liệu từ server");
@@ -104,7 +108,6 @@ onBeforeMount(() => {
     const questionId = props.questionId
     getCommentsList(questionId, 1)
   }
-  console.log('account ID: ' + accountStore.account.id)
 })
 
 const currentComment = ref<string>('')

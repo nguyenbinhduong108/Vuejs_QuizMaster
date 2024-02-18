@@ -1,26 +1,21 @@
 <template>
-  <v-container
-    fluid
-    class="bg-slate-600 min-h-screen max-h-screen sm:px-20 md:px-40 flex flex-col justify-center"
-  >
+  <v-container fluid class="bg-slate-600 min-h-screen max-h-screen sm:px-20 md:px-40 flex flex-col justify-center">
     <!-- header -->
-    <v-row
-      class="text-white text-center font-bold"
-    >
+    <v-row class="text-white text-center font-bold">
       <v-col>
         <div class="text-xs justify-center">
-            Câu số
+          Câu số
         </div>
         <div class="text-base justify-center">
-            {{ index + 1 }} / {{ quantity }}
+          {{ index + 1 }} / {{ quantity }}
         </div>
       </v-col>
       <v-col>
         <div class="text-xs justify-center">
-            Thời gian còn lại
+          Thời gian còn lại
         </div>
         <div class="text-base justify-center">
-            {{ formatTime }}
+          {{ formatTime }}
         </div>
       </v-col>
     </v-row>
@@ -34,41 +29,25 @@
 
     <!-- ! fix image -->
     <!-- image -->
-    <v-row class="overflow-hidden hidden sm:flex">
-        <v-col>
-            <v-img :src="answers[index].image"></v-img>
-        </v-col>
+    <v-row class="overflow-hidden sm:flex">
+      <v-col>
+        <v-img :src="answers[index].image" width="100%" height="400" cover></v-img>
+      </v-col>
     </v-row>
 
     <!-- answer -->
     <v-row>
       <v-col class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <div
-          class="answer-base"
-          ref="answerA"
-          @click="handleAnswerClick('answerA')"
-        >
+        <div class="answer-base" ref="answerA" @click="handleAnswerClick('answerA')">
           {{ answers[index].answers[0] }}
         </div>
-        <div
-          class="answer-base"
-          ref="answerB"
-          @click="handleAnswerClick('answerB')"
-        >
+        <div class="answer-base" ref="answerB" @click="handleAnswerClick('answerB')">
           {{ answers[index].answers[1] }}
         </div>
-        <div
-          class="answer-base"
-          ref="answerC"
-          @click="handleAnswerClick('answerC')"
-        >
+        <div class="answer-base" ref="answerC" @click="handleAnswerClick('answerC')">
           {{ answers[index].answers[2] }}
         </div>
-        <div
-          class="answer-base"
-          ref="answerD"
-          @click="handleAnswerClick('answerD')"
-        >
+        <div class="answer-base" ref="answerD" @click="handleAnswerClick('answerD')">
           {{ answers[index].answers[3] }}
         </div>
       </v-col>
@@ -77,7 +56,7 @@
     <!-- next button -->
     <v-row>
       <v-col>
-        <v-btn color="blue" @click="nextAnswer" block>Next</v-btn>
+        <v-btn color="blue" @click="nextAnswer" block>Tiếp</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -213,10 +192,13 @@ function calculateUsedTime(elapsedTime: number) {
 
 onBeforeMount(() => {
   answers[0].answers = _.shuffle(answers[0].answers);
+  console.log(answerStore.answers)
+  console.log(answers)
+  console.log(answers[0].title)
 });
 
 onMounted(() => {
-    startTimer();
+  startTimer();
 });
 
 onUnmounted(() => {

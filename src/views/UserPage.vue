@@ -9,9 +9,9 @@
       <div class="!pt-[50px] min-h-[calc(100vh-50px)] w-full xl:w-4/5 2xl:w-3/4 my-6 px-4 flex justify-center">
         <div class="flex flex-col lg:flex-row gap-8 overflow-hidden pt-4">
           <!-- menu -->
-          <div v-if="categories.length > 0" class="flex overflow-x-scroll lg:!flex-col gap-2">
+          <div v-if="categories.length > 0" class="flex overflow-x-scroll lg:!flex-col gap-2 hidden-scroll">
             <div @click="() => {
-              getAllQuestion();
+              getAllQuestion(1);
               selectCategory(null);
             }
               "
@@ -21,7 +21,7 @@
             </div>
 
             <div v-for="category in categories" :key="category.id" @click="() => {
-              getQuestionByCategory(category.id);
+              getQuestionByCategory(category.id, 1);
               selectCategory(category.id);
             }
               "
@@ -32,8 +32,15 @@
           </div>
 
           <!-- content -->
-          <div v-if="questions.length > 0" class="flex flex-col md:grid grid-cols-1 md:grid-cols-2 gap-4">
-            <CustomCard :questions="questions" @click="handleSelectQuestion"></CustomCard>
+          <div class="flex flex-col">
+            <div v-if="questions.length > 0" class="flex flex-col md:grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <CustomCard :questions="questions" @click="handleSelectQuestion">
+              </CustomCard>
+            </div>
+            <div v-if="questions.length > 0 && totalPage >= 2" class="flex justify-end w-full">
+              <v-pagination v-model="page" class="my-2" :length="totalPage" :total-visible="totalPage / 2 + 1"
+                active-color="#7070c2" size="small"></v-pagination>
+            </div>
           </div>
           <div v-if="questions.length <= 0 && !isShowLoading"
             class="min-w-[calc(100vw-500px)] 2xl:min-w-[calc(100vw-700px)] text-xl flex items-center justify-center">Xin
@@ -47,7 +54,7 @@
   </div>
 
   <!-- footer -->
-  <!-- <Footer></Footer> -->
+  <Footer v-if="!isShowLoading"></Footer>
 </template>
 
 <script setup lang="ts">
@@ -60,11 +67,11 @@ import categoryApi, { type categoryProps } from "@/apis/categoryApi";
 import questionApi, { type questionProps } from "@/apis/questionApi";
 
 import { onBeforeMount, ref } from "vue";
-import useAnswerStore from "@/stores/answer";
 import useQuestionStore from "@/stores/question";
 
 import { useRouter } from "vue-router";
 import useAccountStore from "@/stores/account";
+import { watch } from "vue";
 
 const router = useRouter();
 
@@ -75,11 +82,16 @@ const selectedCategory = ref<string | null>(null);
 const isShowLoading = ref(false);
 const questionStore = useQuestionStore();
 const accountStore = useAccountStore();
-async function getAllQuestion() {
+
+const page = ref(1);
+const totalPage = ref(0);
+
+async function getAllQuestion(page: number) {
   try {
     isShowLoading.value = true;
-    const response = await questionApi.getAllQuestion(10, 1, "");
+    const response = await questionApi.getAllQuestion(10, page, "");
     questions.value = response.data.data;
+    totalPage.value = response.data.total;
     isShowLoading.value = false;
   } catch (error) {
     console.error("Có lỗi khi lấy dữ liệu từ server");
@@ -95,30 +107,22 @@ async function getAllCategory() {
   }
 }
 
-async function getQuestionByCategory(categoryId: string) {
+async function getQuestionByCategory(categoryId: string, page: number) {
   try {
     isShowLoading.value = true;
     const response = await questionApi.getAllQuestionByCategoryId(
       categoryId,
       10,
-      1,
+      page,
       ""
     );
     questions.value = response.data.data;
+    totalPage.value = response.data.total;
     isShowLoading.value = false;
   } catch (error) {
     console.error("Có lỗi khi lấy dữ liệu từ server");
   }
 }
-
-// async function selectedCardOnClick(questionId: string) {
-//   isShowLoading.value = true;
-//   await questionStore.setQuestion(questionId);
-//   await answerStore.setAnswers(questionId);
-//   isShowLoading.value = false;
-
-//   router.push({ name: "play", params: { questionId: questionId } });
-// }
 
 async function handleSelectQuestion(questionId: string) {
   router.push({ name: "question-details", params: { questionId: questionId } });
@@ -126,11 +130,19 @@ async function handleSelectQuestion(questionId: string) {
 
 onBeforeMount(() => {
   getAllCategory();
-  getAllQuestion();
+  getAllQuestion(1);
 });
+
+watch(page, (newValue) => {
+  getAllQuestion(newValue);
+  if (selectedCategory.value) {
+    getQuestionByCategory(selectedCategory.value, newValue);
+  }
+})
 
 const selectCategory = (categoryId: string | null) => {
   selectedCategory.value = categoryId;
+  page.value = 1
 };
 </script>
 

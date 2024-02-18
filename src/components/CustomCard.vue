@@ -1,6 +1,6 @@
 <template>
   <v-card v-for="question in questions" :key="question.id" color="#fff"
-    class="w-full lg:w-[400px] xl:w-[430px] max-h-40 rounded-lg overflow-hidden" :class="{ 'flex-grow': flexGrow }"
+    class="w-full lg:w-[400px] xl:w-[430px] max-h-40 rounded-lg overflow-hidden"
     @click="selectedCardOnClick(question.id)">
     <v-container class="p-4">
       <v-row>
@@ -39,10 +39,6 @@ import type { questionProps } from "@/apis/questionApi";
 import { questionLevel } from "@/helper/enum";
 const props = defineProps({
   questions: Array<questionProps>,
-  flexGrow: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 const emits = defineEmits(["click"]);

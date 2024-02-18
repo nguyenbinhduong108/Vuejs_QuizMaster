@@ -8,7 +8,8 @@
       <div class="!pt-[50px] min-h-[calc(100vh-50px)] w-full xl:w-4/5 2xl:w-3/4 my-6 px-4 flex justify-center">
         <div class="flex flex-col md:flex-row gap-8">
           <div class="flex flex-col gap-4">
-            <div class="flex flex-col md:flex-row gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
+            <div v-if="questionStore.question.image"
+              class="flex flex-col md:flex-row gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
               <div class="md:w-50 md:max-h-50 min-w-50 min-h-50 rounded overflow-hidden flex items-center justify-center">
                 <v-img :src="questionStore.question.image" width="200" height="200" cover></v-img>
               </div>
@@ -44,7 +45,15 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-4 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
+            <div v-else class="flex flex-col md:flex-row gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
+              <div class="w-full flex items-center justify-center min-w-[250px]">
+                <v-progress-circular indeterminate :size="32" :width="4" color="#7070c2"></v-progress-circular>
+              </div>
+            </div>
+
+
+            <div v-if="questionStore.question.timer"
+              class="flex flex-col gap-4 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
               <div class="text-black font-semibold">
                 Mô tả
               </div>
@@ -61,7 +70,14 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-2 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
+            <div v-else class="flex flex-col md:flex-row gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
+              <div class="w-full flex items-center justify-center min-w-[250px]">
+                <v-progress-circular indeterminate :size="32" :width="4" color="#7070c2"></v-progress-circular>
+              </div>
+            </div>
+
+            <div v-if="questionStore.question.id"
+              class="flex flex-col gap-2 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
               <div class="text-black font-semibold">
                 Bảng xếp hạng
               </div>
@@ -69,11 +85,24 @@
               </Leaderboard>
             </div>
 
-            <div class="flex flex-col gap-4 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
+            <div v-else class="flex flex-col md:flex-row gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
+              <div class="w-full flex items-center justify-center min-w-[250px]">
+                <v-progress-circular indeterminate :size="32" :width="4" color="#7070c2"></v-progress-circular>
+              </div>
+            </div>
+
+            <div v-if="questionStore.question.id"
+              class="flex flex-col gap-4 w-full md:min-w-[500px] bg-white p-4 rounded-lg">
               <div class="text-black font-semibold">
                 Bình luận
               </div>
               <Comments :questionId="questionStore.question.id" />
+            </div>
+
+            <div v-else class="flex flex-col md:flex-row gap-4 w-full md:min-w-[500px] px-4 bg-white p-4 rounded-lg">
+              <div class="w-full flex items-center justify-center min-w-[250px]">
+                <v-progress-circular indeterminate :size="32" :width="4" color="#7070c2"></v-progress-circular>
+              </div>
             </div>
           </div>
 
@@ -115,7 +144,7 @@
 
 <script setup lang="ts">
 import AppBar from "@/components/AppBar.vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import useQuestionStore from "@/stores/question";
 import useAnswerStore from "@/stores/answer";
 import { questionLevel } from "@/helper/enum";
@@ -126,47 +155,30 @@ import Comments from "@/components/Comments.vue"
 import type { questionProps } from "@/apis/questionApi"
 import questionApi from "@/apis/questionApi"
 import { computed } from "vue"
-import { watch } from "vue";
 
 
 const isShowLoading = ref(false)
 const router = useRouter()
-const route = useRoute()
 const questionStore = useQuestionStore()
 const answerStore = useAnswerStore()
-
-const { questionId } = router.currentRoute.value.params;
+const { questionId } = router.currentRoute.value.params
 
 onBeforeMount(async () => {
   isShowLoading.value = true
-  await questionStore.setQuestion(String(questionId));
+  await questionStore.setQuestion(String(questionId))
   await loadRelativeQuestions(questionStore.question.category.id)
   isShowLoading.value = false
 });
 
-// watch(
-//   () => route.path,
-//   async (newPath, oldPath) => {
-//     isShowLoading.value = true;
-//     await questionStore.setQuestion(String(newPath.));
-//     await loadRelativeQuestions(questionStore.question.category.id);
-//     isShowLoading.value = false;
-//   }
-// );
-
-
-
-onBeforeUnmount(() => {
-  questionStore.resetQuestion()
-})
+// onBeforeUnmount(() => {
+//   questionStore.resetQuestion()
+// })
 
 const handleClickPlay = async (questionId: string) => {
   isShowLoading.value = true
   await questionStore.setQuestion(questionId)
   await answerStore.setAnswers(questionId)
   isShowLoading.value = false
-
-  // console.log('id: ', questionId)
   router.push({ name: "play", params: { questionId: questionId } })
 }
 
@@ -209,13 +221,9 @@ const loadRelativeQuestions = async (categoryId: string) => {
 }
 
 const handleClickRelativeQuestion = async (questionId: string) => {
-  console.log('click relative id ' + questionId)
   await questionStore.setQuestion(String(questionId));
   await loadRelativeQuestions(questionStore.question.category.id)
   router.push({ name: "question-details", params: { questionId: questionId } })
-  // isShowLoading.value = true
-
-  // isShowLoading.value = false
 }
 
 </script>
