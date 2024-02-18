@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="bg-slate-600 min-h-screen max-h-screen sm:px-20 md:px-40 flex flex-col justify-center">
+  <v-container fluid class="bg-primary-30 min-h-screen max-h-screen sm:px-20 md:px-40 flex flex-col justify-center">
     <!-- header -->
     <v-row class="text-white text-center font-bold">
       <v-col>
@@ -68,10 +68,13 @@ import useQuestionStore from "@/stores/question";
 import { ref, computed, onMounted, onUnmounted, onBeforeMount } from "vue";
 import router from "@/router";
 import * as _ from "lodash";
+import leaderboardApi from "@/apis/leaderboardApi";
+import useAccountStore from "@/stores/account";
 
 const isStopClick = ref(false);
 const answerStore = useAnswerStore();
 const questionStore = useQuestionStore();
+const accountStore = useAccountStore();
 
 const answers = answerStore.answers;
 const quantity = ref(questionStore.question.quantity);
@@ -172,11 +175,23 @@ function startTimer() {
   }, 1000);
 }
 
-function stopTimer() {
+async function stopTimer() {
   answerStore.totalTimer = calculateUsedTime(totalElapsedTime.value);
+  try {
+    await leaderboardApi.createLeaderboard({
+      result: answerStore.point,
+      timer: totalElapsedTime.value,
+      questionId: questionStore.question.id,
+      accountId: accountStore.account.id,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
   router.push({ name: "result" });
   clearInterval(timer.value);
 }
+
 //#endregion
 
 //#region tính thời gian đã chơi
@@ -192,9 +207,6 @@ function calculateUsedTime(elapsedTime: number) {
 
 onBeforeMount(() => {
   answers[0].answers = _.shuffle(answers[0].answers);
-  console.log(answerStore.answers)
-  console.log(answers)
-  console.log(answers[0].title)
 });
 
 onMounted(() => {
@@ -208,7 +220,7 @@ onUnmounted(() => {
 
 <style scoped>
 .answer-base {
-  @apply text-white font-bold text-center bg-slate-400 p-2 rounded cursor-pointer hover:bg-slate-500 active:bg-slate-700 transition-all whitespace-nowrap;
+  @apply text-black font-semibold text-center bg-white p-2 rounded cursor-pointer hover:bg-slate-500 hover:text-white active:bg-slate-700 transition-all whitespace-nowrap;
 }
 
 .answer-correct {
