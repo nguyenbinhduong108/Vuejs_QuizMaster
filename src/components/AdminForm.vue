@@ -43,6 +43,12 @@
             v-model="question.categoryId"
           ></v-autocomplete>
 
+          <v-autocomplete
+            :items="[1,2,3]"
+            label="Cấp độ"
+            v-model="question.level"
+          ></v-autocomplete>
+
           <v-btn color="blue" @click="createQuestion"> Send </v-btn>
         </v-col>
         <v-col>
@@ -75,6 +81,7 @@ const question = ref<questionBody>({
   accountId: accountStore.account.id,
   categoryId: "c528aa85-6f65-4794-91c9-fe6102b94c12",
   timer: 15,
+  level: 1,
 });
 
 const categories = ref<categoryProps[]>([]);

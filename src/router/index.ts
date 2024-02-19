@@ -45,11 +45,6 @@ const router = createRouter({
       name: "question-details",
       component: QuestionDetails,
     },
-    // {
-    //   path: "/user/:id",
-    //   name: "user",
-    //   component: UserPage,
-    // },
     {
       path: "/play/:questionId",
       name: "play",

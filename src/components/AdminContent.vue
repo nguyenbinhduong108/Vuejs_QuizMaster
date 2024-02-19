@@ -1,4 +1,5 @@
 <template>
+  <Loading v-if="isShowLoading" class="z-50"></Loading>
   <div>
     <!-- app bar -->
     <AppBar :account="accountStore.account"></AppBar>
@@ -25,10 +26,6 @@
       </div>
     </div>
 
-    <!-- pagination -->
-    <div class="w-full pt-4" v-if="totalPage > 1">
-      <v-pagination v-model="page" :length="totalPage" rounded="circle"></v-pagination>
-    </div>
     <!-- body -->
     <div class="p-4 gap-2 grid grid-cols-1 lg:grid-cols-2">
       <v-card class="p-1" color="rgb(156, 163, 175)" v-for="question in listQuestion" :key="question.id">
@@ -79,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, watch } from "vue";
 import AppBar from "@/components/AppBar.vue";
 import Footer from "@/components/Footer.vue";
 import AdminForm from "@/components/AdminForm.vue";
@@ -89,6 +86,7 @@ import questionApi from "@/apis/questionApi";
 import type { questionProps } from "@/apis/questionApi";
 import format from "@/helper/format";
 import router from "@/router";
+import Loading from "./Loading.vue";
 
 const accountStore = useAccountStore();
 const questionStore = useQuestionStore();
@@ -96,9 +94,12 @@ const questionStore = useQuestionStore();
 const listQuestion = ref<questionProps[]>([]);
 const page = ref(1);
 const totalPage = ref(0);
+const isShowLoading = ref(false);
 
 async function getAllQuestionByAccountId() {
+  
   try {
+    isShowLoading.value = true;
     const response = await questionApi.getAllQuestionByAccountId(
       accountStore.account.id,
       10,
@@ -107,10 +108,15 @@ async function getAllQuestionByAccountId() {
     );
     listQuestion.value = response.data.data;
     totalPage.value = response.data.total;
+    isShowLoading.value = false;
   } catch (error) {
     console.error("Có lỗi khi lấy dữ liệu từ server", error);
   }
 }
+
+watch(page,() => {
+  getAllQuestionByAccountId();
+})
 
 onBeforeMount(async () => {
   await getAllQuestionByAccountId();
