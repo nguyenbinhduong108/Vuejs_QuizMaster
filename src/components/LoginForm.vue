@@ -16,11 +16,11 @@
 
         <v-row>
           <v-col>
-            <v-text-field v-model:model-value="account.password" label="Password" prepend-inner-icon="fa-solid fa-lock"
+            <v-text-field v-model:model-value="account.password" label="Mật khẩu" prepend-inner-icon="fa-solid fa-lock"
               hide-details="auto" :type="isShowPassword ? 'text' : 'password'" :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
                 " @click:append-inner="isShowPassword = !isShowPassword">
             </v-text-field>
-            <div class="text-right text-[#f44336] hover:cursor-pointer" @click="changeForgetForm">
+            <div class="text-right text-[#7070c2] hover:cursor-pointer mt-2" @click="changeForgetForm">
               Quên mật khẩu?
             </div>
           </v-col>
@@ -28,14 +28,14 @@
 
         <v-row>
           <v-col>
-            <v-btn block color="#f44336" @click="loginAccount">Đăng nhập</v-btn>
+            <v-btn block color="#7070c2" @click="loginAccount">Đăng nhập</v-btn>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
             <div class="flex justify-center gap-2">
               Chưa có tài khoản?
-              <div class="text-[#f44336] cursor-pointer" @click="changeSignUpForm">
+              <div class="text-[#7070c2] cursor-pointer" @click="changeSignUpForm">
                 Đăng ký ngay
               </div>
             </div>
@@ -53,13 +53,13 @@
 
         <v-row>
           <v-col>
-            <v-text-field label="New password" prepend-inner-icon="fa-solid fa-lock" hide-details="auto"></v-text-field>
+            <v-text-field label="Mật khẩu mới" prepend-inner-icon="fa-solid fa-lock" hide-details="auto"></v-text-field>
           </v-col>
         </v-row>
 
         <v-row>
           <v-col>
-            <v-btn block color="#f44336">Đặt lại mật khẩu</v-btn>
+            <v-btn block color="#7070c2">Đặt lại mật khẩu</v-btn>
           </v-col>
         </v-row>
       </v-form>

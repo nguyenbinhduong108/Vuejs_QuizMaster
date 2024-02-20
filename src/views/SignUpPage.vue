@@ -1,92 +1,57 @@
 <template>
-  <v-container
-    fluid
-    class="fixed inset-0 bg-gradient-to-r from-[#FFBB5C] to-[#E25E3E]"
-  >
+  <v-container fluid class="fixed inset-0 bg-gradient-to-r from-[#9c9cc9] to-[#7070c2]">
     <v-btn variant="flat" icon @click="backToLandingPage">
       <v-icon color="white" icon="fa-solid fa-arrow-left"></v-icon>
     </v-btn>
-    <v-container
-      fluid
-      v-if="isSignUpForm"
-      class="bg-white flex gap-1 w-[70vw] absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded p-3 overflow-hidden"
-    >
+    <v-container fluid v-if="isSignUpForm"
+      class="bg-white flex gap-1 w-[70vw] absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded p-3 overflow-hidden">
       <v-row>
         <v-col>
           <v-row class="text-center text-4xl font-bold">
-            <v-col>Sign Up</v-col>
+            <v-col>Đăng ký</v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model:model-value="account.username"
-                label="User name"
-                prepend-inner-icon="fa-solid fa-user"
-                hide-details="auto"
-              >
+              <v-text-field v-model:model-value="account.username" label="Tên tài khoản"
+                prepend-inner-icon="fa-solid fa-user" hide-details="auto">
               </v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model:model-value="account.email"
-                label="Email"
-                prepend-inner-icon="fa-solid fa-at"
-                hide-details="auto"
-              >
+              <v-text-field v-model:model-value="account.email" label="Email" prepend-inner-icon="fa-solid fa-at"
+                hide-details="auto">
               </v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model:model-value="account.password"
-                label="Password"
-                prepend-inner-icon="fa-solid fa-lock"
-                hide-details="auto"
-                :type="isShowPassword ? 'text' : 'password'"
-                :append-inner-icon="
-                  isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
-                "
-                @click:append-inner="isShowPassword = !isShowPassword"
-              >
+              <v-text-field v-model:model-value="account.password" label="Mật khẩu" prepend-inner-icon="fa-solid fa-lock"
+                hide-details="auto" :type="isShowPassword ? 'text' : 'password'" :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
+                  " @click:append-inner="isShowPassword = !isShowPassword">
               </v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model:model-value="confirmPassword"
-                :error="!checkConfirmPassword"
-                label="Confirm password"
-                prepend-inner-icon="fa-solid fa-lock"
-                hide-details="auto"
-                :type="isShowConfirmPassword ? 'text' : 'password'"
-                :append-inner-icon="
-                  isShowConfirmPassword
-                    ? 'fa-solid fa-eye-slash'
-                    : 'fa-solid fa-eye'
-                "
-                @click:append-inner="
-                  isShowConfirmPassword = !isShowConfirmPassword
-                "
-              >
+              <v-text-field v-model:model-value="confirmPassword" :error="!checkConfirmPassword" label="Nhập lại mật khẩu"
+                prepend-inner-icon="fa-solid fa-lock" hide-details="auto"
+                :type="isShowConfirmPassword ? 'text' : 'password'" :append-inner-icon="isShowConfirmPassword
+                  ? 'fa-solid fa-eye-slash'
+                  : 'fa-solid fa-eye'
+                  " @click:append-inner="
+    isShowConfirmPassword = !isShowConfirmPassword
+    ">
               </v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-btn @click="createAccount" block color="#f44336"
-                >Sign Up</v-btn
-              >
-              <div class="text-center">
-                Already have an account?
-                <span
-                  @click="loginForm"
-                  class="font-bold underline whitespace-nowrap cursor-pointer"
-                  >Login here</span
-                >
+              <v-btn @click="createAccount" block color="#7070c2">Đăng ký</v-btn>
+              <div class="text-center mt-2">
+                Bạn đã có tài khoản?
+                <span @click="loginForm" class="font-bold whitespace-nowrap cursor-pointer text-[#7070c2]">Đăng nhập
+                  ngay</span>
               </div>
             </v-col>
           </v-row>
