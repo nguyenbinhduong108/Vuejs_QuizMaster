@@ -36,7 +36,7 @@
 
     <div class="flex items-center">
       <div v-if="!account.isAdmin">
-        <v-btn variant="text" icon="fa-solid fa-search" color="#fff"></v-btn>
+        <v-btn variant="text" icon="fa-solid fa-search" color="#fff" @click="onClickShowSearch"></v-btn>
       </div>
       <!-- <v-btn variant="text" icon="fa-solid fa-gear" color="#fff"></v-btn> -->
       <v-menu v-if="account.id">
@@ -61,18 +61,21 @@
     </div>
 
     <LoginForm v-if="isShowForm" @closeForm="closeForm"></LoginForm>
+    <Search v-if="isShowSearch" @closeSearch="onClickCloseSearch"></Search>
   </div>
 </template>
 
 <script setup lang="ts">
 
 import LoginForm from "@/components/LoginForm.vue";
+import Search from "./Search.vue";
 
 import { ref } from "vue";
 import useAccountStore from "@/stores/account";
 import router from "@/router";
 import { computed } from "vue";
 
+const isShowSearch = ref<boolean>(false);
 const accountStore = useAccountStore();
 const account = computed(() => accountStore.account);
 const isShowForm = ref(false);
@@ -82,6 +85,14 @@ const items = ref([
   { title: "Cài đặt", func: setting },
   { title: "Đăng xuất", func: logout },
 ]);
+
+function onClickShowSearch(){
+  isShowSearch.value = true; 
+}
+
+function onClickCloseSearch(){
+  isShowSearch.value = false
+}
 
 function yourInfo() {
   console.log("yourInfo");

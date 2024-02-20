@@ -1,9 +1,8 @@
 <template>
-  <Loading v-if="isShowLoading" class="z-50"></Loading>
-  <div>
+  
+  <div class="relative">
     <!-- app bar -->
     <AppBar :account="accountStore.account"></AppBar>
-
     <!-- option -->
     <div
       class="flex flex-col sm:flex-row mt-[50px] p-4 gap-2 bg-[url(@/assets/9Z_2102.w020.n001.1043B.p15.1043.jpg)] bg-cover bg-center bg-no-repeat">
@@ -47,14 +46,14 @@
                 Lần cập nhật cuối: {{ format.formatDate(question.updatedAt) }}
               </div>
             </div>
-            <div class="flex gap-1">
+            <div class="grid sm:flex gap-1">
               <div class="flex-1">
-                <v-btn @click="addAnswer(question.id)" block color="#f44336">
+                <v-btn @click="addAnswer(question.id)" block color="#7070c2">
                   Chỉnh sửa
                 </v-btn>
               </div>
               <div class="flex-1">
-                <v-btn @click="deleteQuestion(question.id)" block prepend-icon="fa-solid fa-trash" color="#f44336">
+                <v-btn @click="deleteQuestion(question.id)" block prepend-icon="fa-solid fa-trash" color="#7070c2">
                   Xoá
                 </v-btn>
               </div>
@@ -70,6 +69,7 @@
     </div>
     <!-- footer -->
     <Footer></Footer>
+    <Loading v-if="isShowLoading" class="z-50"></Loading>
   </div>
 
   <AdminForm v-if="isShowForm" @closeForm="closeForm"></AdminForm>
@@ -97,9 +97,7 @@ const totalPage = ref(0);
 const isShowLoading = ref(false);
 
 async function getAllQuestionByAccountId() {
-  
   try {
-    isShowLoading.value = true;
     const response = await questionApi.getAllQuestionByAccountId(
       accountStore.account.id,
       10,
@@ -108,14 +106,15 @@ async function getAllQuestionByAccountId() {
     );
     listQuestion.value = response.data.data;
     totalPage.value = response.data.total;
-    isShowLoading.value = false;
   } catch (error) {
     console.error("Có lỗi khi lấy dữ liệu từ server", error);
   }
 }
 
-watch(page,() => {
-  getAllQuestionByAccountId();
+watch(page,async () => {
+  isShowLoading.value = true;
+  await getAllQuestionByAccountId();
+  isShowLoading.value = false;
 })
 
 onBeforeMount(async () => {

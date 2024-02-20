@@ -1,6 +1,6 @@
 <template>
   <div class="text-white">
-    <div class="bg-orange-600 flex flex-col sm:flex-row justify-between p-4 gap-3">
+    <div class="bg-primary-10 flex flex-col sm:flex-row justify-between p-4 gap-3">
       <div class="flex justify-center flex-1">
         Get connected with us on social network!
       </div>
