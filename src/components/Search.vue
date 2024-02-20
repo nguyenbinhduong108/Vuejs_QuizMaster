@@ -25,8 +25,8 @@
         <Loading v-if="isShowLoading"></Loading>
         <div class="h-full overflow-y-scroll">
           <!-- trường hợp nhập và tìm được -->
-          <div v-if="searchText.length !== 0 && questions.length !== 0">
-            <CustomCard :questions="questions"></CustomCard>
+          <div v-if="searchText.length !== 0 && questions.length !== 0" class="md:flex md:flex-col xl:grid grid-cols-1 xl:grid-cols-2 gap-2 mb-4">
+            <CustomCard :questions="questions" @click="handleSelectQuestion"></CustomCard>
           </div>
 
           <!-- trường hợp nhập mà không tìm được -->
@@ -48,11 +48,14 @@ import CustomCard from "./CustomCard.vue";
 import Loading from "./Loading.vue";
 import questionApi, { type questionProps } from "@/apis/questionApi";
 import debounce from "lodash/debounce";
+import { useRouter } from "vue-router";
 
 const questions = ref<questionProps[]>([]);
 const searchText = ref<string>("");
 const page = ref<number>(1);
 const isShowLoading = ref<boolean>(false);
+
+const router = useRouter()
 
 const emits = defineEmits([
     "closeSearch"
@@ -97,6 +100,10 @@ watch(searchText, async () => {
   function onClickCloseSearch(){
     emits("closeSearch");
   }
+
+async function handleSelectQuestion(questionId: string) {
+  router.push({ name: "question-details", params: { questionId: questionId } });
+}
 </script>
 
 <style scoped></style>
