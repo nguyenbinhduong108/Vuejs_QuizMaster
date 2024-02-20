@@ -25,8 +25,14 @@
         <Loading v-if="isShowLoading"></Loading>
         <div class="h-full overflow-y-scroll">
           <!-- trường hợp nhập và tìm được -->
-          <div v-if="searchText.length !== 0 && questions.length !== 0" class="md:flex md:flex-col xl:grid grid-cols-1 xl:grid-cols-2 gap-2 mb-4">
-            <CustomCard :questions="questions" @click="handleSelectQuestion"></CustomCard>
+          <div 
+            v-if="searchText.length !== 0 && questions.length !== 0" 
+            class="md:flex md:flex-col xl:grid grid-cols-1 xl:grid-cols-2 gap-2 mb-4"
+          >
+            <CustomCardSearch 
+              :questions="questions" 
+              @click="handleSelectQuestion"
+              @callMoreData="callMoreData"></CustomCardSearch>
           </div>
 
           <!-- trường hợp nhập mà không tìm được -->
@@ -44,7 +50,7 @@
 
 <script setup lang="ts">
 import { ref, onBeforeMount, watch } from "vue";
-import CustomCard from "./CustomCard.vue";
+import CustomCardSearch from "./CustomCardSearch.vue";
 import Loading from "./Loading.vue";
 import questionApi, { type questionProps } from "@/apis/questionApi";
 import debounce from "lodash/debounce";
@@ -62,13 +68,12 @@ const emits = defineEmits([
 ]);
 
 
-
 const getSearchQuetions = debounce(async () => {
   try {
     isShowLoading.value = true;
 
     const response = await questionApi.getAllQuestion(
-      10,
+      5,
       page.value,
       searchText.value
     );
@@ -78,6 +83,10 @@ const getSearchQuetions = debounce(async () => {
     console.error("Có lỗi khi lấy dữ liệu từ server");
   }
 }, 500);
+
+function callMoreData() {
+    console.log("question");
+}
 
 // async function getSearchQuetions() {
 //     try {
@@ -89,17 +98,13 @@ const getSearchQuetions = debounce(async () => {
 //   }
 // }
 
-onBeforeMount(async () => {
-  await getSearchQuetions();
-}),
-
 watch(searchText, async () => {
     await getSearchQuetions();
   });
 
-  function onClickCloseSearch(){
-    emits("closeSearch");
-  }
+function onClickCloseSearch(){
+   emits("closeSearch");
+}
 
 async function handleSelectQuestion(questionId: string) {
   router.push({ name: "question-details", params: { questionId: questionId } });
