@@ -70,6 +70,9 @@
     <!-- footer -->
     <Footer></Footer>
     <Loading v-if="isShowLoading" class="z-50"></Loading>
+    <v-snackbar v-model="isDeleteSuccess" :timeout="2000" color="success">
+      <div class="text-center">Xoá thành công</div>
+    </v-snackbar>
   </div>
 
   <AdminForm v-if="isShowForm" @closeForm="closeForm"></AdminForm>
@@ -95,6 +98,7 @@ const listQuestion = ref<questionProps[]>([]);
 const page = ref(1);
 const totalPage = ref(0);
 const isShowLoading = ref(false);
+const isDeleteSuccess = ref(false);
 
 async function getAllQuestionByAccountId() {
   try {
@@ -133,12 +137,14 @@ async function closeForm() {
 
 async function deleteQuestion(id: string) {
   try {
+    isDeleteSuccess.value = false;
+    isShowLoading.value = true;
     const response = await questionApi.deleteQuestion(id);
-
     if (response) {
-      console.log("Xoá thành công");
       await getAllQuestionByAccountId();
     }
+    isShowLoading.value = false;
+    isDeleteSuccess.value = true;
   } catch (error) {
     console.error("Có lỗi khi xoá bộ câu hỏi", error);
   }

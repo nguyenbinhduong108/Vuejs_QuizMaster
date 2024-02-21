@@ -57,7 +57,7 @@
           </v-row>
         </v-col>
         <v-col>
-          <UploadImage v-model:model-value="account.avatar"></UploadImage>
+          <UploadImage v-model="account.avatar"></UploadImage>
         </v-col>
       </v-row>
     </v-container>

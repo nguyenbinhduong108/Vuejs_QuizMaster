@@ -152,6 +152,15 @@
       </v-card>
     </div>
   </div>
+  <v-snackbar v-model="isCreateSuccess" :timeout="2000" color="success">
+    <div class="text-center">Thêm thành công</div>
+  </v-snackbar>
+  <v-snackbar v-model="isUpdateSuccess" :timeout="2000" color="success">
+    <div class="text-center">Cập nhật thành công</div>
+  </v-snackbar>
+  <v-snackbar v-model="isDeleteSuccess" :timeout="2000" color="success">
+    <div class="text-center">Xoá thành công</div>
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
@@ -174,6 +183,9 @@ const mode = ref(formMode.Add);
 const isShowLoading = ref(false);
 const isApiList = ref(false);
 const isAddList = ref(false);
+const isCreateSuccess = ref(false);
+const isUpdateSuccess = ref(false);
+const isDeleteSuccess = ref(false);
 
 const answer = ref<answerBody>({
   title: "",
@@ -322,6 +334,7 @@ function newAnsswer() {
 
 async function createAnswer() {
   try {
+    isCreateSuccess.value = false;
     isShowLoading.value = true;
     await answerApi.createAnswerByQuestionId(
       questionId.value,
@@ -331,6 +344,7 @@ async function createAnswer() {
     listAddAnswer.value = [];
     await getAllAnswerByQuestionId();
     isShowLoading.value = false;
+    isCreateSuccess.value = true;
   } catch (error) {
     console.log("Có lỗi khi thêm answer", error);
   }
@@ -338,6 +352,7 @@ async function createAnswer() {
 
 async function deleteAnswer() {
   try {
+    isDeleteSuccess.value = false;
     isShowLoading.value = true;
 
     if (isApiList.value == true) {
@@ -349,6 +364,7 @@ async function deleteAnswer() {
 
     newAnsswer();
     isShowLoading.value = false;
+    isDeleteSuccess.value = true;
   } catch (error) {
     console.log("Có lỗi khi xoá answer", error);
   }
@@ -356,6 +372,7 @@ async function deleteAnswer() {
 
 async function updateAnswer() {
   try {
+    isUpdateSuccess.value = false;
     isShowLoading.value = true;
 
     if (isApiList.value == true) {
@@ -374,6 +391,7 @@ async function updateAnswer() {
 
     newAnsswer();
     isShowLoading.value = false;
+    isUpdateSuccess.value = true;
   } catch (error) {
     console.log("Có lỗi khi cập nhật answer", error);
   }
