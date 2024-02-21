@@ -13,14 +13,14 @@
           <v-row>
             <v-col>
               <v-text-field v-model:model-value="account.username" label="Tên tài khoản"
-                prepend-inner-icon="fa-solid fa-user" hide-details="auto">
+                prepend-inner-icon="fa-solid fa-user" hide-details="auto" clearable :rules="usernameRules">
               </v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
               <v-text-field v-model:model-value="account.email" label="Email" prepend-inner-icon="fa-solid fa-at"
-                hide-details="auto">
+                hide-details="auto" clearable :error-messages="emailErrorMessage" :rules="emailRules">
               </v-text-field>
             </v-col>
           </v-row>
@@ -28,7 +28,8 @@
             <v-col>
               <v-text-field v-model:model-value="account.password" label="Mật khẩu" prepend-inner-icon="fa-solid fa-lock"
                 hide-details="auto" :type="isShowPassword ? 'text' : 'password'" :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
-                  " @click:append-inner="isShowPassword = !isShowPassword">
+                  " @click:append-inner="isShowPassword = !isShowPassword" clearable
+                :error-messages="passwordErrorMessage" :rules="passwordRules">
               </v-text-field>
             </v-col>
           </v-row>
@@ -41,7 +42,7 @@
                   : 'fa-solid fa-eye'
                   " @click:append-inner="
     isShowConfirmPassword = !isShowConfirmPassword
-    ">
+    " clearable :error-messages="passwordErrorMessage" :rules="passwordRules">
               </v-text-field>
             </v-col>
           </v-row>
@@ -75,6 +76,7 @@ import type { accountBody } from "@/apis/accountApi";
 import useAccountStore from "@/stores/account";
 import UploadImage from "@/components/UploadImage.vue";
 import router from "@/router";
+import { isEmailValid } from "@/helper/helpers";
 
 const account = ref<accountBody>({
   email: "",
@@ -89,6 +91,23 @@ const checkConfirmPassword = computed(() => {
   }
   return true;
 });
+
+const emailErrorMessage = ref("");
+const passwordErrorMessage = ref("");
+
+const usernameRules = [
+  (v: any) => !!v || 'Tên tài khoản không được để trống',
+]
+
+const emailRules = [
+  (v: any) => !!v || 'Email không được để trống',
+  (v: any) => isEmailValid(v) || 'Email không hợp lệ',
+]
+
+const passwordRules = [
+  (v: any) => !!v || 'Mật khẩu không được để trống',
+  (v: any) => v.length >= 6 || 'Mật khẩu phải dài hơn 6 ký tự',
+]
 
 const accountStore = useAccountStore();
 
