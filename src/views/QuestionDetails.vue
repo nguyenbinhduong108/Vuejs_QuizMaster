@@ -175,11 +175,14 @@ onBeforeMount(async () => {
 // })
 
 const handleClickPlay = async (questionId: string) => {
-  isShowLoading.value = true
-  await questionStore.setQuestion(questionId)
-  await answerStore.setAnswers(questionId)
-  isShowLoading.value = false
-  router.push({ name: "play", params: { questionId: questionId } })
+
+  if (questionStore.question.quantity > 0) {
+    isShowLoading.value = true
+    await questionStore.setQuestion(questionId)
+    await answerStore.setAnswers(questionId)
+    isShowLoading.value = false
+    router.push({ name: "play", params: { questionId: questionId } })
+  }
 }
 
 const isCopyToClipboard = ref(false)
