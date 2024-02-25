@@ -4,150 +4,74 @@
       <div class="flex flex-col items-center h-full">
         <div class="w-[60vw] flex flex-1 flex-col p-2 gap-5">
           <div>
-            <v-text-field
-              v-model:model-value="answer.title"
-              bg-color="white"
-              rounded="pill"
-              variant="solo"
-              :rules="[
-                () => !!answer.title || 'Tên bộ câu hỏi không được để trống',
-              ]"
-              label="Câu hỏi"
-            ></v-text-field>
+            <v-text-field v-model:model-value="answer.title" bg-color="white" rounded="pill" variant="solo" :rules="[
+              () => !!answer.title || 'Tên bộ câu hỏi không được để trống',
+            ]" label="Câu hỏi"></v-text-field>
           </div>
           <div class="flex flex-col flex-1 gap-5">
             <UploadImage v-model="answer.image" rectangle></UploadImage>
 
             <div class="relative grid grid-cols-1 md:grid-cols-2 gap-2">
-              <v-text-field
-                v-model:model-value="answer.answers[0]"
-                :bg-color="selectedField === 'answerA' ? 'green' : 'white'"
-                :prepend-inner-icon="
-                  selectedField === 'answerA'
+              <v-text-field v-model:model-value="answer.answers[0]"
+                :bg-color="selectedField === 'answerA' ? 'green' : 'white'" :prepend-inner-icon="selectedField === 'answerA'
                     ? 'fa-regular fa-circle-check'
                     : 'fa-regular fa-circle'
-                "
-                rounded="pill"
-                variant="solo"
-                :rules="[
-                  () =>
-                    !!answer.answers[0] || 'Câu trả lời không được để trống',
-                ]"
-                co
-                label="Đáp án A"
-                @click:prepend-inner="selectTrueAnswer('answerA')"
-              ></v-text-field>
-              <v-text-field
-                v-model:model-value="answer.answers[1]"
-                :bg-color="selectedField === 'answerB' ? 'green' : 'white'"
-                :prepend-inner-icon="
-                  selectedField === 'answerB'
+                  " rounded="pill" variant="solo" :rules="[
+    () =>
+      !!answer.answers[0] || 'Câu trả lời không được để trống',
+  ]" co label="Đáp án A" @click:prepend-inner="selectTrueAnswer('answerA')"></v-text-field>
+              <v-text-field v-model:model-value="answer.answers[1]"
+                :bg-color="selectedField === 'answerB' ? 'green' : 'white'" :prepend-inner-icon="selectedField === 'answerB'
                     ? 'fa-regular fa-circle-check'
                     : 'fa-regular fa-circle'
-                "
-                rounded="pill"
-                variant="solo"
-                :rules="[
-                  () =>
-                    !!answer.answers[1] || 'Câu trả lời không được để trống',
-                ]"
-                label="Đáp án B"
-                @click:prepend-inner="selectTrueAnswer('answerB')"
-              ></v-text-field>
-              <v-text-field
-                v-model:model-value="answer.answers[2]"
-                :bg-color="selectedField === 'answerC' ? 'green' : 'white'"
-                :prepend-inner-icon="
-                  selectedField === 'answerC'
+                  " rounded="pill" variant="solo" :rules="[
+    () =>
+      !!answer.answers[1] || 'Câu trả lời không được để trống',
+  ]" label="Đáp án B" @click:prepend-inner="selectTrueAnswer('answerB')"></v-text-field>
+              <v-text-field v-model:model-value="answer.answers[2]"
+                :bg-color="selectedField === 'answerC' ? 'green' : 'white'" :prepend-inner-icon="selectedField === 'answerC'
                     ? 'fa-regular fa-circle-check'
                     : 'fa-regular fa-circle'
-                "
-                rounded="pill"
-                variant="solo"
-                :rules="[
-                  () =>
-                    !!answer.answers[2] || 'Câu trả lời không được để trống',
-                ]"
-                label="Đáp án C"
-                @click:prepend-inner="selectTrueAnswer('answerC')"
-              ></v-text-field>
-              <v-text-field
-                v-model:model-value="answer.answers[3]"
-                :bg-color="selectedField === 'answerD' ? 'green' : 'white'"
-                :prepend-inner-icon="
-                  selectedField === 'answerD'
+                  " rounded="pill" variant="solo" :rules="[
+    () =>
+      !!answer.answers[2] || 'Câu trả lời không được để trống',
+  ]" label="Đáp án C" @click:prepend-inner="selectTrueAnswer('answerC')"></v-text-field>
+              <v-text-field v-model:model-value="answer.answers[3]"
+                :bg-color="selectedField === 'answerD' ? 'green' : 'white'" :prepend-inner-icon="selectedField === 'answerD'
                     ? 'fa-regular fa-circle-check'
                     : 'fa-regular fa-circle'
-                "
-                rounded="pill"
-                variant="solo"
-                :rules="[
-                  () =>
-                    !!answer.answers[3] || 'Câu trả lời không được để trống',
-                ]"
-                label="Đáp án D"
-                @click:prepend-inner="selectTrueAnswer('answerD')"
-              ></v-text-field>
+                  " rounded="pill" variant="solo" :rules="[
+    () =>
+      !!answer.answers[3] || 'Câu trả lời không được để trống',
+  ]" label="Đáp án D" @click:prepend-inner="selectTrueAnswer('answerD')"></v-text-field>
             </div>
           </div>
           <div v-if="mode === formMode.Edit" class="grid grid-cols-2 gap-2">
             <v-btn @click="updateAnswer" variant="elevated" color="blue" block>
               Lưu
             </v-btn>
-            <v-btn @click="deleteAnswer" variant="elevated" color="blue" block
-              >Xoá</v-btn
-            >
+            <v-btn @click="deleteAnswer" variant="elevated" color="blue" block>Xoá</v-btn>
           </div>
           <div v-if="mode === formMode.Add" class="grid grid-cols-1">
-            <v-btn @click="createAnswer" variant="elevated" color="blue" block
-              >Lưu</v-btn
-            >
+            <v-btn @click="createAnswer" variant="elevated" color="blue" block>Lưu</v-btn>
           </div>
         </div>
       </div>
       <Loading v-if="isShowLoading"></Loading>
     </div>
 
-    <div
-      class="p-2 w-full h-[20vh] bg-slate-400 flex flex- gap-2 !overflow-scroll custom-scrollbar"
-    >
-      <v-card
-        class="overflow-hidden"
-        min-width="200px"
-        v-for="answer in listAnswer"
-        :key="answer.id"
-      >
-        <v-img
-          :src="answer.image"
-          width="100%"
-          height="100%"
-          cover
-          class="blur-sm hover:blur-0 transition-all"
-          @click="selectApiAnswer(answer.id)"
-        ></v-img>
+    <div class="p-2 w-full h-[20vh] bg-slate-400 flex flex- gap-2 !overflow-scroll custom-scrollbar">
+      <v-card class="overflow-hidden" min-width="200px" v-for="answer in listAnswer" :key="answer.id">
+        <v-img :src="answer.image" width="100%" height="100%" cover class="transition-all"
+          @click="selectApiAnswer(answer.id)"></v-img>
       </v-card>
 
-      <v-card
-        class="overflow-hidden"
-        min-width="200px"
-        v-for="(answer, number) in listAddAnswer"
-        :key="number"
-      >
-        <v-img
-          :src="answer.image"
-          width="100%"
-          height="100%"
-          cover
-          class="blur-sm hover:blur-0 transition-all"
-          @click="selectAddAnswer(number)"
-        ></v-img>
+      <v-card class="overflow-hidden" min-width="200px" v-for="(answer, number) in listAddAnswer" :key="number">
+        <v-img :src="answer.image" width="100%" height="100%" cover class="blur-sm hover:blur-0 transition-all"
+          @click="selectAddAnswer(number)"></v-img>
       </v-card>
 
-      <v-card
-        min-width="200px"
-        class="flex justify-center items-center !overflow-visible"
-        @click="newAnsswer"
-      >
+      <v-card min-width="200px" class="flex justify-center items-center !overflow-visible" @click="newAnsswer">
         <v-icon size="x-large" icon="fa-solid fa-circle-plus"></v-icon>
       </v-card>
     </div>

@@ -86,11 +86,11 @@ const items = ref([
   { title: "Đăng xuất", func: logout },
 ]);
 
-function onClickShowSearch(){
-  isShowSearch.value = true; 
+function onClickShowSearch() {
+  isShowSearch.value = true;
 }
 
-function onClickCloseSearch(){
+function onClickCloseSearch() {
   isShowSearch.value = false
 }
 
@@ -104,7 +104,7 @@ function setting() {
 
 function logout() {
   accountStore.logout();
-  router.push("/");
+  // router.push("/");
 }
 
 function backToHome() {

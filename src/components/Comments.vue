@@ -43,6 +43,7 @@
                 active-color="warning" />
             </div>
             <div v-if="errorMsg" class="text-red-500">{{ errorMsg }}</div>
+            <LoginForm v-if="isShowLoginForm" @closeForm="closeLoginForm"></LoginForm>
           </div>
 
           <v-btn type="submit" class="w-10 flex items-center justify-center bg-primary-10 text-white" text="Gửi"
@@ -61,6 +62,7 @@
 </template>
 
 <script lang="ts" setup>
+import LoginForm from './LoginForm.vue';
 import commentsApi, { type commentsProps } from '@/apis/commentsApi';
 import useAccountStore from '@/stores/account';
 import { watch } from 'vue';
@@ -115,43 +117,52 @@ const currentRating = ref<number>(0)
 const errorMsg = ref<string>('')
 const isLoading = ref<boolean>(false)
 const isCommentSuccess = ref<boolean>(false)
+const isShowLoginForm = ref<boolean>(false)
 
 const handleSendComment = async () => {
   try {
     if (!accountStore.account.id) {
-      errorMsg.value = 'Hãy đăng nhập để bình luận';
-    }
-    if (currentComment.value.length === 0) {
-      errorMsg.value = 'Bạn chưa nhập bình luận';
-    }
-    if (currentRating.value === 0) {
-      errorMsg.value = 'Bạn chưa chọn xếp hạng';
-    }
-
-    if (currentComment.value.length > 0 && currentRating.value !== 0 && props.questionId && accountStore.account.id) {
-
-      isLoading.value = true
-
-      const response = await commentsApi.createComments({
-        comment: currentComment.value,
-        rating: currentRating.value,
-        accountId: accountStore.account.id,
-        questionId: props.questionId,
-      });
-
-      if (response.status === 200) {
-        currentComment.value = "";
-        currentRating.value = 0;
-        errorMsg.value = '';
-        getCommentsList(props.questionId, 1);
+      isShowLoginForm.value = true
+    } else {
+      if (currentRating.value === 0) {
+        errorMsg.value = 'Bạn chưa chọn xếp hạng';
       }
-      isCommentSuccess.value = true
-      isLoading.value = false
+      if (currentComment.value.length === 0) {
+        errorMsg.value = 'Bạn chưa nhập bình luận';
+      }
+
+      if (currentComment.value.length > 0 && currentRating.value !== 0 && props.questionId && accountStore.account.id) {
+
+        isLoading.value = true
+
+        const response = await commentsApi.createComments({
+          comment: currentComment.value,
+          rating: currentRating.value,
+          accountId: accountStore.account.id,
+          questionId: props.questionId,
+        });
+
+        if (response.status === 200) {
+          currentComment.value = "";
+          currentRating.value = 0;
+          errorMsg.value = '';
+          getCommentsList(props.questionId, 1);
+        }
+        isCommentSuccess.value = true
+        isLoading.value = false
+      }
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error("Có lỗi khi lấy dữ liệu từ server");
     isCommentSuccess.value = false
   }
+
+
 };
+
+const closeLoginForm = () => {
+  isShowLoginForm.value = false;
+}
 
 </script>
