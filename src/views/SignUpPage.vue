@@ -35,15 +35,23 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field v-model:model-value="confirmPassword" :error="!checkConfirmPassword" label="Nhập lại mật khẩu"
-                prepend-inner-icon="fa-solid fa-lock" hide-details="auto"
-                :type="isShowConfirmPassword ? 'text' : 'password'" :append-inner-icon="isShowConfirmPassword
+              <v-text-field 
+                v-model:model-value="confirmPassword"  
+                label="Nhập lại mật khẩu"
+                prepend-inner-icon="fa-solid fa-lock" 
+                hide-details="auto"
+                :type="isShowConfirmPassword ? 'text' : 'password'" 
+                :append-inner-icon="isShowConfirmPassword
                   ? 'fa-solid fa-eye-slash'
                   : 'fa-solid fa-eye'
-                  " @click:append-inner="
-    isShowConfirmPassword = !isShowConfirmPassword
-    " clearable :error-messages="passwordErrorMessage" :rules="passwordRules">
-              </v-text-field>
+                  " 
+                @click:append-inner="isShowConfirmPassword = !isShowConfirmPassword" 
+                clearable 
+                :error-messages="confirmPasswordErrorMessage" 
+                :rules="passwordRules"
+                v-on:click:control="resetErrorMessage"
+                ></v-text-field>
+              <!-- :error="!checkConfirmPassword" -->
             </v-col>
           </v-row>
           <v-row>
@@ -70,7 +78,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import LoginForm from "@/components/LoginForm.vue";
-import imgurApi from "@/apis/imgurApi";
 import accountApi from "@/apis/accountApi";
 import type { accountBody } from "@/apis/accountApi";
 import useAccountStore from "@/stores/account";
@@ -94,6 +101,13 @@ const checkConfirmPassword = computed(() => {
 
 const emailErrorMessage = ref("");
 const passwordErrorMessage = ref("");
+const confirmPasswordErrorMessage = ref("");
+
+function resetErrorMessage() {
+  emailErrorMessage.value = "";
+  passwordErrorMessage.value = "";
+  confirmPasswordErrorMessage.value = "";
+}
 
 const usernameRules = [
   (v: any) => !!v || 'Tên tài khoản không được để trống',
@@ -111,33 +125,9 @@ const passwordRules = [
 
 const accountStore = useAccountStore();
 
-const fileInput = ref();
-const isShowLoading = ref(false);
 const isSignUpForm = ref(true);
 const isShowPassword = ref(false);
 const isShowConfirmPassword = ref(false);
-
-function chooseAvatar() {
-  fileInput.value.click();
-}
-
-async function handleFileChange(event: any) {
-  try {
-    const file = (event.target as HTMLInputElement)?.files?.[0];
-
-    if (!file) {
-      return;
-    }
-    isShowLoading.value = true;
-    const formData = new FormData();
-    formData.append("avatar", file);
-    const response = await imgurApi.upload(formData);
-    account.value.avatar = response.data;
-    isShowLoading.value = false;
-  } catch (error) {
-    console.error("Error uploading image:", error);
-  }
-}
 
 function loginForm() {
   isSignUpForm.value = false;
@@ -154,12 +144,12 @@ function backToLandingPage() {
 async function createAccount() {
   try {
     if (checkConfirmPassword.value === false) {
-      console.log("Vui lòng xác nhận chính xác mật khẩu");
+      confirmPasswordErrorMessage.value = "Vui lòng xác nhận chính xác mật khẩu";
       return;
     }
     const response = (await accountApi.registerAccount(account.value)).data;
     accountStore.login(response);
-    router.push("/user");
+    router.push("/");
   } catch (error) {
     console.error(error);
   }
