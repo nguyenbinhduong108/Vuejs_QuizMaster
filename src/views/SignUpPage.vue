@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="fixed inset-0 bg-gradient-to-r from-[#9c9cc9] to-[#7070c2]">
-    <v-btn variant="flat" icon @click="backToLandingPage">
+    <v-btn variant="flat" icon @click="backToPreRoute">
       <v-icon color="white" icon="fa-solid fa-arrow-left"></v-icon>
     </v-btn>
     <v-container fluid v-if="isSignUpForm"
@@ -35,22 +35,14 @@
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field 
-                v-model:model-value="confirmPassword"  
-                label="Nhập lại mật khẩu"
-                prepend-inner-icon="fa-solid fa-lock" 
-                hide-details="auto"
-                :type="isShowConfirmPassword ? 'text' : 'password'" 
-                :append-inner-icon="isShowConfirmPassword
+              <v-text-field v-model:model-value="confirmPassword" label="Nhập lại mật khẩu"
+                prepend-inner-icon="fa-solid fa-lock" hide-details="auto"
+                :type="isShowConfirmPassword ? 'text' : 'password'" :append-inner-icon="isShowConfirmPassword
                   ? 'fa-solid fa-eye-slash'
                   : 'fa-solid fa-eye'
-                  " 
-                @click:append-inner="isShowConfirmPassword = !isShowConfirmPassword" 
-                clearable 
-                :error-messages="confirmPasswordErrorMessage" 
-                :rules="passwordRules"
-                v-on:click:control="resetErrorMessage"
-                ></v-text-field>
+                  " @click:append-inner="isShowConfirmPassword = !isShowConfirmPassword" clearable
+                :error-messages="confirmPasswordErrorMessage" :rules="passwordRules"
+                v-on:click:control="resetErrorMessage"></v-text-field>
               <!-- :error="!checkConfirmPassword" -->
             </v-col>
           </v-row>
@@ -137,8 +129,8 @@ function signUpForm() {
   isSignUpForm.value = true;
 }
 
-function backToLandingPage() {
-  router.push("/");
+function backToPreRoute() {
+  router.back();
 }
 
 async function createAccount() {
@@ -149,7 +141,7 @@ async function createAccount() {
     }
     const response = (await accountApi.registerAccount(account.value)).data;
     accountStore.login(response);
-    router.push("/");
+    router.back();
   } catch (error) {
     console.error(error);
   }
