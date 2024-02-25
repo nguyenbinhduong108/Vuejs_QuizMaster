@@ -9,19 +9,34 @@
         <div class="font-bold text-3xl text-center pb-3">Đăng nhập</div>
         <v-row>
           <v-col>
-            <v-text-field placeholder="example@gmail.com" label="Email" prepend-inner-icon="fa-solid fa-at"
-              hide-details="auto" v-model:model-value="account.email" clearable :error-messages="emailErrorMessage"
-              :rules="emailRules"></v-text-field>
+            <v-text-field 
+              placeholder="example@gmail.com" 
+              label="Email" 
+              prepend-inner-icon="fa-solid fa-at"
+              hide-details="auto" 
+              v-model:model-value="account.email" 
+              clearable 
+              :error-messages="emailErrorMessage"
+              :rules="emailRules"
+              v-on:click:control="resetErrorMessage"
+            ></v-text-field>
           </v-col>
         </v-row>
 
         <v-row>
           <v-col>
-            <v-text-field v-model:model-value="account.password" label="Mật khẩu" prepend-inner-icon="fa-solid fa-lock"
-              hide-details="auto" :type="isShowPassword ? 'text' : 'password'" :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
-                " @click:append-inner="isShowPassword = !isShowPassword" clearable
-              :error-messages="passwordErrorMessage" :rules="passwordRules">
-            </v-text-field>
+            <v-text-field 
+              label="Mật khẩu" 
+              prepend-inner-icon="fa-solid fa-lock" 
+              :type="isShowPassword ? 'text' : 'password'" 
+              :append-inner-icon="isShowPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" @click:append-inner="isShowPassword = !isShowPassword"
+              hide-details="auto" 
+              v-model:model-value="account.password"  
+              clearable
+              :error-messages="passwordErrorMessage" 
+              :rules="passwordRules"
+              v-on:click:control="resetErrorMessage"
+              ></v-text-field>
             <div class="flex justify-end w-full">
               <div class="text-[#7070c2] hover:cursor-pointer mt-2" @click="changeForgetForm">
                 Quên mật khẩu?
@@ -75,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from "vue";
+import { ref } from "vue";
 import accountApi from "@/apis/accountApi";
 import useAccountStore from "@/stores/account";
 import { useRoute, useRouter } from "vue-router";
@@ -167,7 +182,8 @@ async function loginAccount() {
           }
           else if (error.response.data.message === "Mật khẩu sai") {
             passwordErrorMessage.value = error.response.data.message
-            resetErrorMessage()
+            console.log(passwordErrorMessage.value);
+            // resetErrorMessage()
           }
         } else {
           // Xử lý các lỗi khác
