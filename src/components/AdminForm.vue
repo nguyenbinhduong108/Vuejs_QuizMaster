@@ -86,7 +86,10 @@ const question = ref<questionBody>({
 
 const categories = ref<categoryProps[]>([]);
 
-const emits = defineEmits(["closeForm"]);
+const emits = defineEmits([
+  "closeForm",
+  "showLoading",
+]);
 
 async function getAllCategory() {
   try {
@@ -99,6 +102,7 @@ async function getAllCategory() {
 
 async function createQuestion() {
   try {
+    emits("showLoading");
     question.value.timer = parseInt(String(question.value.timer));
     const response = await questionApi.createQuestion(question.value);
     await questionStore.setQuestion(response.data.id);

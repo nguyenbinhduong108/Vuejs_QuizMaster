@@ -1,6 +1,10 @@
 <template>
   
   <div class="relative">
+    <div v-if="isShowLoading"  class="fixed inset-0 z-[99999]">
+      <Loading></Loading>
+    </div>
+      
     <!-- app bar -->
     <AppBar :account="accountStore.account"></AppBar>
     <!-- option -->
@@ -69,13 +73,13 @@
     </div>
     <!-- footer -->
     <Footer></Footer>
-    <Loading v-if="isShowLoading" class="z-50"></Loading>
+  
     <v-snackbar v-model="isDeleteSuccess" :timeout="2000" color="success">
       <div class="text-center">Xoá thành công</div>
     </v-snackbar>
   </div>
 
-  <AdminForm v-if="isShowForm" @closeForm="closeForm"></AdminForm>
+  <AdminForm v-if="isShowForm" @closeForm="closeForm" @showLoading="showLoading"></AdminForm>
 </template>
 
 <script setup lang="ts">
@@ -99,6 +103,10 @@ const page = ref(1);
 const totalPage = ref(0);
 const isShowLoading = ref(false);
 const isDeleteSuccess = ref(false);
+
+const showLoading = () => {
+  isShowLoading.value = true;
+}
 
 async function getAllQuestionByAccountId() {
   try {
@@ -133,6 +141,7 @@ function showForm() {
 async function closeForm() {
   await getAllQuestionByAccountId();
   isShowForm.value = false;
+  isShowLoading.value = false;
 }
 
 async function deleteQuestion(id: string) {
