@@ -1,9 +1,9 @@
-import type { commentsProp } from "@/apis/commentsApi";
+import type { commentsProps } from "@/apis/commentsApi";
 import { defineStore } from "pinia";
 
 const useCommentsStore = defineStore("comments", {
   state: () => ({
-    comments: [] as Array<commentsProp>,
+    comments: [] as Array<commentsProps>,
   }),
 
   actions: {},
